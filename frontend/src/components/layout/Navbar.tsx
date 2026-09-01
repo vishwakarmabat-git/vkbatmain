@@ -7,6 +7,8 @@ import { useWishlistStore } from '@/store/wishlistStore';
 import { Button } from '@/components/ui/Button';
 import { BulkOrderModal } from '@/components/common/BulkOrderModal';
 import { AuthModal } from '@/components/common/AuthModal';
+import { UserProfileModal } from '@/components/common/UserProfileModal';
+
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -106,54 +108,25 @@ export const Navbar: React.FC = () => {
               <Search className="w-5 h-5 stroke-[2]" />
             </button>
 
-            {/* Small User / Login SVG Icon */}
+            {/* Small User / Login SVG Icon / Avatar */}
             {isAuthenticated && user ? (
-              <div className="relative">
+              <>
                 <button
-                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="p-1.5 text-[#F4F4F5] hover:text-[#D4AF37] transition-colors flex items-center gap-1 cursor-pointer"
+                  type="button"
+                  onClick={() => setUserDropdownOpen(true)}
+                  className="p-1 text-[#F4F4F5] hover:text-[#D4AF37] transition-colors flex items-center gap-1.5 cursor-pointer group"
                   aria-label="User Account"
                 >
-                  <User className="w-5 h-5 stroke-[2]" />
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#D4AF37] via-[#F3E5AB] to-[#AA7C11] text-[#09090B] font-bold text-xs flex items-center justify-center ring-2 ring-[#D4AF37]/40 shadow-sm group-hover:scale-105 group-hover:ring-[#D4AF37] transition-all">
+                    {(user.full_name || user.email || 'VK').slice(0, 2).toUpperCase()}
+                  </div>
                 </button>
 
-                {userDropdownOpen && (
-                  <div
-                    className="absolute right-0 mt-2 w-64 bg-[#12121A] border border-[#242436] shadow-2xl rounded-sm py-2 z-50 text-left font-sport tracking-wider text-xs"
-                    onClick={() => setUserDropdownOpen(false)}
-                  >
-                    <div className="px-3.5 py-2 border-b border-[#24242D] overflow-hidden">
-                      <div className="text-[10px] text-[#71717A] uppercase tracking-wider mb-0.5">Signed in as</div>
-                      <div className="text-white font-bold truncate text-xs" title={user.email}>
-                        {user.email}
-                      </div>
-                    </div>
-
-                    {isAdmin && (
-                      <Link
-                        to="/admin"
-                        className="flex items-center gap-2 px-3.5 py-2 text-[#D4AF37] hover:bg-[#181821] font-bold"
-                      >
-                        <Shield className="w-3.5 h-3.5" />
-                        <span>ADMIN DASHBOARD</span>
-                      </Link>
-                    )}
-
-                    <Link to="/profile" className="block px-3.5 py-2 text-[#E4E4E7] hover:bg-[#181821]">
-                      MY PROFILE
-                    </Link>
-                    <Link to="/orders" className="block px-3.5 py-2 text-[#E4E4E7] hover:bg-[#181821]">
-                      ORDER HISTORY
-                    </Link>
-                    <button
-                      onClick={logout}
-                      className="w-full text-left px-3.5 py-2 text-red-400 hover:bg-[#181821]"
-                    >
-                      LOGOUT
-                    </button>
-                  </div>
-                )}
-              </div>
+                <UserProfileModal
+                  isOpen={userDropdownOpen}
+                  onClose={() => setUserDropdownOpen(false)}
+                />
+              </>
             ) : (
               <button
                 type="button"
@@ -164,6 +137,7 @@ export const Navbar: React.FC = () => {
                 <User className="w-5 h-5 stroke-[2]" />
               </button>
             )}
+
 
             {/* Favourites / Wishlist Heart Icon with Red Badge */}
             <Link

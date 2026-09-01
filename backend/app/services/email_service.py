@@ -97,43 +97,75 @@ def _render_email_layout(title: str, preheader: str, body_html: str) -> str:
 </html>
 """
 
+import httpx
+
 class EmailService:
     @staticmethod
-    def _send_smtp(to_email: str, subject: str, html_content: str, text_content: Optional[str] = None):
-        """Internal synchronous SMTP worker running inside background thread"""
+    def _send_worker(to_email: str, subject: str, html_content: str, text_content: Optional[str] = None):
+        """Internal synchronous worker running inside background thread (Brevo API -> SMTP -> Dev Mock)"""
         try:
-            # Check if SMTP is configured
-            if not settings.SMTP_USER or not settings.SMTP_PASSWORD:
-                logger.info(
-                    f"[DEV/MOCK EMAIL] To: {to_email} | Subject: '{subject}'\n"
-                    f"Content preview: {text_content[:200] if text_content else 'HTML content rendered.'}"
-                )
+            # 1. Brevo REST API (Fastest & 100% Reliable over HTTPS)
+            if settings.BREVO_API_KEY and settings.BREVO_API_KEY.strip():
+                sender_email = settings.BREVO_SENDER_EMAIL or settings.SMTP_FROM_EMAIL or "vishwakarmabat@gmail.com"
+                sender_name = settings.BREVO_SENDER_NAME or settings.SMTP_FROM_NAME or "Vishwakarma Bat House"
+                
+                payload = {
+                    "sender": {"name": sender_name, "email": sender_email},
+                    "to": [{"email": to_email}],
+                    "subject": subject,
+                    "htmlContent": html_content
+                }
+                if text_content:
+                    payload["textContent"] = text_content
+
+                headers = {
+                    "api-key": settings.BREVO_API_KEY.strip(),
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                }
+
+                with httpx.Client(timeout=15.0) as client:
+                    resp = client.post("https://api.brevo.com/v3/smtp/email", json=payload, headers=headers)
+                    if resp.status_code in (200, 201, 202):
+                        logger.info(f"[BREVO API] Email successfully delivered to {to_email} (Subject: {subject})")
+                        return True
+                    else:
+                        logger.error(f"[BREVO API ERROR] Status {resp.status_code}: {resp.text}")
+
+            # 2. Brevo / Custom SMTP Relay Fallback
+            if settings.SMTP_USER and settings.SMTP_PASSWORD:
+                msg = MIMEMultipart("alternative")
+                msg["Subject"] = subject
+                from_name = settings.SMTP_FROM_NAME or settings.BREVO_SENDER_NAME or "Vishwakarma Bat House"
+                from_email = settings.SMTP_FROM_EMAIL or settings.BREVO_SENDER_EMAIL or "vishwakarmabat@gmail.com"
+                msg["From"] = f"{from_name} <{from_email}>"
+                msg["To"] = to_email
+
+                if text_content:
+                    msg.attach(MIMEText(text_content, "plain", "utf-8"))
+                msg.attach(MIMEText(html_content, "html", "utf-8"))
+
+                if settings.SMTP_PORT == 465:
+                    with smtplib.SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT, timeout=15) as server:
+                        server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
+                        server.send_message(msg)
+                else:
+                    with smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT, timeout=15) as server:
+                        if settings.SMTP_TLS:
+                            server.starttls()
+                        server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
+                        server.send_message(msg)
+
+                logger.info(f"[SMTP] Email successfully delivered to {to_email} (Subject: {subject})")
                 return True
 
-            msg = MIMEMultipart("alternative")
-            msg["Subject"] = subject
-            msg["From"] = f"{settings.SMTP_FROM_NAME} <{settings.SMTP_FROM_EMAIL}>"
-            msg["To"] = to_email
-
-            if text_content:
-                msg.attach(MIMEText(text_content, "plain", "utf-8"))
-            msg.attach(MIMEText(html_content, "html", "utf-8"))
-
-            if settings.SMTP_PORT == 465:
-                # SSL
-                with smtplib.SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT, timeout=15) as server:
-                    server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
-                    server.send_message(msg)
-            else:
-                # STARTTLS
-                with smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT, timeout=15) as server:
-                    if settings.SMTP_TLS:
-                        server.starttls()
-                    server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
-                    server.send_message(msg)
-
-            logger.info(f"Email successfully delivered to {to_email} (Subject: {subject})")
+            # 3. Dev / Mock mode logging when no provider credentials are configured
+            logger.info(
+                f"[DEV/MOCK EMAIL] To: {to_email} | Subject: '{subject}'\n"
+                f"Content preview: {text_content[:200] if text_content else 'HTML content rendered.'}"
+            )
             return True
+
         except Exception as err:
             logger.error(f"Failed to send email to {to_email}: {err}")
             return False
@@ -142,11 +174,12 @@ class EmailService:
     def send_email_async(cls, to_email: str, subject: str, html_content: str, text_content: Optional[str] = None):
         """Dispatches email in a background thread to never block HTTP request latency"""
         thread = threading.Thread(
-            target=cls._send_smtp,
+            target=cls._send_worker,
             args=(to_email, subject, html_content, text_content),
             daemon=True
         )
         thread.start()
+
 
     # =========================================================================
     # 1. WELCOME EMAIL

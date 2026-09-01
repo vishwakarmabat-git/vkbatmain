@@ -70,15 +70,21 @@ def setup_test_api_db():
             sku="VK-KOH-001",
             price=24999.0,
             compare_price=29999.0,
-            stock_quantity=10,
+            stock_quantity=15,
             status="active",
             is_featured=True,
             willow_grade="Grade 1+ English Willow",
             blade_architecture="Single Blade",
             pressing_type="Triple Pressed",
-            grain_count="10"
+            grain_count="10",
+            rating_average=5.0,
+            rating_count=12
         )
         db.add(prod)
+    else:
+        prod.stock_quantity = 15
+        prod.status = "active"
+        db.commit()
 
     # 5. Test Coupon
     coupon = db.query(Coupon).filter(Coupon.code == "VKCHAMP10").first()

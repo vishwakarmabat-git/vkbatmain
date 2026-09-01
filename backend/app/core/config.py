@@ -34,14 +34,20 @@ class Settings(BaseSettings):
     CONTACT_EMAIL: str = "support@vkbathouse.com"
     FRONTEND_URL: str = "http://localhost:5173"
 
-    # SMTP Mail Server Configuration
-    SMTP_HOST: str = "smtp.gmail.com"
+    # Brevo (Sendinblue) Email Configuration
+    BREVO_API_KEY: str = ""
+    BREVO_SENDER_EMAIL: str = "vishwakarmabat@gmail.com"
+    BREVO_SENDER_NAME: str = "Vishwakarma Bat House"
+
+    # SMTP Mail Server Configuration (Fallback / Alternative)
+    SMTP_HOST: str = "smtp-relay.brevo.com"
     SMTP_PORT: int = 587
     SMTP_USER: str = ""
     SMTP_PASSWORD: str = ""
-    SMTP_FROM_EMAIL: str = "support@vkbathouse.com"
+    SMTP_FROM_EMAIL: str = "vishwakarmabat@gmail.com"
     SMTP_FROM_NAME: str = "Vishwakarma Bat House"
     SMTP_TLS: bool = True
+
 
     # Payment Gateway (Razorpay)
     RAZORPAY_KEY_ID: str = ""
