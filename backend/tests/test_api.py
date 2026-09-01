@@ -101,12 +101,24 @@ def test_health_check():
     assert response.json()["status"] == "healthy"
 
 def test_root_health_check():
+    # GET /health returns HTTP 200 and status ok without auth
     response = client.get("/health")
     assert response.status_code == 200
-    data = response.json()
-    assert data["success"] is True
-    assert data["message"] == "Server is healthy"
-    assert "timestamp" in data
+    assert response.json() == {"status": "ok"}
+    assert response.json()["status"] == "ok"
+
+    # HEAD /health is supported for monitoring tools like UptimeRobot
+    head_resp = client.head("/health")
+    assert head_resp.status_code == 200
+
+    # GET /health/ trailing slash is supported without redirect error
+    slash_resp = client.get("/health/")
+    assert slash_resp.status_code == 200
+    assert slash_resp.json() == {"status": "ok"}
+
+    # POST /health is not allowed (HTTP 405)
+    post_resp = client.post("/health")
+    assert post_resp.status_code == 405
 
 def test_financial_calculations():
     # All-inclusive pricing: Subtotal ₹10,000 with 10% coupon = ₹9,000 grand total (zero hidden taxes/shipping)

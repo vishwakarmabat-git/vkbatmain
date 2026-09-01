@@ -91,13 +91,10 @@ def root():
         "docs": "/docs"
     }
 
-@app.get("/health")
-def health_root():
-    return {
-        "success": True,
-        "message": "Server is healthy",
-        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
-    }
+@app.api_route("/health", methods=["GET", "HEAD"], tags=["Health Check"])
+@app.api_route("/health/", methods=["GET", "HEAD"], include_in_schema=False)
+def health():
+    return {"status": "ok"}
 
 @app.get("/api/v1/health")
 def health_check():
