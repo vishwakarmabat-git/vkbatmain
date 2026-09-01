@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env
+.env.local
+.env.*.local
+
+# Builds
+dist/
+dist-ssr/
+build/
+*.egg-info/
+.eggs/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Database & Uploads
+*.sqlite
+*.db
+backend/uploads/
+alembic.log
+
+# Logs & Tests
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.coverage
+htmlcov/
+.pytest_cache/

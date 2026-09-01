@@ -1,0 +1,41 @@
+# ==============================================================================
+# Render Infrastructure as Code Blueprint for Vishwakarma Bat House Backend
+# ==============================================================================
+services:
+  - type: web
+    name: vkbathouse-api
+    runtime: docker
+    dockerfilePath: backend/Dockerfile
+    dockerContext: backend
+    plan: free
+    region: singapore # Closest to India / South Asia
+    branch: main
+    autoDeploy: true
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: DATABASE_URL
+        sync: false # Set via Render Dashboard to your Supabase PostgreSQL pooler URL
+      - key: DIRECT_URL
+        sync: false # Set via Render Dashboard to direct PostgreSQL port 5432
+      - key: JWT_SECRET_KEY
+        generateValue: true # Render will automatically generate a secure random 32-character key
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "1440"
+      - key: CORS_ORIGINS
+        sync: false # Set to your Vercel URL, e.g. https://vkbathouse.vercel.app,https://yourdomain.com
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: WHATSAPP_NUMBER
+        value: "919274543199"
+      - key: CONTACT_EMAIL
+        value: "support@vkbathouse.com"
+      - key: GST_PERCENTAGE
+        value: "0.0"
+      - key: DEFAULT_SHIPPING_FEE
+        value: "0.0"
+      - key: FREE_SHIPPING_THRESHOLD
+        value: "0.0"

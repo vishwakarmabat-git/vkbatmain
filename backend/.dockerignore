@@ -1,0 +1,31 @@
+# Python & Virtualenv
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment files & secrets
+.env
+.env.*
+!.env.example
+
+# Local SQLite databases (Supabase PostgreSQL is used in production)
+*.db
+*.sqlite
+vkbathouse.db
+
+# Uploads cache
+uploads/*
+!uploads/.gitkeep
+
+# Git & Editor
+.git/
+.gitignore
+.vscode/
+.idea/
+.DS_Store
