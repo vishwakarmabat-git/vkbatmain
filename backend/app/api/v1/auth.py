@@ -1,7 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
-from app.schemas.auth import UserRegister, UserLogin, GoogleAuthRequest, Token, UserResponse, UserUpdate, PasswordChange, AddressCreate, AddressResponse
+from app.schemas.auth import (
+    UserRegister, UserLogin, GoogleAuthRequest, Token, UserResponse,
+    UserUpdate, PasswordChange, AddressCreate, AddressResponse,
+    ForgotPasswordRequest, ResetPasswordRequest
+)
 from app.services.auth_service import AuthService
 from app.dependencies.auth import get_current_user
 from app.models.user import User
@@ -19,6 +23,14 @@ def login(data: UserLogin, db: Session = Depends(get_db)):
 @router.post("/google", response_model=Token)
 def google_login(data: GoogleAuthRequest, db: Session = Depends(get_db)):
     return AuthService.google_auth(db, data)
+
+@router.post("/forgot-password")
+def forgot_password(data: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    return AuthService.forgot_password(db, data.email)
+
+@router.post("/reset-password")
+def reset_password(data: ResetPasswordRequest, db: Session = Depends(get_db)):
+    return AuthService.reset_password(db, data)
 
 @router.get("/me", response_model=UserResponse)
 def get_current_user_profile(current_user: User = Depends(get_current_user)):
@@ -39,3 +51,4 @@ def add_address(data: AddressCreate, current_user: User = Depends(get_current_us
 @router.get("/addresses", response_model=list[AddressResponse])
 def get_addresses(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     return current_user.addresses
+

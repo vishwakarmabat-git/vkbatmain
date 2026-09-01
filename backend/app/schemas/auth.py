@@ -46,6 +46,14 @@ class PasswordChange(BaseModel):
     current_password: str
     new_password: str = Field(min_length=6)
 
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str = Field(min_length=6)
+
+
 class AddressCreate(BaseModel):
     full_name: str
     phone: str

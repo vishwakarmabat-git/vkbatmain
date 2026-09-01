@@ -18,7 +18,10 @@ import { CheckoutPage } from '@/pages/Checkout/CheckoutPage';
 import { OrderSuccessPage } from '@/pages/OrderSuccess/OrderSuccessPage';
 import { LoginPage } from '@/pages/Login/LoginPage';
 import { RegisterPage } from '@/pages/Register/RegisterPage';
+import { ForgotPasswordPage } from '@/pages/Auth/ForgotPasswordPage';
+import { ResetPasswordPage } from '@/pages/Auth/ResetPasswordPage';
 import { ProfilePage } from '@/pages/Profile/ProfilePage';
+
 import { OrdersPage } from '@/pages/Orders/OrdersPage';
 import { WishlistPage } from '@/pages/Wishlist/WishlistPage';
 import { CraftsmanshipPage } from '@/pages/About/CraftsmanshipPage';
@@ -167,6 +170,23 @@ export const AppRoutes: React.FC = () => {
           </CustomerLayout>
         }
       />
+      <Route
+        path="/forgot-password"
+        element={
+          <CustomerLayout>
+            <ForgotPasswordPage />
+          </CustomerLayout>
+        }
+      />
+      <Route
+        path="/reset-password"
+        element={
+          <CustomerLayout>
+            <ResetPasswordPage />
+          </CustomerLayout>
+        }
+      />
+
       <Route
         path="/profile"
         element={

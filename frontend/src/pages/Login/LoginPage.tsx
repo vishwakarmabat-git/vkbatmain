@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { Lock, Mail, User, Phone, ArrowRight } from 'lucide-react';
+
 import { authService } from '@/services/authService';
 import { useAuthStore } from '@/store/authStore';
 import { toast } from 'sonner';
@@ -289,12 +290,12 @@ export const LoginPage: React.FC = () => {
                 <label className="block text-[#A1A1AA] uppercase font-bold text-[10px]">
                   PASSWORD *
                 </label>
-                <a
-                  href="mailto:support@vkbathouse.com?subject=Password%20Reset"
-                  className="text-[10px] text-[#D4AF37] hover:underline"
+                <Link
+                  to="/forgot-password"
+                  className="text-[10px] text-[#D4AF37] hover:text-[#F3E5AB] transition-colors font-sport uppercase tracking-wider font-bold"
                 >
-                  Forgot?
-                </a>
+                  Forgot Password?
+                </Link>
               </div>
               <div className="relative">
                 <Lock className="w-4 h-4 text-[#71717A] absolute left-3.5 top-3.5" />
@@ -308,6 +309,7 @@ export const LoginPage: React.FC = () => {
                 />
               </div>
             </div>
+
 
             <button
               type="submit"

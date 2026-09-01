@@ -28,6 +28,10 @@ def setup_test_api_db():
             is_active=True
         )
         db.add(cust)
+    else:
+        cust.hashed_password = get_password_hash("Player@123456")
+        db.commit()
+
 
     # 2. Test Admin
     adm = db.query(User).filter(User.email == "admin@vkbathouse.com").first()
@@ -224,3 +228,36 @@ def test_order_creation_and_inventory():
     # Verify inventory was decremented
     updated_prod = client.get(f"/api/v1/products/{product['id']}").json()
     assert updated_prod["stock_quantity"] == initial_stock - 1
+
+def test_forgot_and_reset_password_flow():
+    # 1. Request forgot password for existing user
+    res = client.post("/api/v1/auth/forgot-password", json={"email": "cricketfan@vkbathouse.com"})
+    assert res.status_code == 200
+    assert "message" in res.json()
+
+    # 2. Request forgot password for non-existent email (should still return 200 for security)
+    res_unknown = client.post("/api/v1/auth/forgot-password", json={"email": "nonexistent_player_xyz@domain.com"})
+    assert res_unknown.status_code == 200
+
+    # 3. Generate a valid test reset token using security helper
+    from app.core.security import create_password_reset_token
+    token = create_password_reset_token("cricketfan@vkbathouse.com")
+
+    # 4. Attempt reset with invalid token
+    res_bad = client.post("/api/v1/auth/reset-password", json={"token": "invalid_token_123", "new_password": "NewSecretPassword@123"})
+    assert res_bad.status_code == 400
+
+    # 5. Reset password with valid token
+    res_ok = client.post("/api/v1/auth/reset-password", json={"token": token, "new_password": "NewSecretPassword@123"})
+    assert res_ok.status_code == 200
+    assert "successfully reset" in res_ok.json()["message"]
+
+    # 6. Verify user can now log in with the new password
+    login_res = client.post("/api/v1/auth/login", json={"email": "cricketfan@vkbathouse.com", "password": "NewSecretPassword@123"})
+    assert login_res.status_code == 200
+    assert "access_token" in login_res.json()
+
+    # Reset password back for subsequent tests
+    client.post("/api/v1/auth/reset-password", json={"token": create_password_reset_token("cricketfan@vkbathouse.com"), "new_password": "Player@123456"})
+
+

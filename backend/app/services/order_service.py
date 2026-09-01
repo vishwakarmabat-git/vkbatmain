@@ -156,7 +156,21 @@ class OrderService:
             }, user_id=order.user_id)
         # Broadcast inventory update to public catalog because stock was deducted
         emit_realtime_event("public", "INVENTORY_UPDATED", "inventory", {"source": "order_checkout"})
-        return OrderService.get_order_by_id(db, order.id)
+
+        populated_order = OrderService.get_order_by_id(db, order.id)
+
+        # Send order confirmation email asynchronously
+        try:
+            from app.services.email_service import EmailService
+            EmailService.send_order_confirmation_email(
+                order=populated_order,
+                customer_email=populated_order.customer_email,
+                customer_name=populated_order.customer_name
+            )
+        except Exception as e:
+            pass
+
+        return populated_order
 
     @staticmethod
     def get_order_by_id(db: Session, order_id: str) -> Order:
@@ -178,9 +192,11 @@ class OrderService:
 
     @staticmethod
     def update_order_status(db: Session, order_id: str, data: OrderStatusUpdate) -> Order:
-        order = db.query(Order).filter(Order.id == order_id).first()
+        order = db.query(Order).options(joinedload(Order.items)).filter(Order.id == order_id).first()
         if not order:
             raise HTTPException(status_code=404, detail="Order not found")
+
+        previous_status = order.order_status
 
         if data.order_status is not None:
             order.order_status = data.order_status
@@ -212,7 +228,21 @@ class OrderService:
                 "payment_status": order.payment_status,
                 "tracking_number": order.tracking_number
             }, user_id=order.user_id)
+
+        # Trigger Order Delivered email if status changed to 'delivered'
+        if data.order_status == "delivered" and previous_status != "delivered":
+            try:
+                from app.services.email_service import EmailService
+                EmailService.send_order_delivered_email(
+                    order=order,
+                    customer_email=order.customer_email,
+                    customer_name=order.customer_name
+                )
+            except Exception as e:
+                pass
+
         return order
+
 
     @staticmethod
     def generate_whatsapp_order_link(db: Session, data: WhatsAppOrderRequest) -> dict:

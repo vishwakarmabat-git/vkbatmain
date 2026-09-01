@@ -17,24 +17,38 @@ class Settings(BaseSettings):
     SUPABASE_SERVICE_ROLE_KEY: str = ""
     SUPABASE_BUCKET_NAME: str = "vkbathouse-media"
 
+    # Cloudinary Cloud Storage (Photos & Videos)
+    CLOUDINARY_CLOUD_NAME: str = ""
+    CLOUDINARY_API_KEY: str = ""
+    CLOUDINARY_API_SECRET: str = ""
+    CLOUDINARY_URL: str = ""
+
+
     # JWT Authentication
     JWT_SECRET_KEY: str = "vk_bathouse_super_secret_jwt_key_development_change_in_production_9837429873498"
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 24 hours
 
-    # Business & Financial Defaults
-    GST_PERCENTAGE: float = 0.0
-    DEFAULT_SHIPPING_FEE: float = 0.0
-    FREE_SHIPPING_THRESHOLD: float = 0.0
+    # Contact & Notifications
     WHATSAPP_NUMBER: str = "919876543210"
     CONTACT_EMAIL: str = "support@vkbathouse.com"
+    FRONTEND_URL: str = "http://localhost:5173"
+
+    # SMTP Mail Server Configuration
+    SMTP_HOST: str = "smtp.gmail.com"
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_FROM_EMAIL: str = "support@vkbathouse.com"
+    SMTP_FROM_NAME: str = "Vishwakarma Bat House"
+    SMTP_TLS: bool = True
 
     # Payment Gateway (Razorpay)
     RAZORPAY_KEY_ID: str = ""
     RAZORPAY_KEY_SECRET: str = ""
 
     # CORS
-    CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173"
+    CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173,https://vkbatmain.vercel.app"
 
     @property
     def cors_origin_list(self) -> List[str]:
@@ -45,3 +59,4 @@ class Settings(BaseSettings):
         extra = "ignore"
 
 settings = Settings()
+

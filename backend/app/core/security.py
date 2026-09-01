@@ -41,3 +41,30 @@ def decode_access_token(token: str) -> Optional[dict]:
         return payload
     except JWTError:
         return None
+
+def create_password_reset_token(email: str, expires_delta: Optional[timedelta] = None) -> str:
+    """Create a tamper-proof JWT token specifically for password reset (default 30 mins)"""
+    if expires_delta:
+        expire = datetime.now(timezone.utc) + expires_delta
+    else:
+        expire = datetime.now(timezone.utc) + timedelta(minutes=30)
+    
+    to_encode = {
+        "sub": email.lower(),
+        "purpose": "password_reset",
+        "exp": expire,
+        "iat": datetime.now(timezone.utc)
+    }
+    encoded_jwt = jwt.encode(to_encode, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM)
+    return encoded_jwt
+
+def verify_password_reset_token(token: str) -> Optional[str]:
+    """Verify reset token and extract user email if valid and not expired"""
+    try:
+        payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+        if payload.get("purpose") != "password_reset":
+            return None
+        return payload.get("sub")
+    except JWTError:
+        return None
+

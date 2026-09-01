@@ -3,8 +3,15 @@ from typing import Optional
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from app.models.user import User, Address
-from app.schemas.auth import UserRegister, UserLogin, UserUpdate, PasswordChange, AddressCreate, GoogleAuthRequest
-from app.core.security import get_password_hash, verify_password, create_access_token
+from app.schemas.auth import (
+    UserRegister, UserLogin, UserUpdate, PasswordChange, AddressCreate,
+    GoogleAuthRequest, ResetPasswordRequest
+)
+from app.core.security import (
+    get_password_hash, verify_password, create_access_token,
+    create_password_reset_token, verify_password_reset_token
+)
+from app.services.email_service import EmailService
 
 class AuthService:
     @staticmethod
@@ -27,6 +34,9 @@ class AuthService:
         db.add(user)
         db.commit()
         db.refresh(user)
+
+        # Send welcome email asynchronously
+        EmailService.send_welcome_email(user.email, user.full_name)
 
         token = create_access_token(subject=user.id, role=user.role)
         return {
@@ -63,6 +73,7 @@ class AuthService:
         full_name = data.name or "Cricket Player"
 
         user = db.query(User).filter(User.email == email).first()
+        is_new_user = False
         if not user:
             user = User(
                 email=email,
@@ -74,6 +85,7 @@ class AuthService:
             db.add(user)
             db.commit()
             db.refresh(user)
+            is_new_user = True
 
         if not user.is_active:
             raise HTTPException(
@@ -81,11 +93,51 @@ class AuthService:
                 detail="Your account has been deactivated"
             )
 
+        if is_new_user:
+            EmailService.send_welcome_email(user.email, user.full_name)
+
         token = create_access_token(subject=user.id, role=user.role)
         return {
             "access_token": token,
             "token_type": "bearer",
             "user": user
+        }
+
+    @staticmethod
+    def forgot_password(db: Session, email: str) -> dict:
+        user = db.query(User).filter(User.email == email.lower()).first()
+        if user and user.is_active:
+            reset_token = create_password_reset_token(user.email)
+            EmailService.send_password_reset_email(user.email, user.full_name, reset_token)
+
+        # Always return generic success message to prevent user enumeration attacks
+        return {
+            "success": True,
+            "message": "If an account with that email exists, a password reset link has been sent to your inbox."
+        }
+
+    @staticmethod
+    def reset_password(db: Session, data: ResetPasswordRequest) -> dict:
+        user_email = verify_password_reset_token(data.token)
+        if not user_email:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid or expired password reset link. Please request a new one."
+            )
+
+        user = db.query(User).filter(User.email == user_email.lower()).first()
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User account not found."
+            )
+
+        user.hashed_password = get_password_hash(data.new_password)
+        db.commit()
+
+        return {
+            "success": True,
+            "message": "Your password has been successfully reset. You can now sign in with your new password."
         }
 
     @staticmethod
@@ -130,3 +182,4 @@ class AuthService:
         db.commit()
         db.refresh(address)
         return address
+

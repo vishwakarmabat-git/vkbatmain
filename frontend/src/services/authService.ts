@@ -40,5 +40,16 @@ export const authService = {
   async addAddress(payload: Omit<Address, 'id' | 'user_id' | 'created_at'>): Promise<Address> {
     const { data } = await apiClient.post<Address>('/auth/address', payload);
     return data;
+  },
+
+  async forgotPassword(email: string): Promise<{ success: boolean; message: string }> {
+    const { data } = await apiClient.post<{ success: boolean; message: string }>('/auth/forgot-password', { email });
+    return data;
+  },
+
+  async resetPassword(payload: { token: string; new_password: string }): Promise<{ success: boolean; message: string }> {
+    const { data } = await apiClient.post<{ success: boolean; message: string }>('/auth/reset-password', payload);
+    return data;
   }
 };
+
