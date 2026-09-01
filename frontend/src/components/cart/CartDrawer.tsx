@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { couponService } from '@/services/orderService';
 import { orderService } from '@/services/orderService';
 import { toast } from 'sonner';
+import { getImageUrl, handleImageError } from '@/utils/image';
 
 export const CartDrawer: React.FC = () => {
   const navigate = useNavigate();
@@ -161,11 +162,9 @@ export const CartDrawer: React.FC = () => {
                         {/* Thumbnail */}
                         <div className="w-16 h-20 bg-[#09090B] rounded-xs overflow-hidden shrink-0 border border-[#24242D]">
                           <img
-                            src={
-                              item.product.images?.[0]?.image_url ||
-                              'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=400&q=80'
-                            }
+                            src={getImageUrl(item.product.images?.[0]?.image_url, '/VKCAT.png')}
                             alt={item.product.name}
+                            onError={handleImageError}
                             className="w-full h-full object-cover object-center"
                           />
                         </div>

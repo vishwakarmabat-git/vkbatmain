@@ -7,7 +7,7 @@ import { Modal } from '@/components/ui/Modal';
 import { Input, Textarea } from '@/components/ui/Input';
 import { DeviceImageUpload } from '@/components/common/DeviceImageUpload';
 import { Badge } from '@/components/ui/Badge';
-import { getImageUrl } from '@/utils/image';
+import { getImageUrl, handleImageError } from '@/utils/image';
 import { toast } from 'sonner';
 import { useRealtimeSync } from '@/hooks/useRealtime';
 
@@ -178,6 +178,7 @@ export const AdminCategoriesPage: React.FC = () => {
                   <img
                     src={getImageUrl(c.image_url, '/VKCAT.png')}
                     alt={c.name}
+                    onError={handleImageError}
                     className="w-full h-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.8)]"
                   />
                 </div>

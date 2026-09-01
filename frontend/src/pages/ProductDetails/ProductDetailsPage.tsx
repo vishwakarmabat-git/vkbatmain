@@ -8,7 +8,7 @@ import { useCartStore } from '@/store/cartStore';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Input, Textarea } from '@/components/ui/Input';
-import { getImageUrl } from '@/utils/image';
+import { getImageUrl, handleImageError } from '@/utils/image';
 import { toast } from 'sonner';
 
 export const ProductDetailsPage: React.FC = () => {
@@ -171,6 +171,7 @@ export const ProductDetailsPage: React.FC = () => {
             <img
               src={getImageUrl(selectedImage || product.images?.[0]?.image_url, '/VKCAT.png')}
               alt={product.name}
+              onError={handleImageError}
               className="w-full h-full object-contain object-center drop-shadow-[0_15px_30px_rgba(0,0,0,0.9)]"
             />
             {product.discount_percent > 0 && (
@@ -193,7 +194,7 @@ export const ProductDetailsPage: React.FC = () => {
                       : 'border-[#24242D] opacity-60 hover:opacity-100'
                   }`}
                 >
-                  <img src={getImageUrl(img.image_url)} alt="Thumbnail" className="w-full h-full object-cover" />
+                  <img src={getImageUrl(img.image_url, '/VKCAT.png')} alt="Thumbnail" onError={handleImageError} className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>

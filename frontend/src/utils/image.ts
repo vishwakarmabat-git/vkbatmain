@@ -18,13 +18,23 @@ export const getImageUrl = (url?: string | null, fallback = '/VKCAT.png'): strin
   }
 
   // Uploaded backend static files (resolves relative to production API origin)
-  if (cleanUrl.startsWith('/uploads/')) {
+  const normalizedPath = cleanUrl.startsWith('/') ? cleanUrl : `/${cleanUrl}`;
+  if (normalizedPath.startsWith('/uploads/')) {
     const apiUrl = (import.meta.env.VITE_API_URL as string) || '';
-    const backendBase = apiUrl.replace(/\/api(\/v1)?\/?$/, '');
-    return backendBase ? `${backendBase}${cleanUrl}` : cleanUrl;
+    if (apiUrl && (apiUrl.startsWith('http://') || apiUrl.startsWith('https://'))) {
+      const backendBase = apiUrl.replace(/\/api(\/v1)?\/?$/, '');
+      if (backendBase) {
+        return `${backendBase}${normalizedPath}`;
+      }
+    }
+    // Fallback directly to production Render backend origin on Vercel
+    if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+      return `https://vkbatmain.onrender.com${normalizedPath}`;
+    }
+    return normalizedPath;
   }
 
-  return cleanUrl;
+  return normalizedPath;
 };
 
 /**

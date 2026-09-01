@@ -5,7 +5,7 @@ import { categoryService } from '@/services/productService';
 import { Category } from '@/types';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
-import { getImageUrl } from '@/utils/image';
+import { getImageUrl, handleImageError } from '@/utils/image';
 
 export const CategoriesPage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -47,6 +47,7 @@ export const CategoriesPage: React.FC = () => {
                 <img
                   src={getImageUrl(cat.image_url, '/VKCAT.png')}
                   alt={cat.name}
+                  onError={handleImageError}
                   className="w-full h-full object-contain object-center drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]"
                 />
               </div>

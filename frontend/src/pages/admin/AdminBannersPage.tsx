@@ -7,7 +7,7 @@ import { Modal } from '@/components/ui/Modal';
 import { Input, Textarea } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { DeviceImageUpload } from '@/components/common/DeviceImageUpload';
-import { getImageUrl } from '@/utils/image';
+import { getImageUrl, handleImageError } from '@/utils/image';
 import { apiClient } from '@/api/client';
 import { toast } from 'sonner';
 import { useRealtimeSync } from '@/hooks/useRealtime';
@@ -210,6 +210,7 @@ export const AdminBannersPage: React.FC = () => {
                           <img
                             src={getImageUrl(banner.image_url, '/standing_bat_hero.jpg')}
                             alt={banner.title}
+                            onError={handleImageError}
                             className="w-full h-full object-cover"
                           />
                         ) : (
@@ -295,6 +296,7 @@ export const AdminBannersPage: React.FC = () => {
                     <img
                       src={getImageUrl(banner.image_url, '/standing_bat_hero.jpg')}
                       alt={banner.title}
+                      onError={handleImageError}
                       className="w-full h-full object-cover"
                     />
                   ) : (

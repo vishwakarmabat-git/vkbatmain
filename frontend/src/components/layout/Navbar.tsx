@@ -119,33 +119,35 @@ export const Navbar: React.FC = () => {
 
                 {userDropdownOpen && (
                   <div
-                    className="absolute right-0 mt-2 w-48 bg-[#12121A] border border-[#242436] shadow-2xl rounded-sm py-2 z-50 text-left font-sport tracking-wider text-xs"
+                    className="absolute right-0 mt-2 w-64 bg-[#12121A] border border-[#242436] shadow-2xl rounded-sm py-2 z-50 text-left font-sport tracking-wider text-xs"
                     onClick={() => setUserDropdownOpen(false)}
                   >
-                    <div className="px-3 py-1.5 border-b border-[#24242D] text-[#71717A]">
-                      Signed in as <br />
-                      <span className="text-white font-bold">{user.email}</span>
+                    <div className="px-3.5 py-2 border-b border-[#24242D] overflow-hidden">
+                      <div className="text-[10px] text-[#71717A] uppercase tracking-wider mb-0.5">Signed in as</div>
+                      <div className="text-white font-bold truncate text-xs" title={user.email}>
+                        {user.email}
+                      </div>
                     </div>
 
                     {isAdmin && (
                       <Link
                         to="/admin"
-                        className="flex items-center gap-2 px-3 py-2 text-[#D4AF37] hover:bg-[#181821] font-bold"
+                        className="flex items-center gap-2 px-3.5 py-2 text-[#D4AF37] hover:bg-[#181821] font-bold"
                       >
                         <Shield className="w-3.5 h-3.5" />
                         <span>ADMIN DASHBOARD</span>
                       </Link>
                     )}
 
-                    <Link to="/profile" className="block px-3 py-2 text-[#E4E4E7] hover:bg-[#181821]">
+                    <Link to="/profile" className="block px-3.5 py-2 text-[#E4E4E7] hover:bg-[#181821]">
                       MY PROFILE
                     </Link>
-                    <Link to="/orders" className="block px-3 py-2 text-[#E4E4E7] hover:bg-[#181821]">
+                    <Link to="/orders" className="block px-3.5 py-2 text-[#E4E4E7] hover:bg-[#181821]">
                       ORDER HISTORY
                     </Link>
                     <button
                       onClick={logout}
-                      className="w-full text-left px-3 py-2 text-red-400 hover:bg-[#181821]"
+                      className="w-full text-left px-3.5 py-2 text-red-400 hover:bg-[#181821]"
                     >
                       LOGOUT
                     </button>

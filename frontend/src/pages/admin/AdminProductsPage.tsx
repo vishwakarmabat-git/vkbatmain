@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { toast } from 'sonner';
 import { useRealtimeSync } from '@/hooks/useRealtime';
+import { getImageUrl, handleImageError } from '@/utils/image';
 
 export const AdminProductsPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -111,8 +112,9 @@ export const AdminProductsPage: React.FC = () => {
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-12 bg-[#09090B] rounded-xs overflow-hidden shrink-0 border border-[#24242D]">
                           <img
-                            src={p.images?.[0]?.image_url || ''}
+                            src={getImageUrl(p.images?.[0]?.image_url, '/VKCAT.png')}
                             alt=""
+                            onError={handleImageError}
                             className="w-full h-full object-cover"
                           />
                         </div>
@@ -186,8 +188,9 @@ export const AdminProductsPage: React.FC = () => {
               <div className="flex items-start gap-3">
                 <div className="w-14 h-16 bg-[#09090B] rounded-xs overflow-hidden shrink-0 border border-[#24242D]">
                   <img
-                    src={p.images?.[0]?.image_url || ''}
+                    src={getImageUrl(p.images?.[0]?.image_url, '/VKCAT.png')}
                     alt=""
+                    onError={handleImageError}
                     className="w-full h-full object-cover"
                   />
                 </div>

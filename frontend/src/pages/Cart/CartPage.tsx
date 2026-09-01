@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/authStore';
 import { Button } from '@/components/ui/Button';
 import { couponService, orderService } from '@/services/orderService';
 import { toast } from 'sonner';
+import { getImageUrl, handleImageError } from '@/utils/image';
 
 export const CartPage: React.FC = () => {
   const navigate = useNavigate();
@@ -127,11 +128,9 @@ export const CartPage: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="w-24 h-32 bg-[#09090B] rounded-sm overflow-hidden shrink-0 border border-[#24242D]">
                   <img
-                    src={
-                      item.product.images?.[0]?.image_url ||
-                      'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=400&q=80'
-                    }
+                    src={getImageUrl(item.product.images?.[0]?.image_url, '/VKCAT.png')}
                     alt={item.product.name}
+                    onError={handleImageError}
                     className="w-full h-full object-cover object-center"
                   />
                 </div>
