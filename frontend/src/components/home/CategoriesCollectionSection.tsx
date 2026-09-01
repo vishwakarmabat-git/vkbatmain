@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Category } from '@/types';
-import { getImageUrl } from '@/utils/image';
+import { getImageUrl, handleImageError } from '@/utils/image';
 
 interface CategoriesCollectionSectionProps {
   categories?: Category[];
@@ -48,6 +48,7 @@ export const CategoriesCollectionSection: React.FC<CategoriesCollectionSectionPr
                     <img
                       src={getImageUrl(cat.image_url, '/VKCAT.png')}
                       alt={cat.name}
+                      onError={handleImageError}
                       className="w-full h-full object-contain object-center drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]"
                     />
                   </div>

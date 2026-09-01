@@ -27,10 +27,9 @@ build/
 .DS_Store
 Thumbs.db
 
-# Database & Uploads
+# Database
 *.sqlite
 *.db
-backend/uploads/
 alembic.log
 
 # Logs & Tests

@@ -19,10 +19,6 @@ htmlcov/
 *.sqlite
 vkbathouse.db
 
-# Uploads cache
-uploads/*
-!uploads/.gitkeep
-
 # Git & Editor
 .git/
 .gitignore

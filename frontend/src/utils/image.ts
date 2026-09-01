@@ -26,3 +26,13 @@ export const getImageUrl = (url?: string | null, fallback = '/VKCAT.png'): strin
 
   return cleanUrl;
 };
+
+/**
+ * Universal onError handler for img elements to prevent broken image icons
+ */
+export const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, fallback = '/VKCAT.png') => {
+  const target = e.currentTarget;
+  if (target.src !== fallback && !target.src.endsWith(fallback)) {
+    target.src = fallback;
+  }
+};

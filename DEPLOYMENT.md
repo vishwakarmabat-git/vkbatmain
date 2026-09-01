@@ -122,14 +122,14 @@ Render deploys the backend containerized via Docker using the provided [backend/
 | `CONTACT_EMAIL` | Customer support email | `support@vkbathouse.com` |
 
 5. Click **Deploy Web Service**.
-6. Once deployed, note your Render backend URL (e.g. `https://vkbathouse-api.onrender.com`).
+6. Once deployed, note your Render backend URL: `https://vkbatmain.onrender.com`.
 
 ---
 
 ## 5. Step 4: Vercel Frontend Deployment
 
 1. Log into your [Vercel Dashboard](https://vercel.com/dashboard) and click **Add New** → **Project**.
-2. Select your GitHub repository.
+2. Select your GitHub repository (`vishwakarmabat-git/vkbatmain`).
 3. Configure project settings:
    - **Framework Preset**: `Vite`
    - **Root Directory**: Click `Edit` and select `frontend`
@@ -140,8 +140,9 @@ Render deploys the backend containerized via Docker using the provided [backend/
 
 | Variable | Value | Description |
 | :--- | :--- | :--- |
-| `VITE_API_URL` | `https://your-backend.onrender.com/api/v1` | URL of your deployed Render backend |
-| `VITE_GOOGLE_CLIENT_ID` | `165410470670-0c60mt3fbahdg8mhb3bg7fu7u98f6oem...` | Public Google OAuth Client ID |
+| `VITE_API_URL` | `https://vkbatmain.onrender.com/api/v1` | URL of your deployed Render backend |
+| `VITE_RAZORPAY_KEY_ID` | `rzp_live_TTa7F9GaYlk1nt` | Razorpay Key ID |
+| `VITE_GOOGLE_CLIENT_ID` | `165410470670-0c60mt3fbahdg8mhb3bg7fu7u98f6oem.apps.googleusercontent.com` | Public Google OAuth Client ID |
 
 5. Click **Deploy**.
 6. Vercel will build the frontend and serve it with the [frontend/vercel.json](file:///c:/Users/HARSH/OneDrive/Desktop/vkbathouse/frontend/vercel.json) rewrite rules, ensuring deep SPA links (e.g., `/products/slug`, `/checkout`, `/admin/orders`) load seamlessly on page refresh.
@@ -152,33 +153,25 @@ Render deploys the backend containerized via Docker using the provided [backend/
 
 Once both services are deployed:
 1. Copy your live Vercel URL (e.g. `https://vkbathouse.vercel.app`).
-2. Go to **Render Dashboard** → `vkbathouse-api` → **Environment**.
-3. Update `CORS_ORIGINS` to include your Vercel URL:
+2. Go to **Render Dashboard** → `vkbatmain` → **Environment**.
+3. Update `CORS_ORIGINS` with your live frontend domain:
    ```env
-   CORS_ORIGINS=https://vkbathouse.vercel.app,https://yourdomain.com,http://localhost:5173
+   CORS_ORIGINS=https://vkbathouse.vercel.app,http://localhost:5173
    ```
-4. Save and trigger a redeploy on Render.
+4. Save changes. Render will auto-redeploy with the new CORS permissions.
 
 ---
 
-## 7. Step 6: Custom Domain Setup
+## 7. Step 6: Custom Domain Setup (Optional)
 
-### Frontend Custom Domain (`www.vkbathouse.com`):
-1. In Vercel: Go to **Project Settings** → **Domains**.
-2. Add `vkbathouse.com` and `www.vkbathouse.com`.
-3. In your DNS provider (e.g., Cloudflare, GoDaddy, Namecheap), add:
+If using a custom domain (e.g. `vkbathouse.com` and `api.vkbathouse.com`):
+1. **Frontend**: In Vercel Project Settings → Domains → Add `vkbathouse.com` and `www.vkbathouse.com`.
+2. **Backend**: In Render Web Service Settings → Custom Domains → Add `api.vkbathouse.com`.
+3. **DNS Records** (at your domain registrar, e.g. Cloudflare / GoDaddy / Namecheap):
+   - `A` record for `@` → `76.76.21.21` (Vercel)
    - `CNAME` for `www` → `cname.vercel-dns.com`
-   - `A` record for `@` → `76.76.21.21`
-
-### Backend Custom Domain (`api.vkbathouse.com`):
-1. In Render: Go to **Settings** → **Custom Domains**.
-2. Add `api.vkbathouse.com`.
-3. In your DNS provider, add:
-   - `CNAME` for `api` → `vkbathouse-api.onrender.com`
-4. Update frontend `VITE_API_URL` on Vercel to:
-   ```env
-   VITE_API_URL=https://api.vkbathouse.com/api/v1
-   ```
+   - `CNAME` for `api` → `vkbatmain.onrender.com`
+4. Update `VITE_API_URL` on Vercel to `https://api.vkbathouse.com/api/v1`.
 
 ---
 
@@ -187,8 +180,6 @@ Once both services are deployed:
 After deployment, verify each layer:
 
 ### ✅ Health & System Checks
-- [ ] Backend Health Check: `https://your-api.onrender.com/api/v1/health` returns `{"status": "healthy"}`.
-- [ ] Database Health Check: `https://your-api.onrender.com/api/v1/health/db` returns `{"status": "healthy", "database": "connected"}`.
 - [ ] Swagger API Docs: `https://your-api.onrender.com/docs` loads properly.
 
 ### ✅ Frontend & Purchase Flow
