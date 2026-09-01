@@ -20,7 +20,7 @@ export const getImageUrl = (url?: string | null, fallback = '/VKCAT.png'): strin
   // Uploaded backend static files (resolves relative to production API origin)
   if (cleanUrl.startsWith('/uploads/')) {
     const apiUrl = (import.meta.env.VITE_API_URL as string) || '';
-    const backendBase = apiUrl.replace(/\/api\/v1\/?$/, '');
+    const backendBase = apiUrl.replace(/\/api(\/v1)?\/?$/, '');
     return backendBase ? `${backendBase}${cleanUrl}` : cleanUrl;
   }
 

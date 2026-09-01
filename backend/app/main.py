@@ -3,6 +3,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
+from datetime import datetime, timezone
 import os
 
 from app.core.config import settings
@@ -78,6 +79,8 @@ app.include_router(settings_router, prefix=settings.API_V1_PREFIX)
 app.include_router(admin_router, prefix=settings.API_V1_PREFIX)
 app.include_router(upload_router, prefix=settings.API_V1_PREFIX)
 app.include_router(ws_router, prefix=settings.API_V1_PREFIX)
+app.include_router(ws_router, prefix="/api")
+app.include_router(ws_router, prefix="")
 
 @app.get("/")
 def root():
@@ -86,6 +89,14 @@ def root():
         "message": "Welcome to VK Bat House API — Samurai-Precision Handcrafted Cricket Bats",
         "version": settings.VERSION,
         "docs": "/docs"
+    }
+
+@app.get("/health")
+def health_root():
+    return {
+        "success": True,
+        "message": "Server is healthy",
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     }
 
 @app.get("/api/v1/health")

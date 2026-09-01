@@ -100,6 +100,14 @@ def test_health_check():
     assert response.status_code == 200
     assert response.json()["status"] == "healthy"
 
+def test_root_health_check():
+    response = client.get("/health")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["success"] is True
+    assert data["message"] == "Server is healthy"
+    assert "timestamp" in data
+
 def test_financial_calculations():
     # All-inclusive pricing: Subtotal ₹10,000 with 10% coupon = ₹9,000 grand total (zero hidden taxes/shipping)
     sub, gst, ship, disc, grand = calculate_order_totals(
