@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate, Link } from 'react-router-dom';
 import { X, Mail, Lock, User, Phone, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -228,10 +229,24 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     }
   };
 
-  return (
+  // Lock body scroll while modal is open to prevent page scrolling behind
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -241,18 +256,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             className="fixed inset-0 bg-black/80 backdrop-blur-sm"
           />
 
-          {/* Modal Box */}
+          {/* Modal Box - centered vertically and horizontally */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="relative w-full max-w-md bg-[#12121A] border border-[#242436] rounded-2xl p-6 sm:p-8 shadow-2xl text-left z-10 space-y-6 max-h-[90vh] overflow-y-auto"
+            className="relative w-full max-w-md bg-[#12121A] border border-[#242436] rounded-2xl p-5 sm:p-8 shadow-2xl text-left z-10 space-y-4 sm:space-y-6 max-h-[90dvh] overflow-y-auto my-auto"
           >
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-5 right-5 text-[#71717A] hover:text-white transition-colors p-1"
+              className="absolute top-4 right-4 sm:top-5 sm:right-5 text-[#71717A] hover:text-white transition-colors p-1 z-20"
               aria-label="Close authentication modal"
             >
               <X className="w-5 h-5" />
@@ -531,6 +546,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </motion.div>
         </div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
