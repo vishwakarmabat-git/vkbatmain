@@ -3,6 +3,7 @@ import { Search, ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Product, Category } from '@/types';
 import { BatCard } from '@/components/products/BatCard';
+import { CricketBallIcon, CricketBatIcon, CrossedBatsIcon } from '@/components/common/CricketIcons';
 
 interface ChooseYourWeaponSectionProps {
   products?: Product[];
@@ -19,7 +20,7 @@ export const ChooseYourWeaponSection: React.FC<ChooseYourWeaponSectionProps> = (
 
   // Database-driven category pills — no hardcoded fallbacks
   const categoryPills = useMemo(() => {
-    const defaultList = [{ slug: 'all', name: 'ALL MODELS' }];
+    const defaultList = [{ slug: 'all', name: 'ALL WEAPONS' }];
     return [...defaultList, ...categories.map((c) => ({ slug: c.slug, name: c.name.toUpperCase() }))];
   }, [categories]);
 
@@ -64,19 +65,27 @@ export const ChooseYourWeaponSection: React.FC<ChooseYourWeaponSectionProps> = (
   }, [products, categories, selectedCategory, searchQuery, sortBy]);
 
   return (
-    <section className="w-full py-8 sm:py-12 bg-[#09090B] text-center border-t border-[#181822]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
-        {/* Section Header */}
-        <div className="space-y-3 max-w-2xl mx-auto">
-          <span className="text-xs font-sport font-black tracking-[0.25em] text-[#D4AF37] uppercase">
-            OUR COLLECTION
-          </span>
+    <section className="w-full py-10 sm:py-16 bg-[#07090E] text-center border-t border-[#1A1F2C] relative overflow-hidden">
+      {/* Stadium Outfield Ambient Backdrop */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-48 bg-[radial-gradient(ellipse_at_top,_rgba(0,255,135,0.04)_0%,_transparent_70%)] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 relative z-10">
+        {/* Section Header with Crossed Bats */}
+        <div className="space-y-3 max-w-2xl mx-auto flex flex-col items-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#121622] border border-[#242E42] text-[#F5C542] text-[10px] sm:text-xs font-sport tracking-widest font-black uppercase">
+            <CrossedBatsIcon size={16} />
+            <span>AUTHENTIC GUJARAT ARTISAN CLEFT</span>
+          </div>
+
           <h2 className="text-4xl sm:text-6xl font-serif font-black tracking-tight text-white uppercase leading-none">
             CHOOSE YOUR WEAPON
           </h2>
+
           <p className="text-xs sm:text-sm text-[#A1A1AA] leading-relaxed max-w-xl mx-auto font-sans">
-            Custom weights, profiles, and handles are shaped manually.
+            Tailored balance points, 40–42mm edges, pressed under hydraulic roller and manually finished in Chaklasi.
           </p>
+
+          <div className="w-24 h-[2px] bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mt-1" />
         </div>
 
         {/* Filter Controls Bar */}
@@ -88,10 +97,10 @@ export const ChooseYourWeaponSection: React.FC<ChooseYourWeaponSectionProps> = (
               <Search className="w-4 h-4 text-[#71717A] absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search bats by name, grade, tags..."
+                placeholder="Search bats by name, willow grade, profile..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-[#0E0E12] border border-[#1E1E28] focus:border-[#D4AF37] text-white pl-10 pr-4 py-2 sm:py-2.5 rounded-lg text-xs focus:outline-none placeholder:text-[#52525B]"
+                className="w-full bg-[#0E1017] border border-[#202533] focus:border-[#D4AF37] text-white pl-10 pr-4 py-2.5 rounded-lg text-xs focus:outline-none placeholder:text-[#52525B] shadow-sm"
               />
             </div>
 
@@ -100,7 +109,7 @@ export const ChooseYourWeaponSection: React.FC<ChooseYourWeaponSectionProps> = (
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full sm:w-auto bg-[#0E0E12] border border-[#1E1E28] focus:border-[#D4AF37] text-white px-3 sm:px-4 py-2 sm:py-2.5 pr-8 rounded-lg text-[11px] sm:text-xs font-sport tracking-wider uppercase focus:outline-none appearance-none cursor-pointer"
+                className="w-full sm:w-auto bg-[#0E1017] border border-[#202533] focus:border-[#D4AF37] text-white px-3.5 py-2.5 pr-8 rounded-lg text-[11px] sm:text-xs font-sport font-bold tracking-wider uppercase focus:outline-none appearance-none cursor-pointer"
               >
                 <option value="popularity">Sort by: Popularity</option>
                 <option value="price-low">Sort by: Price: Low to High</option>
@@ -111,21 +120,25 @@ export const ChooseYourWeaponSection: React.FC<ChooseYourWeaponSectionProps> = (
             </div>
           </div>
 
-          {/* Category Filter Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2.5 pt-1">
-            {categoryPills.map((pill) => (
-              <button
-                key={pill.slug}
-                onClick={() => setSelectedCategory(pill.slug)}
-                className={`font-sport font-black px-2.5 sm:px-4 py-1 sm:py-2 rounded-xs text-[10px] sm:text-xs tracking-wider uppercase transition-all duration-200 cursor-pointer ${
-                  selectedCategory === pill.slug
-                    ? 'bg-[#D4AF37] text-black shadow-[0_0_15px_rgba(212,175,55,0.25)]'
-                    : 'bg-[#0E0E12] text-[#A1A1AA] hover:text-white border border-[#1E1E28]'
-                }`}
-              >
-                {pill.name}
-              </button>
-            ))}
+          {/* Cricket Theme Category Filter Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+            {categoryPills.map((pill) => {
+              const isSelected = selectedCategory === pill.slug;
+              return (
+                <button
+                  key={pill.slug}
+                  onClick={() => setSelectedCategory(pill.slug)}
+                  className={`font-sport font-black px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-xs text-[10px] sm:text-xs tracking-wider uppercase transition-all duration-300 cursor-pointer flex items-center gap-1.5 active:scale-95 ${
+                    isSelected
+                      ? 'bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] text-white border-y border-dashed border-white/70 shadow-[0_0_20px_rgba(201,24,43,0.5)] bat-swing-shine'
+                      : 'bg-[#0E1017] text-[#A1A1AA] hover:text-white border border-[#202533] hover:border-[#F5C542]/50 hover:bg-[#141824]'
+                  }`}
+                >
+                  {isSelected && <CricketBallIcon size={12} className="shrink-0" />}
+                  <span>{pill.name}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '@/store/authStore';
 import { authService } from '@/services/authService';
 import { toast } from 'sonner';
+import { CricketBallIcon, CricketBatIcon } from '@/components/common/CricketIcons';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -387,9 +388,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-[#D4AF37] hover:bg-[#E5BE4A] text-black font-black py-3.5 px-6 rounded-xs uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(212,175,55,0.25)] mt-2"
+                  className="w-full relative overflow-hidden bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] hover:shadow-[0_0_25px_rgba(201,24,43,0.55)] border-y border-dashed border-white/60 text-white font-sport font-black py-4 px-6 rounded-xs uppercase tracking-widest text-xs flex items-center justify-center gap-2.5 transition-all shadow-lg cursor-pointer bat-swing-shine mt-2 group/btn"
                 >
-                  <span>{isLoading ? 'VERIFYING...' : 'SIGN IN TO ACCOUNT'}</span>
+                  <CricketBallIcon size={14} className="group-hover/btn:rotate-45 transition-transform duration-300" />
+                  <span>{isLoading ? 'VERIFYING...' : 'SIGN IN TO PLAYER ACCOUNT'}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </form>
@@ -518,9 +520,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 <button
                   type="submit"
                   disabled={isLoading || !acceptTerms}
-                  className="w-full bg-[#D4AF37] hover:bg-[#E5BE4A] text-black font-black py-3.5 px-6 rounded-xs uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(212,175,55,0.25)] mt-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full relative overflow-hidden bg-gradient-to-r from-[#FFE8A3] via-[#DDA843] to-[#8C5D0E] hover:shadow-[0_0_25px_rgba(221,168,67,0.5)] border border-[#FFE8A3] text-black font-sport font-black py-4 px-6 rounded-xs uppercase tracking-widest text-xs flex items-center justify-center gap-2.5 transition-all shadow-lg mt-2 cursor-pointer bat-swing-shine disabled:opacity-50 disabled:cursor-not-allowed group/btn"
                 >
-                  <span>{isLoading ? 'CREATING ACCOUNT...' : 'CREATE MY PLAYER ACCOUNT'}</span>
+                  <CricketBatIcon size={16} className="text-black shrink-0" />
+                  <span>{isLoading ? 'CRAFTING PROFILE...' : 'CREATE MY PLAYER ACCOUNT'}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </form>

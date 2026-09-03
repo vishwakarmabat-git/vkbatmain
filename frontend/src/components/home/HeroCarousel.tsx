@@ -5,6 +5,7 @@ import { cmsService } from '@/services/cmsService';
 import { CMSBanner } from '@/types';
 import { getImageUrl } from '@/utils/image';
 import { useRealtimeSync } from '@/hooks/useRealtime';
+import { CricketBallIcon, CricketBatIcon } from '@/components/common/CricketIcons';
 
 export const HeroCarousel: React.FC = () => {
   const [banners, setBanners] = useState<CMSBanner[]>([]);
@@ -71,37 +72,27 @@ export const HeroCarousel: React.FC = () => {
   };
 
   return (
-    <section className="relative w-full min-h-[480px] sm:min-h-[560px] lg:min-h-[620px] flex items-center justify-center overflow-hidden border-b border-[#24242D] bg-[#09090B]">
-      {/* Very Soft & Light Warm Golden Ambient Glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse 75% 65% at 45% 45%, rgba(212, 175, 55, 0.07) 0%, rgba(180, 130, 20, 0.035) 45%, transparent 75%)',
-        }}
-      />
+    <section className="relative w-full min-h-[480px] sm:min-h-[560px] lg:min-h-[620px] flex items-center justify-center overflow-hidden border-b border-[#1E2433] bg-[#07090E]">
+      {/* Stadium Floodlight & Turf Ambient Rays */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(0,255,135,0.06)_0%,_rgba(212,175,55,0.08)_35%,_transparent_70%)] pointer-events-none" />
+      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-[#D4AF37]/10 blur-[120px] rounded-full pointer-events-none" />
 
-      {/* Layer 2: Ultra-Light Warm Blurred Spotlights */}
-      <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[400px] bg-[#D4AF37]/[0.05] rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[400px] h-[320px] bg-[#D4AF37]/[0.03] rounded-full blur-[130px] pointer-events-none" />
-
-      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-14 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 w-full relative z-10">
         <AnimatePresence mode="wait">
           <motion.div
             key={slide.id || currentSlide}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.45, ease: 'easeInOut' }}
-            className={`grid grid-cols-1 ${
-              slide.image_url ? 'lg:grid-cols-12 gap-8 lg:gap-12 items-center' : 'max-w-4xl'
-            } text-left`}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center text-left"
           >
-            {/* Left Content Column */}
-            <div className={slide.image_url ? 'lg:col-span-7 space-y-6' : 'space-y-6'}>
-              {/* Badge / Subtitle */}
+            {/* Left Content Area */}
+            <div className="lg:col-span-7 space-y-4 sm:space-y-6">
+              {/* Top Subtitle with Cricket Ball */}
               {slide.subtitle && (
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#181820] border border-[#2A2A36] text-[11px] font-sport font-black tracking-[0.18em] text-[#D4AF37] uppercase">
-                  <span className="w-2 h-2 rounded-full bg-[#E31B23] animate-pulse" />
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#141926] border border-[#263145] text-[#F5C542] rounded-xs text-[10px] sm:text-xs font-sport tracking-widest font-black uppercase shadow-sm">
+                  <CricketBallIcon size={14} className="shrink-0 animate-spin [animation-duration:8s]" />
                   <span>{slide.subtitle}</span>
                 </div>
               )}
@@ -118,22 +109,24 @@ export const HeroCarousel: React.FC = () => {
                 </p>
               )}
 
-              {/* Buttons */}
+              {/* Buttons with Cricket Theme */}
               <div className="flex flex-wrap items-center gap-4 pt-2 font-sport tracking-widest text-xs">
                 {slide.cta_text && (
                   <Link
                     to={slide.cta_link || '/products'}
-                    className="bg-[#D4AF37] hover:bg-[#E5BE4A] text-black font-black py-3.5 px-7 rounded-xs uppercase transition-all shadow-[0_0_15px_rgba(212,175,55,0.25)]"
+                    className="relative overflow-hidden bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] hover:shadow-[0_0_30px_rgba(201,24,43,0.6)] border-y border-dashed border-white/60 text-white font-black py-4 px-8 rounded-xs uppercase transition-all flex items-center gap-2.5 bat-swing-shine active:scale-95 group/btn"
                   >
-                    {slide.cta_text}
+                    <CricketBallIcon size={16} className="group-hover/btn:rotate-45 transition-transform duration-300" />
+                    <span>{slide.cta_text}</span>
                   </Link>
                 )}
                 {slide.secondary_cta_text && (
                   <Link
                     to={slide.secondary_cta_link || '/contact'}
-                    className="bg-transparent hover:bg-[#181820] border border-[#3A3A4A] text-white font-bold py-3.5 px-7 rounded-xs uppercase transition-all"
+                    className="bg-[#0E1017]/80 hover:bg-[#07150E] border-2 border-[#E2E8F0]/80 hover:border-[#00FF87] text-white hover:text-[#00FF87] hover:shadow-[0_0_25px_rgba(0,255,135,0.3)] font-black py-3.5 px-8 rounded-xs uppercase transition-all flex items-center gap-2 bat-swing-shine active:scale-95"
                   >
-                    {slide.secondary_cta_text}
+                    <CricketBatIcon size={16} className="text-[#D4AF37]" />
+                    <span>{slide.secondary_cta_text}</span>
                   </Link>
                 )}
               </div>

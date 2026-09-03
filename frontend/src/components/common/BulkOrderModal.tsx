@@ -3,6 +3,7 @@ import { X, Send, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import { bulkOrderService } from '@/services/bulkOrderService';
+import { CricketBallIcon } from '@/components/common/CricketIcons';
 
 interface BulkOrderModalProps {
   isOpen: boolean;
@@ -207,14 +208,15 @@ export const BulkOrderModal: React.FC<BulkOrderModalProps> = ({ isOpen, onClose 
                 />
               </div>
 
-              {/* Submit Button */}
+              {/* Submit Button with Cricket Ball Seam theme */}
               <div className="pt-2">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-[#0A0A0E] hover:bg-[#181822] disabled:opacity-60 text-white font-sport font-black py-4 px-6 rounded-xs uppercase tracking-widest text-xs flex items-center justify-center gap-2 border border-[#2A2A3C] transition-all hover:border-[#D4AF37] cursor-pointer"
+                  className="w-full relative overflow-hidden bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] hover:shadow-[0_0_25px_rgba(201,24,43,0.55)] border-y-2 border-dashed border-white/60 text-white font-sport font-black py-4 px-6 rounded-xs uppercase tracking-widest text-xs flex items-center justify-center gap-2.5 transition-all shadow-xl cursor-pointer bat-swing-shine active:scale-95 group/btn disabled:opacity-60"
                 >
-                  <span>{isSubmitting ? 'TRANSMITTING INQUIRY...' : 'REQUEST BULK QUOTE'}</span>
+                  <CricketBallIcon size={16} className="group-hover/btn:rotate-45 transition-transform duration-300" />
+                  <span>{isSubmitting ? 'TRANSMITTING INQUIRY...' : 'REQUEST BULK CRICKET QUOTE'}</span>
                 </button>
               </div>
             </form>

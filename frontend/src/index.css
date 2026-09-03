@@ -89,10 +89,93 @@
 }
 
 .floodlight-glow {
-  background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.08) 0%, rgba(9, 9, 11, 0) 60%);
+  background: radial-gradient(circle at 50% 20%, rgba(0, 255, 135, 0.06) 0%, rgba(255, 255, 255, 0.03) 30%, rgba(6, 9, 14, 0) 70%);
 }
 
-/* Pitch Crease Lines */
+/* ========================================================
+   CRICKET AESTHETICS & THEME ACCENTS
+   ======================================================== */
+
+/* 1. Authentic Cricket Ball Leather Seam */
+.cricket-seam-horizontal {
+  position: relative;
+}
+.cricket-seam-horizontal::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #FFFFFF 0px,
+    #FFFFFF 4px,
+    transparent 4px,
+    transparent 7px
+  );
+  opacity: 0.75;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+.cricket-seam-border {
+  position: relative;
+}
+.cricket-seam-border::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* 2. Classic Chevron Rubber Bat Grip Texture */
+.bat-chevron-grip {
+  background-color: #12121A;
+  background-image: 
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0, rgba(255, 255, 255, 0.03) 3px, transparent 3px, transparent 6px),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0, rgba(255, 255, 255, 0.03) 3px, transparent 3px, transparent 6px);
+  background-size: 12px 12px;
+}
+
+/* 3. Grade 1 English Willow Honey Wood Grain */
+.willow-grain-gradient {
+  background: linear-gradient(135deg, #FFE8A3 0%, #DDA843 35%, #9E6F18 70%, #5E410D 100%);
+}
+
+.willow-card-bg {
+  background: linear-gradient(180deg, #161622 0%, #0F1017 100%);
+  position: relative;
+}
+.willow-card-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(212, 175, 55, 0.015) 0px,
+    rgba(212, 175, 55, 0.015) 1px,
+    transparent 1px,
+    transparent 16px
+  );
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* 4. Stadium Turf Neon & Floodlight Aura */
+.turf-emerald-glow {
+  box-shadow: 0 0 25px rgba(0, 255, 135, 0.15);
+  border-color: rgba(0, 255, 135, 0.4);
+}
+
+.stadium-boundary-border {
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.08), inset 0 0 15px rgba(0, 255, 135, 0.04);
+}
+
+/* 5. Cricket Pitch Crease Lines */
 .pitch-crease-divider {
   position: relative;
 }
@@ -102,33 +185,49 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 120px;
+  width: 140px;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+  background: linear-gradient(90deg, transparent, #E2E8F0, #D4AF37, #E2E8F0, transparent);
 }
 
-/* Bat Wood Texture Overlay */
-.wood-grain-overlay {
-  background-image: radial-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 0);
-  background-size: 24px 24px;
-}
-
-/* Gold Sweep Hover Animation */
-.gold-sweep {
+/* 6. Bat Swing Sweep Shine Animation */
+.bat-swing-shine {
   position: relative;
   overflow: hidden;
 }
-.gold-sweep::before {
+.bat-swing-shine::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transform: skewX(-20deg);
-  transition: 0.7s;
+  top: -50%;
+  left: -150%;
+  width: 80%;
+  height: 200%;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 80%
+  );
+  transform: rotate(25deg);
+  transition: all 0.75s ease-out;
 }
-.gold-sweep:hover::before {
-  left: 150%;
+.bat-swing-shine:hover::before {
+  left: 170%;
 }
+
+/* 7. Sweet Spot Pulse */
+@keyframes sweetSpotPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 135, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(0, 255, 135, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 135, 0);
+  }
+}
+.sweet-spot-pulse {
+  animation: sweetSpotPulse 2.2s infinite;
+}
+

@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { getImageUrl } from '@/utils/image';
 import { toast } from 'sonner';
+import { CricketBallIcon, CricketBatIcon } from '@/components/common/CricketIcons';
 
 interface ProductCardProps {
   product: Product;
@@ -62,14 +63,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
   };
 
   return (
-    <div className="group relative bg-[#121216] border border-[#24242D] hover:border-[#D4AF37]/60 rounded-md overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,175,55,0.12)] flex flex-col text-left">
+    <div className="group relative bg-[#0E1017] border border-[#202533] hover:border-[#D4AF37] rounded-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_35px_rgba(212,175,55,0.18)] flex flex-col text-left">
       {/* Top badges bar */}
       <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-none">
         <div className="flex flex-col gap-1.5 pointer-events-auto">
-          {product.is_bestseller && <Badge variant="red">BESTSELLER</Badge>}
-          {product.is_featured && !product.is_bestseller && <Badge variant="gold">FEATURED</Badge>}
+          {product.is_bestseller && (
+            <Badge variant="cricket" showCricketBall>BESTSELLER</Badge>
+          )}
+          {product.is_featured && !product.is_bestseller && (
+            <Badge variant="willow">FEATURED WEAPON</Badge>
+          )}
           {product.discount_percent > 0 && (
-            <span className="bg-[#E31B23] text-white text-[10px] font-sport font-black px-2 py-0.5 rounded-xs tracking-wider uppercase shadow-md">
+            <span className="bg-gradient-to-r from-[#8B1220] to-[#C9182B] text-white text-[10px] font-sport font-black px-2 py-0.5 rounded-xs tracking-wider uppercase shadow-md border-y border-dashed border-white/50">
               SAVE {product.discount_percent}%
             </span>
           )}
@@ -80,8 +85,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           onClick={handleWishlistClick}
           className={`pointer-events-auto w-8 h-8 rounded-full flex items-center justify-center transition-all ${
             isLiked
-              ? 'bg-[#E31B23] text-white shadow-[0_0_10px_rgba(227,27,35,0.5)]'
-              : 'bg-[#09090B]/80 backdrop-blur-md text-[#A1A1AA] hover:text-[#E31B23] border border-[#24242D]'
+              ? 'bg-[#E31B23] text-white shadow-[0_0_12px_rgba(227,27,35,0.6)]'
+              : 'bg-[#09090B]/85 backdrop-blur-md text-[#A1A1AA] hover:text-[#E31B23] border border-[#242A38]'
           }`}
           aria-label="Wishlist"
         >
@@ -90,11 +95,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
       </div>
 
       {/* Image Container with Zoom & Hover Actions */}
-      <Link to={`/products/${product.slug}`} className="block relative aspect-3/4 overflow-hidden bg-[#07070A] p-4 flex items-center justify-center">
+      <Link to={`/products/${product.slug}`} className="block relative aspect-3/4 overflow-hidden bg-[#07090E] p-4 flex items-center justify-center">
         <img
           src={primaryImage}
           alt={product.name}
-          className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-500 ease-out drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]"
+          className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-500 ease-out drop-shadow-[0_12px_25px_rgba(0,0,0,0.85)]"
           loading="lazy"
           onError={(e) => {
             (e.target as HTMLImageElement).src = '/VKCAT.png';
@@ -102,13 +107,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
         />
 
         {/* Subtle dark gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#121216] via-transparent to-transparent opacity-80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0E1017] via-transparent to-transparent opacity-80" />
 
         {/* Quick View Button on Hover */}
         {onQuickView && (
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-[#09090B]/40 backdrop-blur-[2px]">
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-[#09090B]/50 backdrop-blur-[2px]">
             <Button
-              variant="outline"
+              variant="crease"
               size="sm"
               onClick={(e) => {
                 e.preventDefault();
@@ -128,7 +133,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
         <div>
           {/* Blade Architecture / Category */}
           <div className="flex items-center justify-between text-xs text-[#A1A1AA] font-sport font-semibold tracking-wider uppercase mb-1">
-            <span className="text-[#D4AF37]">{product.blade_architecture || product.category_name || 'English Willow'}</span>
+            <span className="text-[#D4AF37] flex items-center gap-1">
+              <CricketBatIcon size={12} />
+              <span>{product.blade_architecture || product.category_name || 'English Willow'}</span>
+            </span>
             <div className="flex items-center gap-1 text-amber-400">
               <Star className="w-3 h-3 fill-amber-400" />
               <span>{product.rating_avg.toFixed(1)}</span>
@@ -138,7 +146,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
 
           {/* Product Title */}
           <Link to={`/products/${product.slug}`} className="block">
-            <h4 className="font-serif font-bold text-lg text-[#F4F4F5] group-hover:text-[#D4AF37] transition-colors line-clamp-1">
+            <h4 className="font-serif font-black text-lg text-white group-hover:text-[#D4AF37] transition-colors line-clamp-1 uppercase tracking-wide">
               {product.name}
             </h4>
           </Link>
@@ -146,20 +154,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           {/* Key Cricket Specs Pill */}
           <div className="mt-2.5 flex flex-wrap gap-1.5 text-[11px] font-sport tracking-wider text-[#A1A1AA]">
             {product.edge_thickness && (
-              <span className="px-2 py-0.5 bg-[#181821] border border-[#24242D] rounded-xs text-[#E4E4E7]">
+              <span className="px-2 py-0.5 bg-[#141824] border border-[#242A38] rounded-xs text-[#E4E4E7]">
                 ⚡ {product.edge_thickness} Edges
               </span>
             )}
             {product.willow_grade && (
-              <span className="px-2 py-0.5 bg-[#181821] border border-[#24242D] rounded-xs text-[#D4AF37]">
+              <span className="px-2 py-0.5 bg-[#141824] border border-[#242A38] rounded-xs text-[#F5C542]">
                 🛡️ {product.willow_grade.split(' ')[0]} {product.willow_grade.split(' ')[1] || ''}
               </span>
             )}
           </div>
         </div>
 
-        {/* Pricing & CTA */}
-        <div className="pt-3 border-t border-[#24242D] flex items-center justify-between gap-3">
+        {/* Pricing & Cricket Theme CTA Button */}
+        <div className="pt-3 border-t border-[#202533] flex items-center justify-between gap-3">
           <div className="flex flex-col">
             <div className="flex items-baseline gap-2">
               <span className="text-xl font-sport font-black text-[#F4F4F5] tracking-tight">
@@ -171,7 +179,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
                 </span>
               )}
             </div>
-            <span className="text-[10px] font-sport text-[#D4AF37] uppercase tracking-wider font-semibold">
+            <span className="text-[10px] font-sport text-[#D4AF37] uppercase tracking-wider font-bold">
               Bespoke Artisan Craft
             </span>
           </div>
@@ -179,9 +187,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           <div className="flex items-center gap-2">
             <button
               onClick={handleQuickAdd}
-              className="bg-[#D4AF37] hover:bg-[#E5BE4A] text-black font-sport font-black py-2.5 px-4 rounded-xs text-xs tracking-wider uppercase transition-all duration-200 cursor-pointer flex items-center gap-2 shadow-[0_0_15px_rgba(212,175,55,0.2)]"
+              className="relative overflow-hidden bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] hover:shadow-[0_0_22px_rgba(201,24,43,0.55)] border-y border-dashed border-white/50 text-white font-sport font-black py-2.5 px-4 rounded-xs text-xs tracking-wider uppercase transition-all duration-300 cursor-pointer flex items-center gap-2 shadow-md active:scale-95 bat-swing-shine group/btn"
             >
-              <ShoppingBag className="w-3.5 h-3.5" />
+              <CricketBallIcon size={14} className="shrink-0 group-hover/btn:rotate-45 transition-transform duration-300" />
               <span>ADD TO CART</span>
             </button>
           </div>

@@ -95,7 +95,7 @@ export const CartDrawer: React.FC = () => {
 
   return (
     <>
-      {/* 1. BLINKIT-STYLE FLOATING BOTTOM CART BAR (MOBILE ONLY) */}
+      {/* 1. CRICKET WILLOW & LEATHER FLOATING BOTTOM CART BAR (MOBILE ONLY) */}
       <AnimatePresence>
         {items.length > 0 && !isDrawerOpen && location.pathname !== '/checkout' && (
           <motion.div
@@ -107,10 +107,10 @@ export const CartDrawer: React.FC = () => {
           >
             <button
               onClick={openDrawer}
-              className="bg-gradient-to-r from-[#D4AF37] via-[#E5BE4A] to-[#D4AF37] text-black rounded-full pl-2 pr-3.5 py-1.5 shadow-[0_8px_25px_rgba(0,0,0,0.6),0_0_18px_rgba(212,175,55,0.4)] border border-yellow-300/50 flex items-center gap-2.5 transition-transform active:scale-95 cursor-pointer whitespace-nowrap"
+              className="relative overflow-hidden bg-gradient-to-r from-[#DDA843] via-[#FFE8A3] to-[#B8860B] text-black rounded-full pl-2 pr-4 py-1.5 shadow-[0_10px_30px_rgba(0,0,0,0.7),0_0_25px_rgba(221,168,67,0.45)] border-2 border-[#FFE8A3] flex items-center gap-2.5 transition-transform active:scale-95 cursor-pointer whitespace-nowrap bat-swing-shine"
             >
-              {/* Left: Circular Image Preview */}
-              <div className="relative w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0 overflow-hidden shadow-sm p-0.5">
+              {/* Left: Circular Image Preview with Red Cricket Ball Ring */}
+              <div className="relative w-8 h-8 rounded-full bg-black p-0.5 shrink-0 overflow-hidden shadow-sm ring-2 ring-[#C9182B]">
                 <img
                   src={getImageUrl(firstItemImage, '/VKCAT.png')}
                   alt="Cart preview"
@@ -118,7 +118,7 @@ export const CartDrawer: React.FC = () => {
                   onError={handleImageError}
                 />
                 {items.length > 1 && (
-                  <span className="absolute -top-0.5 -right-0.5 bg-black text-[#D4AF37] text-[8px] font-sport font-black w-3.5 h-3.5 rounded-full flex items-center justify-center border border-[#D4AF37]">
+                  <span className="absolute -top-1 -right-1 bg-gradient-to-r from-[#8B1220] to-[#C9182B] text-white text-[8px] font-sport font-black w-4 h-4 rounded-full flex items-center justify-center border border-white">
                     {items.length}
                   </span>
                 )}
@@ -126,11 +126,11 @@ export const CartDrawer: React.FC = () => {
 
               {/* Center: View Cart Text & Item Count */}
               <div className="text-left font-sport leading-tight">
-                <div className="font-black text-[11px] tracking-wider uppercase text-black">
-                  View cart
+                <div className="font-black text-xs tracking-wider uppercase text-black flex items-center gap-1">
+                  <span>VIEW WEAPONS</span>
                 </div>
                 <div className="text-[10px] font-bold text-black/80">
-                  {totalItemsCount} {totalItemsCount === 1 ? 'item' : 'items'}
+                  {totalItemsCount} {totalItemsCount === 1 ? 'item' : 'items'} • ₹{grandTotal.toLocaleString('en-IN')}
                 </div>
               </div>
 
@@ -350,9 +350,9 @@ export const CartDrawer: React.FC = () => {
                     {/* Mobile CTAs */}
                     <div className="space-y-1.5 pt-0.5">
                       <Button
-                        variant="gold"
+                        variant="cricket-ball"
                         size="md"
-                        className="w-full justify-between"
+                        className="w-full justify-between shadow-[0_0_20px_rgba(201,24,43,0.5)]"
                         onClick={handleProceedToCheckout}
                         rightIcon={<ArrowRight className="w-4 h-4" />}
                       >
@@ -577,9 +577,9 @@ export const CartDrawer: React.FC = () => {
                     {/* CTAs */}
                     <div className="space-y-2 pt-2">
                       <Button
-                        variant="gold"
+                        variant="cricket-ball"
                         size="lg"
-                        className="w-full justify-between"
+                        className="w-full justify-between shadow-[0_0_25px_rgba(201,24,43,0.55)]"
                         onClick={handleProceedToCheckout}
                         rightIcon={<ArrowRight className="w-4 h-4" />}
                       >

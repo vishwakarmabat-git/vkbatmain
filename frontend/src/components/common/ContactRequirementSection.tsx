@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Phone, Mail, MapPin, MessageCircle, Send } from 'lucide-react';
 import { toast } from 'sonner';
 import { bulkOrderService } from '@/services/bulkOrderService';
+import { CricketBallIcon } from '@/components/common/CricketIcons';
 
 export const ContactRequirementSection: React.FC = () => {
   const [fullName, setFullName] = useState('');
@@ -181,14 +182,15 @@ export const ContactRequirementSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* Submit Button pinned at bottom */}
+              {/* Submit Button pinned at bottom with Cricket Ball Seam theme */}
               <div className="pt-3">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-[#D4AF37] hover:bg-[#E5BE4A] text-black font-sport font-black py-4 px-6 rounded-xs uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(212,175,55,0.25)] cursor-pointer"
+                  className="w-full relative overflow-hidden bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] hover:shadow-[0_0_30px_rgba(201,24,43,0.6)] border-y-2 border-dashed border-white/60 text-white font-sport font-black py-4 px-6 rounded-xs uppercase tracking-widest text-xs flex items-center justify-center gap-2.5 transition-all shadow-xl cursor-pointer bat-swing-shine active:scale-95 group/btn"
                 >
-                  <span>SUBMIT SPECIFICATIONS</span>
+                  <CricketBallIcon size={16} className="group-hover/btn:rotate-45 transition-transform duration-300" />
+                  <span>{isSubmitting ? 'DISPATCHING SPECIFICATIONS...' : 'SUBMIT BAT SPECIFICATIONS'}</span>
                   <Send className="w-3.5 h-3.5" />
                 </button>
               </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { cmsService, WhyVKSectionData } from '@/services/cmsService';
 import { useRealtimeSync, useRealtimeEvent } from '@/hooks/useRealtime';
+import { CricketBallIcon, CricketBatIcon, CricketStumpsIcon } from '@/components/common/CricketIcons';
 
 const DEFAULT_SECTION: WhyVKSectionData = {
   badge: 'WHY VK?',
@@ -71,32 +72,37 @@ export const WhyVKSection: React.FC = () => {
   ));
 
   return (
-    <section className="w-full py-8 sm:py-12 bg-[#09090B] text-left border-t border-[#181822]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center">
+    <section className="w-full py-10 sm:py-16 bg-[#07090E] text-left border-t border-[#1E2433] relative overflow-hidden">
+      {/* Floodlight & Ground Glow */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-96 h-96 bg-[radial-gradient(circle,_rgba(212,175,55,0.06)_0%,_transparent_70%)] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
         {/* Left Column: Heading + 4 Pillars (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="space-y-2">
-            <span className="text-xs font-sport font-black tracking-[0.25em] text-[#D4AF37] uppercase">
-              {data.badge}
-            </span>
+          <div className="space-y-2.5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#121622] border border-[#263145] text-[#F5C542] rounded-xs text-[10px] sm:text-xs font-sport tracking-widest font-black uppercase">
+              <CricketBallIcon size={14} className="shrink-0" />
+              <span>{data.badge}</span>
+            </div>
             <h2 className="text-4xl sm:text-6xl font-serif font-black tracking-tight text-white uppercase leading-[1.05]">
               {formattedTitle}
             </h2>
           </div>
 
           {/* Feature Items */}
-          <div className="space-y-3 sm:space-y-5 pt-1">
+          <div className="space-y-4 sm:space-y-5 pt-2">
             {data.features.map((f) => (
               <div
                 key={f.number}
-                className="flex items-start gap-3.5 sm:gap-5 pb-3 sm:pb-5 border-b border-[#1E1E28] last:border-0 last:pb-0"
+                className="flex items-start gap-4 sm:gap-5 pb-4 sm:pb-5 border-b border-[#1E2433] last:border-0 last:pb-0 group"
               >
-                <span className="font-serif font-black text-xl sm:text-3xl text-[#D4AF37]/50 shrink-0 pt-0.5 select-none">
+                <span className="font-serif font-black text-2xl sm:text-4xl text-[#D4AF37] shrink-0 pt-0.5 select-none transition-transform group-hover:scale-110">
                   {f.number}
                 </span>
-                <div className="space-y-0.5 sm:space-y-1">
-                  <h3 className="font-sport font-black text-xs sm:text-base text-white tracking-wider uppercase">
-                    {f.title}
+                <div className="space-y-1">
+                  <h3 className="font-sport font-black text-sm sm:text-base text-white tracking-wider uppercase flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#C9182B]" />
+                    <span>{f.title}</span>
                   </h3>
                   <p className="text-xs sm:text-sm text-[#A1A1AA] leading-relaxed font-sans font-normal">
                     {f.description}
@@ -107,18 +113,19 @@ export const WhyVKSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Column: Premium Studio Bat Photo (5 cols) */}
+        {/* Right Column: Studio Bat Photo (5 cols) */}
         <div className="lg:col-span-5 flex justify-center lg:justify-end">
-          <div className="relative w-full max-w-xs sm:max-w-md aspect-4/3 sm:aspect-4/5 rounded-xl sm:rounded-2xl overflow-hidden border border-[#242436] shadow-2xl bg-[#12121A] group">
+          <div className="relative w-full max-w-xs sm:max-w-md aspect-4/3 sm:aspect-4/5 rounded-xl sm:rounded-2xl overflow-hidden border-2 border-[#D4AF37]/35 shadow-[0_0_35px_rgba(212,175,55,0.18)] bg-[#0C0E15] group">
             <img
               src={data.image_url || '/standing_bat_hero.jpg'}
               alt={data.image_badge || 'Premium Handcrafted Cricket Bat'}
               className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
             />
-            {/* Bottom Dark Pill Badge */}
+            {/* Bottom Cricket Leather Pill Badge */}
             {data.image_badge && (
-              <div className="absolute bottom-3 left-3 sm:bottom-5 sm:left-5 bg-[#09090B]/90 backdrop-blur-md text-white font-sport font-black px-3 py-1 sm:px-4 sm:py-1.5 rounded-xs text-[10px] sm:text-[11px] tracking-widest uppercase border border-[#2A2A3A] shadow-xl">
-                {data.image_badge}
+              <div className="absolute bottom-3 left-3 sm:bottom-5 sm:left-5 bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] text-white font-sport font-black px-3.5 py-1.5 rounded-xs text-[10px] sm:text-[11px] tracking-widest uppercase border-y border-dashed border-white/60 shadow-xl flex items-center gap-2">
+                <CricketBallIcon size={12} />
+                <span>{data.image_badge}</span>
               </div>
             )}
           </div>
