@@ -18,6 +18,7 @@ import {
 import { PaymentMethodStep } from '@/components/checkout/PaymentMethodStep';
 import { ReviewOrderStep } from '@/components/checkout/ReviewOrderStep';
 import { OrderSummaryCard } from '@/components/checkout/OrderSummaryCard';
+import { OrderSuccessModal } from '@/components/checkout/OrderSuccessModal';
 
 const STORAGE_KEY_ADDRESS = 'vk_checkout_address';
 
@@ -39,6 +40,14 @@ export const CheckoutPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<CheckoutStepId>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'razorpay' | 'cod'>('razorpay');
+  const [confirmedOrder, setConfirmedOrder] = useState<{
+    orderNumber: string;
+    paymentMethod: 'razorpay' | 'cod';
+    grandTotal: number;
+    customerName: string;
+    itemsCount: number;
+    deliveryCity: string;
+  } | null>(null);
 
   // Address Form State
   const [formData, setFormData] = useState<AddressFormData>(() => {
@@ -85,10 +94,10 @@ export const CheckoutPage: React.FC = () => {
       navigate('/login?redirect=/checkout', { replace: true });
       return;
     }
-    if (items.length === 0) {
+    if (items.length === 0 && !confirmedOrder) {
       navigate('/cart');
     }
-  }, [isAuthenticated, items.length, navigate]);
+  }, [isAuthenticated, items.length, confirmedOrder, navigate]);
 
   // Sync user profile details if form fields are empty
   useEffect(() => {
@@ -262,9 +271,18 @@ export const CheckoutPage: React.FC = () => {
                     razorpay_payment_id: response.razorpay_payment_id || `pay_${Date.now()}`,
                     razorpay_signature: response.razorpay_signature || 'mock_signature',
                   });
+                  const details = {
+                    orderNumber: order.order_number,
+                    paymentMethod: 'razorpay' as const,
+                    grandTotal: order.grand_total,
+                    customerName: formData.firstName || user?.full_name || 'Champion',
+                    itemsCount: items.length,
+                    deliveryCity: formData.city,
+                  };
                   clearCart();
+                  setConfirmedOrder(details);
+                  setIsSubmitting(false);
                   toast.success(`Payment verified! Order #${order.order_number} confirmed.`);
-                  navigate(`/order-success/${order.order_number}`);
                 } catch (err: any) {
                   toast.error(err?.response?.data?.detail || 'Payment verification failed');
                   setIsSubmitting(false);
@@ -295,6 +313,19 @@ export const CheckoutPage: React.FC = () => {
               razorpay_payment_id: `pay_${Date.now()}`,
               razorpay_signature: 'verified_sig',
             });
+            const details = {
+              orderNumber: order.order_number,
+              paymentMethod: 'razorpay' as const,
+              grandTotal: order.grand_total,
+              customerName: formData.firstName || user?.full_name || 'Champion',
+              itemsCount: items.length,
+              deliveryCity: formData.city,
+            };
+            clearCart();
+            setConfirmedOrder(details);
+            setIsSubmitting(false);
+            toast.success(`Payment verified! Order #${order.order_number} confirmed.`);
+            return;
           }
         } catch (rpErr: any) {
           console.warn('Razorpay initialization fallback', rpErr);
@@ -302,9 +333,18 @@ export const CheckoutPage: React.FC = () => {
       }
 
       // 3. For COD or direct fallback
+      const details = {
+        orderNumber: order.order_number,
+        paymentMethod: 'cod' as const,
+        grandTotal: order.grand_total,
+        customerName: formData.firstName || user?.full_name || 'Champion',
+        itemsCount: items.length,
+        deliveryCity: formData.city,
+      };
       clearCart();
+      setConfirmedOrder(details);
+      setIsSubmitting(false);
       toast.success(`Order #${order.order_number} placed successfully!`);
-      navigate(`/order-success/${order.order_number}`);
     } catch (err: any) {
       console.error(err);
       toast.error(
@@ -467,6 +507,19 @@ export const CheckoutPage: React.FC = () => {
           />
         </div>
       </div>
+
+      {/* Celebration Modal with Animated Green Tick */}
+      {confirmedOrder && (
+        <OrderSuccessModal
+          isOpen={Boolean(confirmedOrder)}
+          orderNumber={confirmedOrder.orderNumber}
+          paymentMethod={confirmedOrder.paymentMethod}
+          grandTotal={confirmedOrder.grandTotal}
+          customerName={confirmedOrder.customerName}
+          itemsCount={confirmedOrder.itemsCount}
+          deliveryCity={confirmedOrder.deliveryCity}
+        />
+      )}
     </div>
   );
 };

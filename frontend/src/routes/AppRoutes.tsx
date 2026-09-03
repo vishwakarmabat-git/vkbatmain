@@ -33,14 +33,24 @@ import {
   RefundPolicyPage,
   PrivacyPolicyPage,
   TermsPage,
+  TermsAndConditionsPage,
+  TermsOfSalePage,
+  CancellationPolicyPage,
+  ReturnRefundPolicyPage,
+  PaymentPolicyPage,
+  CookiePolicyPage,
+  ContactUsPage,
+  GrievanceRedressalPage,
 } from '@/pages/Policies/PoliciesPage';
+
+import { CookieConsentBanner } from '@/components/legal/CookieConsentBanner';
+import { ReconsentModal } from '@/components/legal/ReconsentModal';
 
 // Admin Pages
 import { AdminDashboardPage } from '@/pages/admin/AdminDashboardPage';
 import { AdminProductsPage } from '@/pages/admin/AdminProductsPage';
 import { AdminProductFormPage } from '@/pages/admin/AdminProductFormPage';
 import { AdminCategoriesPage } from '@/pages/admin/AdminCategoriesPage';
-import { AdminInventoryPage } from '@/pages/admin/AdminInventoryPage';
 import { AdminOrdersPage } from '@/pages/admin/AdminOrdersPage';
 import { AdminOrderDetailsPage } from '@/pages/admin/AdminOrderDetailsPage';
 import { AdminCustomersPage } from '@/pages/admin/AdminCustomersPage';
@@ -51,6 +61,9 @@ import { AdminCMSPage } from '@/pages/admin/AdminCMSPage';
 import { AdminGalleryPage } from '@/pages/admin/AdminGalleryPage';
 import { AdminSettingsPage } from '@/pages/admin/AdminSettingsPage';
 import { AdminUsersPage } from '@/pages/admin/AdminUsersPage';
+import { AdminBulkOrdersPage } from '@/pages/admin/AdminBulkOrdersPage';
+import { AdminWhyVKPage } from '@/pages/admin/AdminWhyVKPage';
+import { AdminLegalPage } from '@/pages/admin/AdminLegalPage';
 
 import { useAuthStore } from '@/store/authStore';
 
@@ -70,6 +83,8 @@ const CustomerLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =
       <main className="flex-1">{children}</main>
       <Footer />
       <CartDrawer />
+      <CookieConsentBanner />
+      <ReconsentModal />
     </div>
   );
 };
@@ -252,6 +267,22 @@ export const AppRoutes: React.FC = () => {
         }
       />
       <Route
+        path="/cancellation-policy"
+        element={
+          <CustomerLayout>
+            <CancellationPolicyPage />
+          </CustomerLayout>
+        }
+      />
+      <Route
+        path="/return-refund-policy"
+        element={
+          <CustomerLayout>
+            <ReturnRefundPolicyPage />
+          </CustomerLayout>
+        }
+      />
+      <Route
         path="/refund-policy"
         element={
           <CustomerLayout>
@@ -268,10 +299,58 @@ export const AppRoutes: React.FC = () => {
         }
       />
       <Route
+        path="/terms-and-conditions"
+        element={
+          <CustomerLayout>
+            <TermsAndConditionsPage />
+          </CustomerLayout>
+        }
+      />
+      <Route
         path="/terms"
         element={
           <CustomerLayout>
             <TermsPage />
+          </CustomerLayout>
+        }
+      />
+      <Route
+        path="/terms-of-sale"
+        element={
+          <CustomerLayout>
+            <TermsOfSalePage />
+          </CustomerLayout>
+        }
+      />
+      <Route
+        path="/payment-policy"
+        element={
+          <CustomerLayout>
+            <PaymentPolicyPage />
+          </CustomerLayout>
+        }
+      />
+      <Route
+        path="/cookie-policy"
+        element={
+          <CustomerLayout>
+            <CookiePolicyPage />
+          </CustomerLayout>
+        }
+      />
+      <Route
+        path="/contact-us"
+        element={
+          <CustomerLayout>
+            <ContactUsPage />
+          </CustomerLayout>
+        }
+      />
+      <Route
+        path="/grievance-redressal"
+        element={
+          <CustomerLayout>
+            <GrievanceRedressalPage />
           </CustomerLayout>
         }
       />
@@ -293,13 +372,16 @@ export const AppRoutes: React.FC = () => {
         <Route path="products/new" element={<AdminProductFormPage />} />
         <Route path="products/:id/edit" element={<AdminProductFormPage />} />
         <Route path="categories" element={<AdminCategoriesPage />} />
-        <Route path="inventory" element={<AdminInventoryPage />} />
+        <Route path="inventory" element={<Navigate to="/admin/products" replace />} />
         <Route path="orders" element={<AdminOrdersPage />} />
         <Route path="orders/:id" element={<AdminOrderDetailsPage />} />
+        <Route path="bulk-orders" element={<AdminBulkOrdersPage />} />
         <Route path="customers" element={<AdminCustomersPage />} />
         <Route path="reviews" element={<AdminReviewsPage />} />
         <Route path="coupons" element={<AdminCouponsPage />} />
+        <Route path="legal-policies" element={<AdminLegalPage />} />
         <Route path="banners" element={<AdminBannersPage />} />
+        <Route path="why-vk" element={<AdminWhyVKPage />} />
         <Route path="cms" element={<AdminCMSPage />} />
         <Route path="testimonials" element={<AdminCMSPage />} />
         <Route path="faqs" element={<AdminCMSPage />} />

@@ -150,7 +150,7 @@ export const AdminUsersPage: React.FC = () => {
               className="w-full bg-[#121216] border border-[#24242D] text-white p-2.5 text-sm rounded-sm"
             >
               <option value="admin">Administrator (Full Access)</option>
-              <option value="staff">Staff (Fulfillment & Inventory)</option>
+              <option value="staff">Staff (Orders & Fulfillment)</option>
             </select>
           </div>
           <div className="flex justify-end gap-2 pt-2">

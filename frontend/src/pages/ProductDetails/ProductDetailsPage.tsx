@@ -251,15 +251,13 @@ export const ProductDetailsPage: React.FC = () => {
           <div className="pt-2 flex flex-col sm:flex-row items-center gap-3 max-w-md font-sport tracking-wider text-xs">
             <button
               onClick={handleAddToCart}
-              disabled={product.stock_quantity <= 0}
-              className="w-full bg-[#D4AF37] hover:bg-[#E5BE4A] text-black font-black py-4 px-6 rounded-xs uppercase tracking-widest text-xs transition-all shadow-[0_0_20px_rgba(212,175,55,0.25)] cursor-pointer disabled:opacity-40"
+              className="w-full bg-[#D4AF37] hover:bg-[#E5BE4A] text-black font-black py-4 px-6 rounded-xs uppercase tracking-widest text-xs transition-all shadow-[0_0_20px_rgba(212,175,55,0.25)] cursor-pointer"
             >
               ADD TO CART
             </button>
             <button
               onClick={handleBuyNow}
-              disabled={product.stock_quantity <= 0}
-              className="w-full bg-[#181820] hover:bg-[#24242D] border border-[#3A3A4A] hover:border-[#D4AF37] text-white font-bold py-4 px-6 rounded-xs uppercase tracking-widest text-xs transition-all cursor-pointer disabled:opacity-40"
+              className="w-full bg-[#181820] hover:bg-[#24242D] border border-[#3A3A4A] hover:border-[#D4AF37] text-white font-bold py-4 px-6 rounded-xs uppercase tracking-widest text-xs transition-all cursor-pointer"
             >
               BUY NOW
             </button>

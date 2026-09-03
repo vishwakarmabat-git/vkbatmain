@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 
 class CMSBannerBase(BaseModel):
@@ -102,3 +102,15 @@ class GalleryItemResponse(GalleryItemBase):
 
     class Config:
         from_attributes = True
+
+class WhyVKFeature(BaseModel):
+    number: str
+    title: str
+    description: str
+
+class WhyVKSectionSchema(BaseModel):
+    badge: str = "WHY VK?"
+    title: str = "Built Different. Performs Different."
+    image_url: str = "/standing_bat_hero.jpg"
+    image_badge: str = "PREMIUM GRADE-A WILLOW"
+    features: List[WhyVKFeature] = []

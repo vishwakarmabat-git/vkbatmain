@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { X, Mail, Lock, User, Phone, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '@/store/authStore';
@@ -29,6 +29,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const googleBtnRef = useRef<HTMLDivElement>(null);
 
@@ -196,6 +198,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       return;
     }
 
+    if (!acceptTerms) {
+      toast.error('You must agree to the Terms & Conditions and acknowledge the Privacy Policy.');
+      return;
+    }
+
     setIsLoading(true);
     try {
       const data = await authService.register({
@@ -203,6 +210,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         email,
         password,
         phone: phoneNumber || undefined,
+        accept_terms_and_privacy: acceptTerms,
+        marketing_opt_in: marketingOptIn,
       });
       setAuth(data.user, data.access_token);
       toast.success(`Account created! Welcome to VK Bat House, ${data.user.full_name}!`);
@@ -455,10 +464,61 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   </div>
                 </div>
 
+                {/* Mandatory Legal Terms & Conditions Checkbox */}
+                <div className="pt-2">
+                  <label className="flex items-start gap-2.5 cursor-pointer select-none group">
+                    <input
+                      type="checkbox"
+                      id="authmodal-register-terms"
+                      checked={acceptTerms}
+                      onChange={(e) => setAcceptTerms(e.target.checked)}
+                      required
+                      className="w-4 h-4 mt-0.5 accent-[#D4AF37] rounded cursor-pointer shrink-0"
+                    />
+                    <span className="text-[11px] text-[#A1A1AA] group-hover:text-white transition-colors font-sans leading-relaxed">
+                      I agree to the{' '}
+                      <Link
+                        to="/terms-and-conditions"
+                        target="_blank"
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-[#D4AF37] underline hover:text-[#F3E5AB] font-bold"
+                      >
+                        Terms & Conditions
+                      </Link>{' '}
+                      and acknowledge the{' '}
+                      <Link
+                        to="/privacy-policy"
+                        target="_blank"
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-[#D4AF37] underline hover:text-[#F3E5AB] font-bold"
+                      >
+                        Privacy Policy
+                      </Link>
+                      . <span className="text-red-400">*</span>
+                    </span>
+                  </label>
+                </div>
+
+                {/* Optional Separate Marketing Opt-In Checkbox */}
+                <div className="pb-1">
+                  <label className="flex items-start gap-2.5 cursor-pointer select-none group">
+                    <input
+                      type="checkbox"
+                      id="authmodal-register-marketing"
+                      checked={marketingOptIn}
+                      onChange={(e) => setMarketingOptIn(e.target.checked)}
+                      className="w-4 h-4 mt-0.5 accent-[#D4AF37] rounded cursor-pointer shrink-0"
+                    />
+                    <span className="text-[11px] text-[#71717A] group-hover:text-[#A1A1AA] transition-colors font-sans leading-relaxed">
+                      Send me offers, discounts and new bat cleft releases by email / WhatsApp / SMS (Optional).
+                    </span>
+                  </label>
+                </div>
+
                 <button
                   type="submit"
-                  disabled={isLoading}
-                  className="w-full bg-[#D4AF37] hover:bg-[#E5BE4A] text-black font-black py-3.5 px-6 rounded-xs uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(212,175,55,0.25)] mt-2"
+                  disabled={isLoading || !acceptTerms}
+                  className="w-full bg-[#D4AF37] hover:bg-[#E5BE4A] text-black font-black py-3.5 px-6 rounded-xs uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(212,175,55,0.25)] mt-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span>{isLoading ? 'CREATING ACCOUNT...' : 'CREATE MY PLAYER ACCOUNT'}</span>
                   <ArrowRight className="w-4 h-4" />

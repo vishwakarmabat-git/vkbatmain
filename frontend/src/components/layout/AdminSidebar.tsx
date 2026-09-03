@@ -3,7 +3,7 @@ import { NavLink, Link, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Package, Layers, Boxes, ShoppingCart, Users,
   Star, Tag, Image, MessageSquare, HelpCircle, Settings, UserCheck,
-  History, ArrowLeft, LogOut, ShieldAlert, Sliders
+  History, ArrowLeft, LogOut, ShieldAlert, Sliders, Briefcase, Sparkles, Scale
 } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { useRealtime } from '@/realtime/RealtimeProvider';
@@ -18,11 +18,13 @@ export const AdminSidebar: React.FC<{ isOpen: boolean; onClose?: () => void }> =
     { label: 'Products', path: '/admin/products', icon: <Package className="w-4 h-4" /> },
     { label: 'Categories', path: '/admin/categories', icon: <Layers className="w-4 h-4" /> },
     { label: 'Banners Slider', path: '/admin/banners', icon: <Sliders className="w-4 h-4" /> },
-    { label: 'Inventory & Stock', path: '/admin/inventory', icon: <Boxes className="w-4 h-4" /> },
+    { label: 'Why VK Showcase', path: '/admin/why-vk', icon: <Sparkles className="w-4 h-4" /> },
     { label: 'Orders & Sales', path: '/admin/orders', icon: <ShoppingCart className="w-4 h-4" /> },
+    { label: 'Bulk Orders', path: '/admin/bulk-orders', icon: <Briefcase className="w-4 h-4" /> },
     { label: 'Customers', path: '/admin/customers', icon: <Users className="w-4 h-4" /> },
     { label: 'Reviews Moderation', path: '/admin/reviews', icon: <Star className="w-4 h-4" /> },
     { label: 'Coupons & Promos', path: '/admin/coupons', icon: <Tag className="w-4 h-4" /> },
+    { label: 'Legal & Policies', path: '/admin/legal-policies', icon: <Scale className="w-4 h-4" /> },
     { label: 'CMS & Content', path: '/admin/cms', icon: <MessageSquare className="w-4 h-4" /> },
     { label: 'Workshop Gallery', path: '/admin/gallery', icon: <Image className="w-4 h-4" /> },
     { label: 'Global Settings', path: '/admin/settings', icon: <Settings className="w-4 h-4" /> },

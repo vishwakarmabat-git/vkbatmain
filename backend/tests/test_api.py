@@ -186,11 +186,10 @@ def test_coupon_validation():
     assert data["is_valid"] is True
     assert data["discount_amount"] == 2000.0  # 10% of 20000
 
-def test_order_creation_and_inventory():
+def test_order_creation():
     # Fetch first product
     prod_res = client.get("/api/v1/products")
     product = prod_res.json()["items"][0]
-    initial_stock = product["stock_quantity"]
 
     order_payload = {
         "shipping_address": {
@@ -231,10 +230,6 @@ def test_order_creation_and_inventory():
     assert "order_number" in order_data
     assert order_data["order_number"].startswith("VK-")
 
-    # Verify inventory was decremented
-    updated_prod = client.get(f"/api/v1/products/{product['id']}").json()
-    assert updated_prod["stock_quantity"] == initial_stock - 1
-
 def test_forgot_and_reset_password_flow():
     # 1. Request forgot password for existing user
     res = client.post("/api/v1/auth/forgot-password", json={"email": "cricketfan@vkbathouse.com"})
@@ -265,5 +260,102 @@ def test_forgot_and_reset_password_flow():
 
     # Reset password back for subsequent tests
     client.post("/api/v1/auth/reset-password", json={"token": create_password_reset_token("cricketfan@vkbathouse.com"), "new_password": "Player@123456"})
+
+def test_submit_bulk_order_public_and_admin_workflow():
+    # 0. Log in as admin
+    login_res = client.post("/api/v1/auth/login", json={"email": "admin@vkbathouse.com", "password": "Admin@123456"})
+    assert login_res.status_code == 200
+    admin_token = login_res.json()["access_token"]
+
+    # 1. Submit a bulk order inquiry as a public customer/academy
+    payload = {
+        "inquiry_type": "bulk_order",
+        "name": "Rohit Cricket Academy",
+        "phone": "+91 9876543210",
+        "email": "coach@rohitacademy.com",
+        "club_name": "Rohit Cricket Academy",
+        "order_quantity": "25 - 50 Bats",
+        "bat_models": "Triple Cane Pro, Samurai Blade",
+        "details": "Custom academy branding required on all bats. Need 1150g weight with round handles."
+    }
+    submit_res = client.post("/api/v1/bulk-orders", json=payload)
+    assert submit_res.status_code == 201
+    inquiry_data = submit_res.json()
+    assert inquiry_data["name"] == "Rohit Cricket Academy"
+    assert inquiry_data["order_quantity"] == "25 - 50 Bats"
+    assert inquiry_data["status"] == "PENDING"
+    inquiry_id = inquiry_data["id"]
+
+    # 2. Non-admin should be denied access to admin bulk orders list
+    unauth_res = client.get("/api/v1/admin/bulk-orders")
+    assert unauth_res.status_code in [401, 403]
+
+    # 3. Admin can list all bulk orders and find this inquiry
+    admin_headers = {"Authorization": f"Bearer {admin_token}"}
+    list_res = client.get("/api/v1/admin/bulk-orders", headers=admin_headers)
+    assert list_res.status_code == 200
+    inquiries = list_res.json()
+    assert any(i["id"] == inquiry_id for i in inquiries)
+
+    # 4. Admin can update inquiry status to QUOTED and add internal admin notes
+    update_res = client.put(
+        f"/api/v1/admin/bulk-orders/{inquiry_id}/status",
+        headers=admin_headers,
+        json={"status": "QUOTED", "admin_notes": "Offered 15% academy discount via WhatsApp."}
+    )
+    assert update_res.status_code == 200
+    updated_data = update_res.json()
+    assert updated_data["status"] == "QUOTED"
+    assert "academy discount" in updated_data["admin_notes"]
+
+    # 5. Filter by status returns the quoted inquiry
+    filter_res = client.get("/api/v1/admin/bulk-orders?status_filter=QUOTED", headers=admin_headers)
+    assert filter_res.status_code == 200
+    assert any(i["id"] == inquiry_id for i in filter_res.json())
+
+def test_why_vk_cms_endpoints():
+    # 1. Public GET returns default or saved Why VK section
+    res = client.get("/api/v1/cms/why-vk")
+    assert res.status_code == 200
+    data = res.json()
+    assert "badge" in data
+    assert "features" in data
+    assert len(data["features"]) >= 1
+
+    # 2. Non-admin cannot update Why VK section
+    unauth_res = client.put("/api/v1/cms/why-vk", json=data)
+    assert unauth_res.status_code in [401, 403]
+
+    # 3. Admin can update Why VK section
+    login_res = client.post("/api/v1/auth/login", json={"email": "admin@vkbathouse.com", "password": "Admin@123456"})
+    admin_token = login_res.json()["access_token"]
+    admin_headers = {"Authorization": f"Bearer {admin_token}"}
+
+    updated_payload = {
+        "badge": "WHY CHOOSE VK?",
+        "title": "Built Different.\nPerforms Different.",
+        "image_url": "/standing_bat_hero.jpg",
+        "image_badge": "CUSTOM PRO RESERVE",
+        "features": [
+            {
+                "number": "01",
+                "title": "CHAKLASI HERITAGE",
+                "description": "Hand-carved with traditional drawknives by 3rd-generation craftsmen."
+            }
+        ]
+    }
+
+    put_res = client.put("/api/v1/cms/why-vk", json=updated_payload, headers=admin_headers)
+    assert put_res.status_code == 200
+    saved = put_res.json()
+    assert saved["badge"] == "WHY CHOOSE VK?"
+    assert saved["image_badge"] == "CUSTOM PRO RESERVE"
+    assert saved["features"][0]["title"] == "CHAKLASI HERITAGE"
+
+    # 4. Public GET now returns updated data
+    get_res = client.get("/api/v1/cms/why-vk")
+    assert get_res.status_code == 200
+    assert get_res.json()["badge"] == "WHY CHOOSE VK?"
+
 
 

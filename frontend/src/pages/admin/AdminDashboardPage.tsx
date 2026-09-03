@@ -30,8 +30,8 @@ export const AdminDashboardPage: React.FC = () => {
     fetchStats();
   }, []);
 
-  // Realtime instant metrics updates on orders, inventory, or products
-  useRealtimeSync(['vk:realtime:orders', 'vk:realtime:products', 'vk:realtime:inventory'], fetchStats);
+  // Realtime instant metrics updates on orders or products
+  useRealtimeSync(['vk:realtime:orders', 'vk:realtime:products'], fetchStats);
 
   if (loading || !stats) {
     return (
@@ -43,6 +43,8 @@ export const AdminDashboardPage: React.FC = () => {
       </div>
     );
   }
+
+  const avgOrderValue = stats.total_orders > 0 ? Math.round(stats.total_revenue / stats.total_orders) : 0;
 
   const statCards = [
     {
@@ -70,14 +72,6 @@ export const AdminDashboardPage: React.FC = () => {
       link: '/admin/orders?status=pending',
     },
     {
-      title: 'LOW STOCK ALERT',
-      value: stats.low_stock_products,
-      growth: stats.low_stock_products > 0 ? `${stats.low_stock_products} models below threshold` : 'Inventory healthy',
-      isPositive: stats.low_stock_products === 0,
-      icon: <AlertTriangle className="w-5 h-5 text-red-400" />,
-      link: '/admin/inventory',
-    },
-    {
       title: 'ACTIVE PRODUCTS',
       value: stats.total_products,
       growth: `${stats.total_products} active bat models`,
@@ -92,6 +86,14 @@ export const AdminDashboardPage: React.FC = () => {
       isPositive: true,
       icon: <Users className="w-5 h-5 text-purple-400" />,
       link: '/admin/customers',
+    },
+    {
+      title: 'AVG ORDER VALUE',
+      value: `₹${avgOrderValue.toLocaleString('en-IN')}`,
+      growth: 'Per checkout average',
+      isPositive: true,
+      icon: <TrendingUp className="w-5 h-5 text-[#D4AF37]" />,
+      link: '/admin/orders',
     },
   ];
 
@@ -114,9 +116,9 @@ export const AdminDashboardPage: React.FC = () => {
               ADD NEW BAT
             </Button>
           </Link>
-          <Link to="/admin/inventory">
-            <Button variant="outline" size="sm" leftIcon={<Box className="w-4 h-4" />}>
-              AUDIT INVENTORY
+          <Link to="/admin/orders">
+            <Button variant="outline" size="sm" leftIcon={<ShoppingCart className="w-4 h-4" />}>
+              VIEW ORDERS
             </Button>
           </Link>
         </div>
@@ -229,7 +231,7 @@ export const AdminDashboardPage: React.FC = () => {
             TOP SELLING CRICKET BLADES
           </h3>
           <Link to="/admin/products" className="text-xs font-sport text-[#D4AF37] hover:underline uppercase">
-            VIEW ALL INVENTORY
+            VIEW ALL PRODUCTS
           </Link>
         </div>
 

@@ -71,7 +71,7 @@ export const HeroCarousel: React.FC = () => {
   };
 
   return (
-    <section className="relative w-full min-h-[560px] sm:min-h-[620px] lg:min-h-[660px] flex items-center justify-center overflow-hidden border-b border-[#24242D] bg-[#09090B]">
+    <section className="relative w-full min-h-[480px] sm:min-h-[560px] lg:min-h-[620px] flex items-center justify-center overflow-hidden border-b border-[#24242D] bg-[#09090B]">
       {/* Very Soft & Light Warm Golden Ambient Glow */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -84,7 +84,7 @@ export const HeroCarousel: React.FC = () => {
       <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[400px] bg-[#D4AF37]/[0.05] rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[400px] h-[320px] bg-[#D4AF37]/[0.03] rounded-full blur-[130px] pointer-events-none" />
 
-      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 relative z-10">
+      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-14 relative z-10">
         <AnimatePresence mode="wait">
           <motion.div
             key={slide.id || currentSlide}
@@ -159,7 +159,7 @@ export const HeroCarousel: React.FC = () => {
 
         {/* Bottom Pagination Dots */}
         {banners.length > 1 && (
-          <div className="flex items-center justify-center gap-2.5 pt-10 sm:pt-14">
+          <div className="flex items-center justify-center gap-2.5 pt-6 sm:pt-8">
             {banners.map((s, idx) => (
               <button
                 key={s.id || idx}

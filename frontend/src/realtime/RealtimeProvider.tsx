@@ -89,11 +89,26 @@ export const RealtimeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
         case 'BANNER_UPDATED':
         case 'CMS_UPDATED':
+        case 'WHY_VK_UPDATED':
         case 'GALLERY_UPDATED':
           queryClient.invalidateQueries({ queryKey: ['cms-banners'] });
           queryClient.invalidateQueries({ queryKey: ['cms'] });
           queryClient.invalidateQueries({ queryKey: ['gallery'] });
+          queryClient.invalidateQueries({ queryKey: ['why-vk'] });
           window.dispatchEvent(new CustomEvent('vk:realtime:cms', { detail: message }));
+          break;
+
+        case 'BULK_ORDER_CREATED':
+        case 'BULK_ORDER_UPDATED':
+        case 'BULK_ORDER_DELETED':
+          queryClient.invalidateQueries({ queryKey: ['admin-bulk-orders'] });
+          window.dispatchEvent(new CustomEvent('vk:realtime:bulk_orders', { detail: message }));
+
+          if (isAdmin && event === 'BULK_ORDER_CREATED') {
+            toast.info(`🔔 New Bulk Order Inquiry!`, {
+              description: `${data?.name || 'Customer'}${data?.club_name ? ` (${data.club_name})` : ''} • ${data?.quantity || 'Custom Order'}`
+            });
+          }
           break;
 
         case 'REVIEW_CREATED':

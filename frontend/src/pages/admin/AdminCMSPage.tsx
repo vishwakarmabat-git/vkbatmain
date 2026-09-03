@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Image as ImageIcon, MessageSquare, HelpCircle, Plus, Trash2, CheckCircle2, Layers, Sparkles } from 'lucide-react';
 import { cmsService } from '@/services/cmsService';
 import { CMSBanner, Testimonial, FAQ } from '@/types';
@@ -185,6 +186,14 @@ export const AdminCMSPage: React.FC = () => {
           <HelpCircle className="w-3.5 h-3.5" />
           <span>FAQs ({faqs.length})</span>
         </button>
+
+        <Link
+          to="/admin/why-vk"
+          className="px-4 py-2 rounded-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 bg-[#181821] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black border border-[#D4AF37]/50"
+        >
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>Edit "Why VK" Showcase ➔</span>
+        </Link>
       </div>
 
       {/* SECTION 1: HOMEPAGE HERO BANNER PREVIEW */}

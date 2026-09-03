@@ -2,7 +2,14 @@ import { apiClient } from '@/api/client';
 import { User, Address } from '@/types';
 
 export const authService = {
-  async register(payload: { email: string; password: string; full_name: string; phone?: string }) {
+  async register(payload: {
+    email: string;
+    password: string;
+    full_name: string;
+    phone?: string;
+    accept_terms_and_privacy?: boolean;
+    marketing_opt_in?: boolean;
+  }) {
     const { data } = await apiClient.post<{ access_token: string; token_type: string; user: User }>('/auth/register', payload);
     return data;
   },

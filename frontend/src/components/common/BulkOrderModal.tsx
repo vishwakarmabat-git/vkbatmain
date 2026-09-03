@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Send, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
+import { bulkOrderService } from '@/services/bulkOrderService';
 
 interface BulkOrderModalProps {
   isOpen: boolean;
@@ -18,16 +19,25 @@ export const BulkOrderModal: React.FC<BulkOrderModalProps> = ({ isOpen, onClose 
   const [details, setDetails] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !phone || !email) {
-      toast.error('Please fill in all required fields (Name, Phone, and Email).');
+    if (!name.trim() || !phone.trim() || !details.trim()) {
+      toast.error('Please fill in required fields (Name, Phone, and Custom Specifications).');
       return;
     }
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      await bulkOrderService.submitBulkOrder({
+        inquiry_type: 'bulk_order',
+        name: name.trim(),
+        phone: phone.trim(),
+        email: email.trim() || undefined,
+        club_name: clubName.trim() || undefined,
+        order_quantity: orderQuantity,
+        bat_models: batModels.trim() || undefined,
+        details: details.trim(),
+      });
       toast.success('Bulk order inquiry transmitted! Our B2B manager will contact you within 4 hours.');
       setName('');
       setPhone('');
@@ -36,7 +46,11 @@ export const BulkOrderModal: React.FC<BulkOrderModalProps> = ({ isOpen, onClose 
       setBatModels('');
       setDetails('');
       onClose();
-    }, 600);
+    } catch (err: any) {
+      toast.error(err?.response?.data?.detail || 'Error submitting bulk order inquiry. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -198,9 +212,9 @@ export const BulkOrderModal: React.FC<BulkOrderModalProps> = ({ isOpen, onClose 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-[#0A0A0E] hover:bg-[#181822] text-white font-sport font-black py-4 px-6 rounded-xs uppercase tracking-widest text-xs flex items-center justify-center gap-2 border border-[#2A2A3C] transition-all hover:border-[#D4AF37]"
+                  className="w-full bg-[#0A0A0E] hover:bg-[#181822] disabled:opacity-60 text-white font-sport font-black py-4 px-6 rounded-xs uppercase tracking-widest text-xs flex items-center justify-center gap-2 border border-[#2A2A3C] transition-all hover:border-[#D4AF37] cursor-pointer"
                 >
-                  <span>REQUEST BULK QUOTE</span>
+                  <span>{isSubmitting ? 'TRANSMITTING INQUIRY...' : 'REQUEST BULK QUOTE'}</span>
                 </button>
               </div>
             </form>

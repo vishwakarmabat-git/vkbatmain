@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { MapPin, CreditCard, Banknote, Edit3, ShieldCheck, Lock, Truck, ArrowLeft, Loader2, Award, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { CartItem, Coupon } from '@/types';
@@ -36,6 +37,7 @@ export const ReviewOrderStep: React.FC<ReviewOrderStepProps> = ({
   onBack,
   onConfirmOrder,
 }) => {
+  const [termsOfSaleAgreed, setTermsOfSaleAgreed] = useState(false);
   return (
     <div className="space-y-6 text-left">
       {/* 1. Address & Payment Review Cards */}
@@ -237,6 +239,37 @@ export const ReviewOrderStep: React.FC<ReviewOrderStepProps> = ({
           </div>
         </div>
 
+        {/* Checkout Legal Acknowledgement & Affirmative Confirmation */}
+        <div className="bg-[#121216] border border-[#242436] rounded-xl p-4 space-y-2">
+          <label className="flex items-start gap-3 cursor-pointer select-none group">
+            <input
+              type="checkbox"
+              id="checkout-terms-of-sale"
+              checked={termsOfSaleAgreed}
+              onChange={(e) => setTermsOfSaleAgreed(e.target.checked)}
+              className="w-4 h-4 mt-0.5 accent-[#D4AF37] rounded cursor-pointer shrink-0"
+            />
+            <span className="text-xs text-[#A1A1AA] group-hover:text-white transition-colors font-sans leading-relaxed">
+              I agree to the{' '}
+              <Link
+                to="/terms-of-sale"
+                target="_blank"
+                className="text-[#D4AF37] underline hover:text-[#F3E5AB] font-bold"
+              >
+                Terms of Sale
+              </Link>{' '}
+              and confirm that the delivery address and order details provided by me are accurate. <span className="text-red-400">*</span>
+            </span>
+          </label>
+          <p className="text-[11px] text-[#71717A] font-sans pl-7">
+            By placing this order, you also acknowledge our{' '}
+            <Link to="/privacy-policy" target="_blank" className="text-[#A1A1AA] underline hover:text-white">
+              Privacy Policy
+            </Link>
+            . Sensitive payment credentials (cards, UPI PINs) are processed exclusively by our PCI-DSS compliant payment gateway and never stored on our servers.
+          </p>
+        </div>
+
         <div className="flex flex-col-reverse sm:flex-row items-center justify-between gap-3 pt-2">
           <Button
             type="button"
@@ -254,9 +287,9 @@ export const ReviewOrderStep: React.FC<ReviewOrderStepProps> = ({
             type="button"
             variant="gold"
             size="xl"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !termsOfSaleAgreed}
             onClick={onConfirmOrder}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 font-black shadow-[0_0_30px_rgba(212,175,55,0.4)] tracking-wider"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 font-black shadow-[0_0_30px_rgba(212,175,55,0.4)] tracking-wider disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {isSubmitting ? (
               <>

@@ -67,60 +67,84 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Column 2: QUICK LINKS (3 cols) */}
+          {/* Column 2: CUSTOMER SUPPORT (3 cols) */}
           <div className="md:col-span-3 space-y-3 font-sport tracking-wider">
             <h4 className="text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
-              QUICK LINKS
+              CUSTOMER SUPPORT
             </h4>
             <ul className="space-y-2.5 text-xs">
               <li>
-                <Link to="/" className="text-[#A1A1AA] hover:text-white transition-colors">
-                  Home Storefront
+                <Link to="/contact-us" className="text-[#A1A1AA] hover:text-white transition-colors">
+                  Contact Us
                 </Link>
               </li>
               <li>
-                <Link to="/products" className="text-[#A1A1AA] hover:text-white transition-colors">
-                  Browse All Bats
+                <Link to="/shipping-policy" className="text-[#A1A1AA] hover:text-white transition-colors">
+                  Shipping Policy
                 </Link>
               </li>
               <li>
-                <Link to="/gallery" className="text-[#A1A1AA] hover:text-white transition-colors">
-                  Gallery Showcase
+                <Link to="/cancellation-policy" className="text-[#A1A1AA] hover:text-white transition-colors">
+                  Cancellation Policy
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-[#A1A1AA] hover:text-white transition-colors">
-                  Bulk Orders Inquiries
+                <Link to="/return-refund-policy" className="text-[#A1A1AA] hover:text-white transition-colors">
+                  Return & Refund Policy
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Column 3: LEGAL & INFO + AMAVASYA CALLOUT (4 cols) */}
+          {/* Column 3: LEGAL & COMPLIANCE (4 cols) */}
           <div className="md:col-span-4 space-y-4 font-sport tracking-wider">
             <h4 className="text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
-              LEGAL & INFO
+              LEGAL & COMPLIANCE
             </h4>
-            <ul className="space-y-2.5 text-xs">
-              <li>
-                <Link to="/terms" className="text-[#A1A1AA] hover:text-white transition-colors">
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link to="/privacy-policy" className="text-[#A1A1AA] hover:text-white transition-colors">
+            <div className="grid grid-cols-2 gap-y-2.5 gap-x-4 text-xs">
+              <div>
+                <Link to="/privacy-policy" className="text-[#A1A1AA] hover:text-white transition-colors block">
                   Privacy Policy
                 </Link>
-              </li>
-              <li>
-                <Link to="/refund-policy" className="text-[#A1A1AA] hover:text-white transition-colors">
-                  Returns & Refunds
+              </div>
+              <div>
+                <Link to="/terms-and-conditions" className="text-[#A1A1AA] hover:text-white transition-colors block">
+                  Terms & Conditions
                 </Link>
-              </li>
-            </ul>
+              </div>
+              <div>
+                <Link to="/terms-of-sale" className="text-[#A1A1AA] hover:text-white transition-colors block">
+                  Terms of Sale
+                </Link>
+              </div>
+              <div>
+                <Link to="/payment-policy" className="text-[#A1A1AA] hover:text-white transition-colors block">
+                  Payment Policy
+                </Link>
+              </div>
+              <div>
+                <Link to="/cookie-policy" className="text-[#A1A1AA] hover:text-white transition-colors block">
+                  Cookie Policy
+                </Link>
+              </div>
+              <div>
+                <Link to="/grievance-redressal" className="text-[#A1A1AA] hover:text-white transition-colors block">
+                  Grievance Redressal
+                </Link>
+              </div>
+              <div className="col-span-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => window.dispatchEvent(new CustomEvent('vk:open_cookie_preferences'))}
+                  className="text-xs text-[#D4AF37] hover:text-[#F3E5AB] transition-colors underline cursor-pointer"
+                >
+                  ⚙ Manage Cookie Preferences
+                </button>
+              </div>
+            </div>
 
             {/* Amavasya Notice Card */}
-            <div className="bg-[#111116] border border-[#24242D] rounded-xs p-3.5 space-y-1 mt-3">
+            <div className="bg-[#111116] border border-[#24242D] rounded-xs p-3 space-y-1 mt-2">
               <div className="flex items-center gap-1.5 text-red-400 text-xs font-bold uppercase tracking-wider">
                 <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" />
                 <span>CLOSED ON AMAVASYA</span>

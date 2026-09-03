@@ -7,7 +7,7 @@ class AdminDashboardStats(BaseModel):
     total_orders: int
     pending_orders: int
     total_products: int
-    low_stock_products: int
+    low_stock_products: int = 0
     total_customers: int
     revenue_growth_percent: float = 12.5
     orders_growth_percent: float = 8.3

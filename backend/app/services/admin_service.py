@@ -21,9 +21,9 @@ class AdminService:
         total_orders = db.query(Order).count()
         pending_orders = db.query(Order).filter(Order.order_status == "pending").count()
 
-        # 3. Products & stock
+        # 3. Products
         total_products = db.query(Product).filter(Product.status == "active").count()
-        low_stock_products = db.query(Product).filter(Product.stock_quantity <= 3, Product.status == "active").count()
+        low_stock_products = 0
 
         # 4. Customers count
         total_customers = db.query(User).filter(User.role == "customer").count()

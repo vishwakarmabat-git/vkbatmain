@@ -63,7 +63,7 @@ export const ProductsPage: React.FC = () => {
   }, [currentCategory, currentSearch, currentSort, currentWillow, currentPressing, currentMinPrice, currentMaxPrice]);
 
   // Realtime instant updates without refresh
-  useRealtimeSync(['vk:realtime:products', 'vk:realtime:inventory'], fetchProducts);
+  useRealtimeSync('vk:realtime:products', fetchProducts);
   useRealtimeSync('vk:realtime:categories', fetchCategories);
 
   const updateParam = (key: string, value: string) => {

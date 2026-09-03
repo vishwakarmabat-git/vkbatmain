@@ -14,8 +14,8 @@ export const TrustedByChampionsSection: React.FC = () => {
   if (testimonials.length === 0) return null;
 
   return (
-    <section className="w-full py-16 bg-[#09090B] text-left">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <section className="w-full py-8 sm:py-12 bg-[#09090B] text-left border-t border-[#181822]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         {/* Section Header */}
         <div className="text-center space-y-3">
           <span className="text-xs font-sport font-black tracking-[0.25em] text-[#D4AF37] uppercase">
@@ -32,11 +32,11 @@ export const TrustedByChampionsSection: React.FC = () => {
         </div>
 
         {/* Testimonial Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-6 lg:gap-8 items-stretch">
           {testimonials.map((t) => (
             <div
               key={t.id}
-              className="bg-[#111116] border border-[#242436] hover:border-[#D4AF37]/50 rounded-xl p-7 sm:p-8 flex flex-col justify-between space-y-6 transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.1)] group"
+              className="bg-[#111116] border border-[#24242D] hover:border-[#D4AF37]/50 rounded-xl p-4 sm:p-7 flex flex-col justify-between space-y-3 sm:space-y-6 transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.1)] group"
             >
               {/* Star Rating & Quote */}
               <div className="space-y-4">

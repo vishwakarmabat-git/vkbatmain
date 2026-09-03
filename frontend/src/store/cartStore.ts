@@ -51,11 +51,13 @@ export const useCartStore = create<CartState>()(
             (item) => `${item.product.id}-${item.customization.weight}-${item.customization.handle_shape}-${item.customization.handle_size}-${item.customization.grip_color}-${item.customization.sticker_finish}-${item.customization.custom_engraving || ''}` === customKey
           );
 
+          const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+
           if (existingIndex > -1) {
             const updatedItems = [...state.items];
             updatedItems[existingIndex].quantity += quantity;
             updatedItems[existingIndex].total_price = updatedItems[existingIndex].quantity * unit_price;
-            return { items: updatedItems, isDrawerOpen: true };
+            return { items: updatedItems, isDrawerOpen: isMobile ? false : true };
           } else {
             const newItem: CartItem = {
               id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -65,7 +67,7 @@ export const useCartStore = create<CartState>()(
               unit_price,
               total_price: unit_price * quantity
             };
-            return { items: [...state.items, newItem], isDrawerOpen: true };
+            return { items: [...state.items, newItem], isDrawerOpen: isMobile ? false : true };
           }
         });
       },

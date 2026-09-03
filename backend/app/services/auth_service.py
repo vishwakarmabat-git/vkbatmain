@@ -16,6 +16,12 @@ from app.services.email_service import EmailService
 class AuthService:
     @staticmethod
     def register(db: Session, data: UserRegister) -> dict:
+        if not data.accept_terms_and_privacy:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="You must agree to the Terms & Conditions and acknowledge the Privacy Policy to create an account."
+            )
+
         existing = db.query(User).filter(User.email == data.email.lower()).first()
         if existing:
             raise HTTPException(
@@ -34,6 +40,50 @@ class AuthService:
         db.add(user)
         db.commit()
         db.refresh(user)
+
+        # Record legally auditable consent record for Terms & Privacy
+        try:
+            from app.models.legal import ConsentRecord, MarketingPreference, LegalDocument
+            
+            # Fetch active versions if present
+            terms_doc = db.query(LegalDocument).filter(LegalDocument.slug == "terms-and-conditions").first()
+            current_ver = terms_doc.version if terms_doc else "1.0"
+
+            consent = ConsentRecord(
+                user_id=user.id,
+                consent_type="TERMS_AND_PRIVACY",
+                document_type="terms-and-conditions",
+                document_version=current_ver,
+                consent_status="ACCEPTED",
+                source="registration"
+            )
+            db.add(consent)
+
+            # Store explicit, separate marketing preferences
+            marketing_opt = bool(data.marketing_opt_in)
+            pref = MarketingPreference(
+                user_id=user.id,
+                email_marketing=marketing_opt,
+                sms_marketing=marketing_opt,
+                whatsapp_marketing=marketing_opt
+            )
+            db.add(pref)
+
+            if marketing_opt:
+                mkt_consent = ConsentRecord(
+                    user_id=user.id,
+                    consent_type="MARKETING_PROMOTIONS",
+                    document_type="marketing",
+                    document_version="1.0",
+                    consent_status="ACCEPTED",
+                    source="registration"
+                )
+                db.add(mkt_consent)
+
+            db.commit()
+        except Exception as e:
+            # Do not block registration if logging fails, but log trace
+            print(f"[AuthService] Consent logging error: {e}")
 
         # Send welcome email asynchronously
         EmailService.send_welcome_email(user.email, user.full_name)

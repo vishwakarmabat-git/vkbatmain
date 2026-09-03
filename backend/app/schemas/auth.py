@@ -7,6 +7,8 @@ class UserRegister(BaseModel):
     password: str = Field(min_length=6)
     full_name: str = Field(min_length=2)
     phone: Optional[str] = None
+    accept_terms_and_privacy: bool = Field(True, description="Explicit agreement to Terms & Conditions and acknowledgement of Privacy Policy")
+    marketing_opt_in: Optional[bool] = Field(False, description="Optional opt-in for promotional updates")
 
 class UserLogin(BaseModel):
     email: EmailStr

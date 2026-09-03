@@ -28,7 +28,7 @@ class OrderService:
         if not data.items:
             raise HTTPException(status_code=400, detail="Order must contain at least one item")
 
-        # 1. Fetch products & calculate subtotal while validating stock
+        # 1. Fetch products & calculate subtotal
         item_objects = []
         raw_subtotal = 0.0
 
@@ -38,8 +38,6 @@ class OrderService:
                 raise HTTPException(status_code=404, detail=f"Product not found: {item_in.product_id}")
             if product.status != "active":
                 raise HTTPException(status_code=400, detail=f"Product {product.name} is not available for purchase")
-            if product.stock_quantity < item_in.quantity:
-                raise HTTPException(status_code=400, detail=f"Insufficient stock for {product.name}. Available: {product.stock_quantity}")
 
             # Calculate item unit price + extra customization cost
             unit_price = float(product.price)
@@ -112,13 +110,10 @@ class OrderService:
         db.add(order)
         db.flush()
 
-        # 5. Add order items & safely deduct stock
+        # 5. Add order items
         for order_item, product in item_objects:
             order_item.order_id = order.id
             db.add(order_item)
-            
-            # Deduct product stock
-            product.stock_quantity = max(0, product.stock_quantity - order_item.quantity)
 
         # 6. Mark coupon as used if applied
         if applied_coupon_code:
@@ -154,8 +149,6 @@ class OrderService:
                 "grand_total": float(order.grand_total),
                 "order_status": order.order_status
             }, user_id=order.user_id)
-        # Broadcast inventory update to public catalog because stock was deducted
-        emit_realtime_event("public", "INVENTORY_UPDATED", "inventory", {"source": "order_checkout"})
 
         populated_order = OrderService.get_order_by_id(db, order.id)
 

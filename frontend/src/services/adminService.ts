@@ -60,16 +60,6 @@ export const adminService = {
     return data;
   },
 
-  async getInventory(): Promise<any[]> {
-    const { data } = await apiClient.get<any[]>('/admin/inventory');
-    return data;
-  },
-
-  async adjustInventory(payload: { product_id: string; adjustment_type: string; quantity: number; reason?: string }) {
-    const { data } = await apiClient.post('/admin/inventory/adjust', payload);
-    return data;
-  },
-
   async getCustomers(search?: string): Promise<User[]> {
     const { data } = await apiClient.get<User[]>('/admin/customers', { params: { search } });
     return data;

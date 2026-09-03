@@ -31,7 +31,7 @@ export const AdminProductsPage: React.FC = () => {
   }, [search]);
 
   // Realtime instant auto-sync without refresh
-  useRealtimeSync(['vk:realtime:products', 'vk:realtime:inventory'], fetchProducts);
+  useRealtimeSync('vk:realtime:products', fetchProducts);
 
   const handleDelete = async (id: string, name: string) => {
     if (!window.confirm(`⚠️ PERMANENTLY DELETE "${name}"?\n\nThis action permanently removes this product from the catalog and customer website.\n\nThis action cannot be undone.`)) return;
@@ -52,7 +52,7 @@ export const AdminProductsPage: React.FC = () => {
             PRODUCT CATALOG MANAGEMENT
           </span>
           <h1 className="text-2xl sm:text-3xl font-serif font-black text-[#F4F4F5] uppercase mt-0.5">
-            CRICKET BATS INVENTORY ({products.length})
+            CRICKET BATS CATALOG ({products.length})
           </h1>
         </div>
 
@@ -87,7 +87,6 @@ export const AdminProductsPage: React.FC = () => {
                 <th className="py-3 px-4 font-semibold">SKU</th>
                 <th className="py-3 px-4 font-semibold">EDITION</th>
                 <th className="py-3 px-4 font-semibold">PRICE</th>
-                <th className="py-3 px-4 font-semibold">STOCK</th>
                 <th className="py-3 px-4 font-semibold">STATUS</th>
                 <th className="py-3 px-4 font-semibold text-right">ACTIONS</th>
               </tr>
@@ -95,13 +94,13 @@ export const AdminProductsPage: React.FC = () => {
             <tbody className="divide-y divide-[#24242D]/60">
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="py-8 text-center text-[#71717A]">
+                  <td colSpan={6} className="py-8 text-center text-[#71717A]">
                     Loading products...
                   </td>
                 </tr>
               ) : products.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-8 text-center text-[#71717A]">
+                  <td colSpan={6} className="py-8 text-center text-[#71717A]">
                     No products found.
                   </td>
                 </tr>
@@ -128,11 +127,6 @@ export const AdminProductsPage: React.FC = () => {
                     <td className="py-3 px-4 text-[#D4AF37]">{p.blade_architecture || p.category_name}</td>
                     <td className="py-3 px-4 font-black text-white text-sm">
                       ₹{Number(p.price).toLocaleString('en-IN')}
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className={`font-bold ${p.stock_quantity <= 3 ? 'text-red-400' : 'text-emerald-400'}`}>
-                        {p.stock_quantity} Units
-                      </span>
                     </td>
                     <td className="py-3 px-4">
                       <Badge variant={p.status === 'active' ? 'success' : 'dark'}>
@@ -210,9 +204,6 @@ export const AdminProductsPage: React.FC = () => {
                 <div className="flex items-baseline gap-2">
                   <span className="font-black text-white text-base">
                     ₹{Number(p.price).toLocaleString('en-IN')}
-                  </span>
-                  <span className={`text-[11px] font-bold ${p.stock_quantity <= 3 ? 'text-red-400' : 'text-emerald-400'}`}>
-                    • {p.stock_quantity} Units
                   </span>
                 </div>
 

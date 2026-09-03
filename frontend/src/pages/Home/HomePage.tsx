@@ -50,7 +50,7 @@ export const HomePage: React.FC = () => {
   useRealtimeSync(['vk:realtime:products', 'vk:realtime:categories', 'vk:realtime:cms'], fetchData);
 
   return (
-    <div className="space-y-24 pb-20">
+    <div className="w-full pb-12">
       {/* SECTION 1: AUTO-LOOPING 3-SECOND HERO CAROUSEL */}
       <HeroCarousel />
 

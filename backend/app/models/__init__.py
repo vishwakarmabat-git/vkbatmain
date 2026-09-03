@@ -9,6 +9,8 @@ from app.models.wishlist import Wishlist, WishlistItem
 from app.models.cms import CMSBanner, Testimonial, FAQ, GalleryItem
 from app.models.setting import Setting
 from app.models.activity_log import AdminActivityLog
+from app.models.bulk_order import BulkOrder
+from app.models.legal import LegalDocument, ConsentRecord, MarketingPreference, PrivacyRequest
 
 __all__ = [
     "Base",
@@ -31,4 +33,9 @@ __all__ = [
     "GalleryItem",
     "Setting",
     "AdminActivityLog",
+    "BulkOrder",
+    "LegalDocument",
+    "ConsentRecord",
+    "MarketingPreference",
+    "PrivacyRequest",
 ]

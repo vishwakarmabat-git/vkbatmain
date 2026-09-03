@@ -54,7 +54,8 @@ class Settings(BaseSettings):
     RAZORPAY_KEY_SECRET: str = ""
 
     # CORS
-    CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173,https://vkbatmain.vercel.app"
+    CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173,https://vkbatmain.vercel.app,https://www.vishwakarmabathouse.in,https://vishwakarmabathouse.in"
+
 
     @property
     def cors_origin_list(self) -> List[str]:

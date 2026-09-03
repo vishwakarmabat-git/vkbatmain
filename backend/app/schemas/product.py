@@ -46,7 +46,7 @@ class ProductBase(BaseModel):
     grain_count: Optional[str] = None
     bow_profile: Optional[str] = None
     
-    stock_quantity: int = 10
+    stock_quantity: Optional[int] = 9999
     is_featured: bool = False
     is_bestseller: bool = False
     status: str = "active"

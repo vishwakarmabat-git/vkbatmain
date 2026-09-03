@@ -171,20 +171,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
                 </span>
               )}
             </div>
-            <span className="text-[10px] font-sport text-[#71717A] uppercase tracking-wider">
-              {product.stock_quantity > 0 ? (
-                <span className="text-emerald-400">● In Stock ({product.stock_quantity})</span>
-              ) : (
-                <span className="text-red-400">● Sold Out</span>
-              )}
+            <span className="text-[10px] font-sport text-[#D4AF37] uppercase tracking-wider font-semibold">
+              Bespoke Artisan Craft
             </span>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={handleQuickAdd}
-              disabled={product.stock_quantity <= 0}
-              className="bg-[#D4AF37] hover:bg-[#E5BE4A] text-black font-sport font-black py-2.5 px-4 rounded-xs text-xs tracking-wider uppercase transition-all duration-200 cursor-pointer disabled:opacity-40 flex items-center gap-2 shadow-[0_0_15px_rgba(212,175,55,0.2)]"
+              className="bg-[#D4AF37] hover:bg-[#E5BE4A] text-black font-sport font-black py-2.5 px-4 rounded-xs text-xs tracking-wider uppercase transition-all duration-200 cursor-pointer flex items-center gap-2 shadow-[0_0_15px_rgba(212,175,55,0.2)]"
             >
               <ShoppingBag className="w-3.5 h-3.5" />
               <span>ADD TO CART</span>

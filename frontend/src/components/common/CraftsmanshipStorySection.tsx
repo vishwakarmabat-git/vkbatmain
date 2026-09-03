@@ -3,11 +3,11 @@ import { MapPin } from 'lucide-react';
 
 export const CraftsmanshipStorySection: React.FC = () => {
   return (
-    <section className="w-full py-16 bg-[#09090B] text-left">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+    <section className="w-full py-8 sm:py-12 bg-[#09090B] text-left border-t border-[#181822]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
         {/* Left Column: Workshop Artisan Photo (5 cols) */}
         <div className="lg:col-span-5">
-          <div className="relative rounded-xl overflow-hidden border border-[#24242D] shadow-2xl bg-[#121216] aspect-4/5 group">
+          <div className="relative rounded-xl overflow-hidden border border-[#24242D] shadow-2xl bg-[#121216] aspect-4/5 group max-w-md mx-auto lg:max-w-none">
             <img
               src="/workshop_crafting.jpg"
               alt="Artisan shaping cricket bat in workshop"
@@ -21,7 +21,7 @@ export const CraftsmanshipStorySection: React.FC = () => {
         </div>
 
         {/* Right Column: Heritage & Story Content (7 cols) */}
-        <div className="lg:col-span-7 space-y-6">
+        <div className="lg:col-span-7 space-y-4 sm:space-y-6">
           <div className="space-y-2">
             <span className="text-xs font-sport font-black tracking-[0.25em] text-[#D4AF37] uppercase">
               CRAFTSMANSHIP
@@ -42,10 +42,10 @@ export const CraftsmanshipStorySection: React.FC = () => {
           </div>
 
           {/* 3 Step List with Gold Left Borders */}
-          <div className="space-y-4 pt-2 font-sport">
+          <div className="space-y-2.5 sm:space-y-4 pt-1 sm:pt-2 font-sport">
             {/* Step 1 */}
-            <div className="border-l-2 border-[#D4AF37] pl-4 space-y-1">
-              <h4 className="font-black text-sm sm:text-base text-white uppercase tracking-wider">
+            <div className="border-l-2 border-[#D4AF37] pl-3.5 sm:pl-4 space-y-0.5 sm:space-y-1">
+              <h4 className="font-black text-xs sm:text-base text-white uppercase tracking-wider">
                 1. SOURCING ELITE CLEFTS
               </h4>
               <p className="text-xs text-[#A1A1AA] leading-relaxed font-normal">
@@ -54,8 +54,8 @@ export const CraftsmanshipStorySection: React.FC = () => {
             </div>
 
             {/* Step 2 */}
-            <div className="border-l-2 border-[#D4AF37] pl-4 space-y-1">
-              <h4 className="font-black text-sm sm:text-base text-white uppercase tracking-wider">
+            <div className="border-l-2 border-[#D4AF37] pl-3.5 sm:pl-4 space-y-0.5 sm:space-y-1">
+              <h4 className="font-black text-xs sm:text-base text-white uppercase tracking-wider">
                 2. MANUAL BLADE SHAPING
               </h4>
               <p className="text-xs text-[#A1A1AA] leading-relaxed font-normal">
@@ -64,8 +64,8 @@ export const CraftsmanshipStorySection: React.FC = () => {
             </div>
 
             {/* Step 3 */}
-            <div className="border-l-2 border-[#D4AF37] pl-4 space-y-1">
-              <h4 className="font-black text-sm sm:text-base text-white uppercase tracking-wider">
+            <div className="border-l-2 border-[#D4AF37] pl-3.5 sm:pl-4 space-y-0.5 sm:space-y-1">
+              <h4 className="font-black text-xs sm:text-base text-white uppercase tracking-wider">
                 3. DOUBLE COMPRESSION PRESSING
               </h4>
               <p className="text-xs text-[#A1A1AA] leading-relaxed font-normal">
@@ -75,8 +75,8 @@ export const CraftsmanshipStorySection: React.FC = () => {
           </div>
 
           {/* Address Line */}
-          <div className="pt-4 border-t border-[#24242D] flex items-center gap-2 text-xs font-sport tracking-wider text-[#A1A1AA]">
-            <span className="text-base">📍</span>
+          <div className="pt-2 sm:pt-4 border-t border-[#24242D] flex items-center gap-2 text-xs font-sport tracking-wider text-[#A1A1AA]">
+            <span className="text-sm sm:text-base">📍</span>
             <span>
               <strong className="text-[#F4F4F5] uppercase">Workshop Address:</strong> VK BAT HOUSE, Uttarsanda Bhalej Road, Chaklasi 387315
             </span>

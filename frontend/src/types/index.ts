@@ -79,7 +79,7 @@ export interface Product {
   grain_count?: string;
   bow_profile?: string;
   
-  stock_quantity: number;
+  stock_quantity?: number;
   is_featured: boolean;
   is_bestseller: boolean;
   status: 'active' | 'draft' | 'archived';

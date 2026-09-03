@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Phone, Mail, MapPin, MessageCircle, Send } from 'lucide-react';
 import { toast } from 'sonner';
+import { bulkOrderService } from '@/services/bulkOrderService';
 
 export const ContactRequirementSection: React.FC = () => {
   const [fullName, setFullName] = useState('');
@@ -11,7 +12,7 @@ export const ContactRequirementSection: React.FC = () => {
   const [customSpecs, setCustomSpecs] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullName || !contactNumber) {
       toast.error('Please enter your full name and contact number');
@@ -19,14 +20,24 @@ export const ContactRequirementSection: React.FC = () => {
     }
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      await bulkOrderService.submitBulkOrder({
+        inquiry_type: 'custom_requirement',
+        name: fullName.trim(),
+        phone: contactNumber.trim(),
+        email: email.trim() || undefined,
+        details: `Experience: ${cricketExperience} | Weight: ${preferredWeight} | Specs: ${customSpecs.trim() || 'Standard custom craftsmanship request'}`,
+      });
       toast.success('Thank you! Your custom bat requirement has been sent to our master artisan.');
       setFullName('');
       setContactNumber('');
       setEmail('');
       setCustomSpecs('');
-    }, 600);
+    } catch (err: any) {
+      toast.error(err?.response?.data?.detail || 'Error submitting requirement. Please try again or message on WhatsApp.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleWhatsAppDirect = () => {
@@ -42,8 +53,8 @@ export const ContactRequirementSection: React.FC = () => {
   };
 
   return (
-    <section className="w-full py-16 bg-[#09090B] text-left">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <section className="w-full py-8 sm:py-12 bg-[#09090B] text-left border-t border-[#181822]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         {/* Section Header */}
         <div className="text-center space-y-3 max-w-3xl mx-auto">
           <span className="text-xs font-sport font-black tracking-[0.25em] text-[#D4AF37] uppercase">
@@ -59,19 +70,19 @@ export const ContactRequirementSection: React.FC = () => {
         </div>
 
         {/* 2-Column Grid with Matching Equal Height */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-stretch">
           {/* Left Column: Requirement Form (7 cols) */}
-          <div className="lg:col-span-7 bg-[#111116] border border-[#24242D] rounded-md p-6 sm:p-8 shadow-2xl flex flex-col justify-between h-full">
-            <div className="space-y-1 mb-5">
-              <span className="text-[11px] font-sport font-black tracking-widest text-[#D4AF37] uppercase">
+          <div className="lg:col-span-7 bg-[#111116] border border-[#24242D] rounded-md p-4 sm:p-8 shadow-2xl flex flex-col justify-between h-full">
+            <div className="space-y-0.5 sm:space-y-1 mb-3 sm:mb-5">
+              <span className="text-[10px] sm:text-[11px] font-sport font-black tracking-widest text-[#D4AF37] uppercase">
                 CUSTOM SPECS
               </span>
-              <h3 className="font-serif font-bold text-2xl text-white">
+              <h3 className="font-serif font-bold text-xl sm:text-2xl text-white">
                 Requirement Form
               </h3>
             </div>
 
-            <form onSubmit={handleSubmit} className="flex-1 flex flex-col justify-between space-y-4 font-sport tracking-wider text-xs">
+            <form onSubmit={handleSubmit} className="flex-1 flex flex-col justify-between space-y-3 sm:space-y-4 font-sport tracking-wider text-xs">
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Full Name */}
@@ -220,9 +231,9 @@ export const ContactRequirementSection: React.FC = () => {
             </div>
 
             {/* Card 1: Call Us */}
-            <div className="bg-[#111116] border border-[#24242D] rounded-md p-5 flex items-start gap-4">
-              <div className="p-3 bg-[#181821] text-[#E31B23] rounded-sm shrink-0 border border-[#2A2A36]">
-                <Phone className="w-5 h-5" />
+            <div className="bg-[#111116] border border-[#24242D] rounded-md p-3.5 sm:p-5 flex items-start gap-3 sm:gap-4">
+              <div className="p-2.5 sm:p-3 bg-[#181821] text-[#E31B23] rounded-sm shrink-0 border border-[#2A2A36]">
+                <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="space-y-0.5 text-left font-sport">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-[#D4AF37] block">
@@ -230,20 +241,20 @@ export const ContactRequirementSection: React.FC = () => {
                 </span>
                 <a
                   href="tel:+919274543199"
-                  className="text-lg font-black text-white hover:text-[#D4AF37] transition-colors block"
+                  className="text-base sm:text-lg font-black text-white hover:text-[#D4AF37] transition-colors block"
                 >
                   +91 9274543199
                 </a>
-                <span className="text-[11px] text-[#71717A] block">
+                <span className="text-[10px] sm:text-[11px] text-[#71717A] block">
                   Mon–Sat, 9am–7pm · Closed on Amavasya
                 </span>
               </div>
             </div>
 
             {/* Card 2: Email */}
-            <div className="bg-[#111116] border border-[#24242D] rounded-md p-5 flex items-start gap-4">
-              <div className="p-3 bg-[#181821] text-[#D4AF37] rounded-sm shrink-0 border border-[#2A2A36]">
-                <Mail className="w-5 h-5" />
+            <div className="bg-[#111116] border border-[#24242D] rounded-md p-3.5 sm:p-5 flex items-start gap-3 sm:gap-4">
+              <div className="p-2.5 sm:p-3 bg-[#181821] text-[#D4AF37] rounded-sm shrink-0 border border-[#2A2A36]">
+                <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="space-y-0.5 text-left font-sport">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-[#D4AF37] block">
@@ -251,29 +262,29 @@ export const ContactRequirementSection: React.FC = () => {
                 </span>
                 <a
                   href="mailto:vishwakarmabat@gmail.com"
-                  className="text-base font-bold text-white hover:text-[#D4AF37] transition-colors block break-all"
+                  className="text-sm sm:text-base font-bold text-white hover:text-[#D4AF37] transition-colors block break-all"
                 >
                   vishwakarmabat@gmail.com
                 </a>
-                <span className="text-[11px] text-[#71717A] block">
+                <span className="text-[10px] sm:text-[11px] text-[#71717A] block">
                   Reply within 24 hours
                 </span>
               </div>
             </div>
 
             {/* Card 3: Visit Us */}
-            <div className="bg-[#111116] border border-[#24242D] rounded-md p-5 flex items-start gap-4">
-              <div className="p-3 bg-[#181821] text-emerald-400 rounded-sm shrink-0 border border-[#2A2A36]">
-                <MapPin className="w-5 h-5" />
+            <div className="bg-[#111116] border border-[#24242D] rounded-md p-3.5 sm:p-5 flex items-start gap-3 sm:gap-4">
+              <div className="p-2.5 sm:p-3 bg-[#181821] text-emerald-400 rounded-sm shrink-0 border border-[#2A2A36]">
+                <MapPin className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="space-y-0.5 text-left font-sport">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-[#D4AF37] block">
                   VISIT US
                 </span>
-                <span className="text-base font-bold text-white block">
+                <span className="text-sm sm:text-base font-bold text-white block">
                   VK Bat House, Chaklasi
                 </span>
-                <span className="text-[11px] text-[#71717A] block">
+                <span className="text-[10px] sm:text-[11px] text-[#71717A] block">
                   Uttarsanda Bhalej Road, Gujarat 387315
                 </span>
               </div>

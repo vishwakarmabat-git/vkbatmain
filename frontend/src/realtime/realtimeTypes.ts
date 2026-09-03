@@ -13,6 +13,10 @@ export type EventType =
   | 'BANNER_UPDATED'
   | 'GALLERY_UPDATED'
   | 'CMS_UPDATED'
+  | 'WHY_VK_UPDATED'
+  | 'BULK_ORDER_CREATED'
+  | 'BULK_ORDER_UPDATED'
+  | 'BULK_ORDER_DELETED'
   | 'COUPON_CREATED'
   | 'COUPON_UPDATED'
   | 'COUPON_DELETED'
@@ -21,7 +25,7 @@ export type EventType =
 export interface RealtimeMessage<T = any> {
   channel: 'public' | 'admin' | string;
   event: EventType;
-  entity: 'product' | 'category' | 'order' | 'inventory' | 'review' | 'banner' | 'gallery' | 'coupon' | 'system';
+  entity: 'product' | 'category' | 'order' | 'inventory' | 'review' | 'banner' | 'gallery' | 'coupon' | 'bulk_order' | 'cms' | 'system';
   data: T;
 }
 

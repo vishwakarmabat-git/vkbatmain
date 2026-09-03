@@ -32,7 +32,6 @@ export const AdminProductFormPage: React.FC = () => {
   const [toeProfile, setToeProfile] = useState('Square Power Toe');
   const [price, setPrice] = useState<number | string>(19999);
   const [comparePrice, setComparePrice] = useState<number | string>(24999);
-  const [stockQuantity, setStockQuantity] = useState<number | string>(10);
   const [shortDesc, setShortDesc] = useState('');
   const [fullDesc, setFullDesc] = useState('');
   const [imageUrl, setImageUrl] = useState('');
@@ -68,7 +67,6 @@ export const AdminProductFormPage: React.FC = () => {
           if (p.toe_profile) setToeProfile(p.toe_profile);
           setPrice(p.price);
           setComparePrice(p.compare_price || '');
-          setStockQuantity(p.stock_quantity);
           setShortDesc(p.short_description || '');
           setFullDesc(p.full_description || '');
           setImageUrl(p.images?.[0]?.image_url || '');
@@ -113,7 +111,6 @@ export const AdminProductFormPage: React.FC = () => {
       toe_profile: toeProfile,
       price: Number(price),
       compare_price: comparePrice ? Number(comparePrice) : undefined,
-      stock_quantity: Number(stockQuantity),
       short_description: shortDesc,
       full_description: fullDesc,
       is_featured: isFeatured,
@@ -273,13 +270,13 @@ export const AdminProductFormPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Pricing, Stock & Descriptions */}
+        {/* Financials & Descriptions */}
         <div className="bg-[#121216] border border-[#24242D] p-6 rounded-md space-y-4">
           <h3 className="font-sport font-bold text-base text-[#F4F4F5] uppercase">
-            FINANCIALS, INVENTORY & DESCRIPTIONS
+            FINANCIALS & PRODUCT DESCRIPTIONS
           </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
               label="SALE PRICE (INR ₹)"
               type="number"
@@ -292,13 +289,6 @@ export const AdminProductFormPage: React.FC = () => {
               type="number"
               value={comparePrice}
               onChange={(e) => setComparePrice(e.target.value)}
-            />
-            <Input
-              label="INITIAL STOCK UNITS"
-              type="number"
-              value={stockQuantity}
-              onChange={(e) => setStockQuantity(e.target.value)}
-              required
             />
           </div>
 

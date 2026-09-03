@@ -7,8 +7,11 @@ from app.schemas.cms import (
     CMSBannerCreate, CMSBannerUpdate, CMSBannerResponse,
     TestimonialCreate, TestimonialResponse,
     FAQCreate, FAQResponse,
-    GalleryItemCreate, GalleryItemUpdate, GalleryItemResponse
+    GalleryItemCreate, GalleryItemUpdate, GalleryItemResponse,
+    WhyVKSectionSchema
 )
+from app.models.setting import Setting
+import json
 from app.services.cms_service import CMSService
 from app.dependencies.auth import get_current_active_admin
 from app.models.user import User
@@ -144,3 +147,68 @@ def delete_gallery_item(item_id: str, db: Session = Depends(get_db), admin: User
     from app.utils.realtime import emit_realtime_event
     emit_realtime_event("public", "GALLERY_UPDATED", "gallery", {"id": item_id})
     return {"success": True, "message": "Gallery item deleted"}
+
+# --- WHY VK SECTION ---
+DEFAULT_WHY_VK = {
+    "badge": "WHY VK?",
+    "title": "Built\nDifferent.\nPerforms\nDifferent.",
+    "image_url": "/standing_bat_hero.jpg",
+    "image_badge": "PREMIUM GRADE-A WILLOW",
+    "features": [
+        {
+            "number": "01",
+            "title": "ARTISAN HANDCRAFTED",
+            "description": "Shaped manually by third-generation batmakers in Chaklasi. We refine the curvature of every blade to guarantee the perfect aerodynamic pickup and sweep."
+        },
+        {
+            "number": "02",
+            "title": "5-TON PRESSING",
+            "description": "Pressed under 5-ton setups to compact the willow cells, assuring extreme durability and an explosive ping response straight out of the box."
+        },
+        {
+            "number": "03",
+            "title": "OPTIMAL POWER-TO-WEIGHT",
+            "description": "Thick profiles (40mm+ edges, 60mm+ spine) paired with balanced weight distribution, offering massive power without sacrificing hand speed."
+        },
+        {
+            "number": "04",
+            "title": "SINGAPORE CANE HANDLES",
+            "description": "Built with premium multi-piece cane handles wrapped in high-tension thread and epoxy to absorb heavy impacts and reduce sting vibrations."
+        }
+    ]
+}
+
+@router.get("/why-vk", response_model=WhyVKSectionSchema)
+def get_why_vk_section(db: Session = Depends(get_db)):
+    setting = db.query(Setting).filter(Setting.key == "why_vk_section").first()
+    if setting and setting.value:
+        try:
+            return json.loads(setting.value)
+        except Exception:
+            pass
+    return DEFAULT_WHY_VK
+
+@router.put("/why-vk", response_model=WhyVKSectionSchema)
+def update_why_vk_section(
+    data: WhyVKSectionSchema,
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_current_active_admin)
+):
+    setting = db.query(Setting).filter(Setting.key == "why_vk_section").first()
+    json_val = json.dumps(data.model_dump())
+    if setting:
+        setting.value = json_val
+    else:
+        setting = Setting(key="why_vk_section", value=json_val, description="Homepage Why VK Showcase section content")
+        db.add(setting)
+    db.commit()
+    db.refresh(setting)
+
+    try:
+        from app.utils.realtime import emit_realtime_event
+        emit_realtime_event("public", "WHY_VK_UPDATED", "cms", data.model_dump())
+        emit_realtime_event("public", "CMS_UPDATED", "cms", data.model_dump())
+    except Exception:
+        pass
+
+    return data

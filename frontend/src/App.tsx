@@ -17,6 +17,16 @@ const queryClient = new QueryClient({
 });
 
 export function App() {
+  const [isMobile, setIsMobile] = React.useState(
+    () => typeof window !== 'undefined' && window.innerWidth < 768
+  );
+
+  React.useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
@@ -25,14 +35,22 @@ export function App() {
             <ScrollToTop />
             <AppRoutes />
             <Toaster
-              position="bottom-right"
+              position={isMobile ? 'top-center' : 'top-right'}
               theme="dark"
+              offset={isMobile ? '85px' : '24px'}
+              mobileOffset={{ top: '85px', left: '16px', right: '16px' }}
+              duration={2400}
               toastOptions={{
                 style: {
-                  background: '#181821',
-                  border: '1px solid #24242D',
+                  background: 'rgba(20, 20, 28, 0.95)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(212, 175, 55, 0.35)',
+                  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.15)',
                   color: '#F4F4F5',
                   fontFamily: 'Work Sans, sans-serif',
+                  fontSize: '13px',
+                  borderRadius: '14px',
                 },
               }}
             />
