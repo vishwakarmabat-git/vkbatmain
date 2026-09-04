@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, Link } from 'react-router-dom';
-import { X, Mail, Lock, User, Phone, ArrowRight } from 'lucide-react';
+import { X, Mail, Lock, User, Phone, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '@/store/authStore';
 import { authService } from '@/services/authService';
@@ -29,6 +29,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [tab, setTab] = useState<'login' | 'register'>(defaultTab);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [acceptTerms, setAcceptTerms] = useState(false);
@@ -390,13 +391,26 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <div className="relative">
                     <Lock className="w-4 h-4 text-[#71717A] absolute left-3.5 top-3.5" />
                     <input
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
-                      className="w-full bg-[#181822] border border-[#2A2A3C] focus:border-[#D4AF37] text-white pl-10 pr-3 py-3 rounded-xs text-xs focus:outline-none placeholder:text-[#52525B]"
+                      className="w-full bg-[#181822] border border-[#2A2A3C] focus:border-[#D4AF37] text-white pl-10 pr-10 py-3 rounded-xs text-xs focus:outline-none placeholder:text-[#52525B]"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#71717A] hover:text-[#D4AF37] transition-colors focus:outline-none p-1 cursor-pointer"
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      tabIndex={-1}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
                   </div>
                 </div>
 
@@ -470,14 +484,27 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <div className="relative">
                     <Lock className="w-4 h-4 text-[#71717A] absolute left-3.5 top-3.5" />
                     <input
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
                       minLength={6}
-                      className="w-full bg-[#181822] border border-[#2A2A3C] focus:border-[#D4AF37] text-white pl-10 pr-3 py-3 rounded-xs text-xs focus:outline-none placeholder:text-[#52525B]"
+                      className="w-full bg-[#181822] border border-[#2A2A3C] focus:border-[#D4AF37] text-white pl-10 pr-10 py-3 rounded-xs text-xs focus:outline-none placeholder:text-[#52525B]"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#71717A] hover:text-[#D4AF37] transition-colors focus:outline-none p-1 cursor-pointer"
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      tabIndex={-1}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
                   </div>
                 </div>
 

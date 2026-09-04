@@ -249,8 +249,8 @@ export const AdminBulkOrdersPage: React.FC = () => {
                             {inquiry.club_name}
                           </span>
                         )}
-                        <span className="text-[10px] font-sport text-[#71717A] bg-[#181821] border border-[#24242D] px-2 py-0.5 rounded-md uppercase">
-                          {inquiry.inquiry_type === 'custom_requirement' ? 'Custom Spec' : 'Bulk B2B'}
+                        <span className="text-[10px] font-sport text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-md uppercase font-bold">
+                          Bulk Order
                         </span>
                       </div>
 

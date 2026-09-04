@@ -122,93 +122,74 @@ export const CategoriesCollectionSection: React.FC<CategoriesCollectionSectionPr
           </p>
         </div>
 
-        {/* Categories Presentation */}
+        {/* Categories Presentation - Chain Train Loop Animation Across All Views */}
         {categories.length > 0 ? (
-          <>
-            {/* 1. MOBILE ONLY VIEW: 2 BOXES CHAIN TRAIN LOOP ANIMATION */}
-            <div
-              className="sm:hidden relative w-full overflow-hidden"
-              onTouchStart={onTouchStart}
-              onTouchEnd={onTouchEnd}
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
-            >
-              <div className="relative min-h-[290px] w-full flex items-center justify-center">
-                <AnimatePresence mode="popLayout" custom={direction}>
-                  <motion.div
-                    key={activePairIndex}
-                    custom={direction}
-                    variants={{
-                      enter: (dir: number) => ({
-                        opacity: 0,
-                        x: dir > 0 ? 100 : -100,
-                      }),
-                      center: {
-                        opacity: 1,
-                        x: 0,
-                        transition: {
-                          duration: 0.45,
-                          ease: [0.22, 1, 0.36, 1],
-                        },
-                      },
-                      exit: (dir: number) => ({
-                        opacity: 0,
-                        x: dir > 0 ? -100 : 100,
-                        transition: {
-                          duration: 0.4,
-                          ease: [0.22, 1, 0.36, 1],
-                        },
-                      }),
-                    }}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    className="grid grid-cols-2 gap-3 w-full"
-                  >
-                    {/* Box 1 (Left train carriage) */}
-                    {currentPair[0] && (
-                      <motion.div
-                        initial={{ opacity: 0, x: direction > 0 ? 50 : -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0 }}
-                        className="w-full"
-                      >
-                        {renderCategoryCard(currentPair[0])}
-                      </motion.div>
-                    )}
-
-                    {/* Box 2 (Right train carriage - staggered linked chain) */}
-                    {currentPair[1] && (
-                      <motion.div
-                        initial={{ opacity: 0, x: direction > 0 ? 50 : -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
-                        className="w-full"
-                      >
-                        {renderCategoryCard(currentPair[1])}
-                      </motion.div>
-                    )}
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            </div>
-
-            {/* 2. DESKTOP / TABLET VIEW: CLEAN RESPONSIVE GRID */}
-            <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8 justify-items-center">
-              {categories.map((cat, idx) => (
+          <div
+            className="relative w-full overflow-hidden max-w-sm sm:max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto"
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            <div className="relative min-h-[300px] sm:min-h-[440px] md:min-h-[480px] w-full flex items-center justify-center">
+              <AnimatePresence mode="popLayout" custom={direction}>
                 <motion.div
-                  key={cat.id || idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: idx * 0.1 }}
-                  className="w-full"
+                  key={activePairIndex}
+                  custom={direction}
+                  variants={{
+                    enter: (dir: number) => ({
+                      opacity: 0,
+                      x: dir > 0 ? 120 : -120,
+                    }),
+                    center: {
+                      opacity: 1,
+                      x: 0,
+                      transition: {
+                        duration: 0.55,
+                        ease: [0.22, 1, 0.36, 1],
+                      },
+                    },
+                    exit: (dir: number) => ({
+                      opacity: 0,
+                      x: dir > 0 ? -120 : 120,
+                      transition: {
+                        duration: 0.45,
+                        ease: [0.22, 1, 0.36, 1],
+                      },
+                    }),
+                  }}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  className={`grid ${currentPair.length === 1 ? 'grid-cols-1 max-w-xs' : 'grid-cols-2'} gap-3 sm:gap-6 lg:gap-8 w-full`}
                 >
-                  {renderCategoryCard(cat)}
+                  {/* Box 1 (Left train carriage) */}
+                  {currentPair[0] && (
+                    <motion.div
+                      initial={{ opacity: 0, x: direction > 0 ? 60 : -60 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0 }}
+                      className="w-full"
+                    >
+                      {renderCategoryCard(currentPair[0])}
+                    </motion.div>
+                  )}
+
+                  {/* Box 2 (Right train carriage - staggered linked chain) */}
+                  {currentPair[1] && (
+                    <motion.div
+                      initial={{ opacity: 0, x: direction > 0 ? 60 : -60 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+                      className="w-full"
+                    >
+                      {renderCategoryCard(currentPair[1])}
+                    </motion.div>
+                  )}
                 </motion.div>
-              ))}
+              </AnimatePresence>
             </div>
-          </>
+          </div>
         ) : (
           <div className="py-10 border border-[#1E1E28] rounded-xl bg-[#0E0E12] max-w-md mx-auto p-6 space-y-3">
             <p className="text-xs font-sport tracking-wider text-[#A1A1AA] uppercase">

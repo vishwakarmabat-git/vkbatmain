@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Phone, Mail, MapPin, MessageCircle, Send } from 'lucide-react';
 import { toast } from 'sonner';
-import { bulkOrderService } from '@/services/bulkOrderService';
 import { CricketBallIcon } from '@/components/common/CricketIcons';
 
 export const ContactRequirementSection: React.FC = () => {
@@ -9,48 +8,54 @@ export const ContactRequirementSection: React.FC = () => {
   const [contactNumber, setContactNumber] = useState('');
   const [email, setEmail] = useState('');
   const [cricketExperience, setCricketExperience] = useState('Club Player');
-  const [preferredWeight, setPreferredWeight] = useState('Light (1110 - 1140g)');
+  const [preferredWeight, setPreferredWeight] = useState('Light (950 - 1050g)');
   const [customSpecs, setCustomSpecs] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!fullName || !contactNumber) {
+    if (!fullName.trim() || !contactNumber.trim()) {
       toast.error('Please enter your full name and contact number');
       return;
     }
 
-    setIsSubmitting(true);
-    try {
-      await bulkOrderService.submitBulkOrder({
-        inquiry_type: 'custom_requirement',
-        name: fullName.trim(),
-        phone: contactNumber.trim(),
-        email: email.trim() || undefined,
-        details: `Experience: ${cricketExperience} | Weight: ${preferredWeight} | Specs: ${customSpecs.trim() || 'Standard custom craftsmanship request'}`,
-      });
-      toast.success('Thank you! Your custom bat requirement has been sent to our master artisan.');
-      setFullName('');
-      setContactNumber('');
-      setEmail('');
-      setCustomSpecs('');
-    } catch (err: any) {
-      toast.error(err?.response?.data?.detail || 'Error submitting requirement. Please try again or message on WhatsApp.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    const message =
+      `🏏 *NEW CUSTOM BAT SPECIFICATIONS*\n` +
+      `*Vishwakarma Bat House Workshop*\n` +
+      `--------------------------------\n` +
+      `👤 *Player / Customer Name:* ${fullName.trim()}\n` +
+      `📞 *Contact Number:* ${contactNumber.trim()}\n` +
+      (email.trim() ? `📧 *Email Address:* ${email.trim()}\n` : '') +
+      `🏅 *Cricket Level:* ${cricketExperience}\n` +
+      `⚖️ *Preferred Bat Weight:* ${preferredWeight}\n` +
+      `📝 *Custom Specifications / Notes:*\n${customSpecs.trim() || 'Standard bespoke craftsmanship request'}\n` +
+      `--------------------------------\n` +
+      `_Sent via Requirement Form (vkbathouse.com)_`;
+
+    const wpUrl = `https://wa.me/919274543199?text=${encodeURIComponent(message)}`;
+    window.open(wpUrl, '_blank');
+    toast.success('Opening WhatsApp to send your specifications directly to our master artisan!');
+
+    setFullName('');
+    setContactNumber('');
+    setEmail('');
+    setCustomSpecs('');
   };
 
   const handleWhatsAppDirect = () => {
-    const message = encodeURIComponent(
+    const message =
+      `🏏 *CUSTOM BAT INQUIRY*\n` +
+      `*Vishwakarma Bat House Workshop*\n` +
+      `--------------------------------\n` +
       `Hello VK Bat House! I want to order a custom handcrafted bat.\n\n` +
-      `Name: ${fullName || 'Interested Player'}\n` +
-      `Phone: ${contactNumber || 'Direct Inquiry'}\n` +
-      `Experience: ${cricketExperience}\n` +
-      `Preferred Weight: ${preferredWeight}\n` +
-      (customSpecs ? `Custom Specs: ${customSpecs}` : '')
-    );
-    window.open(`https://wa.me/919274543199?text=${message}`, '_blank');
+      `👤 *Name:* ${fullName.trim() || 'Interested Player'}\n` +
+      `📞 *Phone:* ${contactNumber.trim() || 'Direct Inquiry'}\n` +
+      `🏅 *Experience:* ${cricketExperience}\n` +
+      `⚖️ *Preferred Weight:* ${preferredWeight}\n` +
+      (customSpecs.trim() ? `📝 *Custom Specs:* ${customSpecs.trim()}\n` : '') +
+      `--------------------------------\n` +
+      `_Sent via VK Bat House WhatsApp Inquiry_`;
+
+    window.open(`https://wa.me/919274543199?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   return (
@@ -183,16 +188,19 @@ export const ContactRequirementSection: React.FC = () => {
               </div>
 
               {/* Submit Button pinned at bottom with Cricket Ball Seam theme */}
-              <div className="pt-3">
+              <div className="pt-3 space-y-2">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
                   className="w-full relative overflow-hidden bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] hover:shadow-[0_0_30px_rgba(201,24,43,0.6)] border-y-2 border-dashed border-white/60 text-white font-sport font-black py-3.5 sm:py-4 px-4 sm:px-6 rounded-xs uppercase tracking-wider text-xs flex flex-wrap sm:flex-nowrap items-center justify-center gap-2 transition-all shadow-xl cursor-pointer bat-swing-shine active:scale-95 group/btn leading-tight text-center"
                 >
                   <CricketBallIcon size={16} className="shrink-0 group-hover/btn:rotate-45 transition-transform duration-300" />
-                  <span>{isSubmitting ? 'DISPATCHING SPECIFICATIONS...' : 'SUBMIT BAT SPECIFICATIONS'}</span>
-                  <Send className="w-3.5 h-3.5 shrink-0" />
+                  <span>SUBMIT SPECIFICATIONS ON WHATSAPP</span>
+                  <MessageCircle className="w-4 h-4 shrink-0 text-emerald-400" />
                 </button>
+                <p className="text-[10.5px] text-center text-[#A1A1AA] font-sport tracking-wider flex items-center justify-center gap-1.5">
+                  <MessageCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  Direct WhatsApp dispatch to master artisan (+91 9274543199)
+                </p>
               </div>
             </form>
           </div>

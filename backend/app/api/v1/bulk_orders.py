@@ -67,7 +67,7 @@ def get_admin_bulk_orders(
     db: Session = Depends(get_db),
     admin: User = Depends(get_current_active_admin)
 ):
-    query = db.query(BulkOrder).order_by(BulkOrder.created_at.desc())
+    query = db.query(BulkOrder).filter(BulkOrder.inquiry_type == "bulk_order").order_by(BulkOrder.created_at.desc())
     if status_filter and status_filter != "all":
         query = query.filter(BulkOrder.status == status_filter.upper())
     if search:
