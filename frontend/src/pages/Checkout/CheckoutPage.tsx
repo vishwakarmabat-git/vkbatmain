@@ -404,7 +404,7 @@ export const CheckoutPage: React.FC = () => {
               Secure Checkout
             </h1>
             <p className="text-xs text-[#A1A1AA] mt-0.5">
-              Handcrafted English Willow Bats • Direct Workshop Fulfillment
+              Handcrafted Kashmir Willow Bats • Direct Workshop Fulfillment
             </p>
           </div>
 

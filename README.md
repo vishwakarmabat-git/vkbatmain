@@ -11,7 +11,7 @@
 
 ## 1. Project Overview
 
-**Vishwakarma Bat House** is a production-grade, full-stack e-commerce platform engineered specifically for bespoke, handcrafted Grade 1+ English Willow cricket bats. It solves the fragmentation of custom sports equipment commerce by combining an ultra-fast catalog with precision bat specification configuration, atomic inventory management, automated Razorpay payment verification, and a live dynamic CMS admin portal.
+**Vishwakarma Bat House** is a production-grade, full-stack e-commerce platform engineered specifically for bespoke, handcrafted Grade 1+ Kashmir Willow cricket bats. It solves the fragmentation of custom sports equipment commerce by combining an ultra-fast catalog with precision bat specification configuration, atomic inventory management, automated Razorpay payment verification, and a live dynamic CMS admin portal.
 
 ---
 

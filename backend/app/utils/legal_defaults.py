@@ -101,8 +101,8 @@ By accessing or creating an account on the Vishwakarma Bat House storefront, you
 
 ---
 
-### 2. Nature of Handcrafted English Willow Equipment
-- **Organic Material Disclosure:** Cricket bats manufactured by Vishwakarma Bat House are shaped from natural English Willow (Salix alba caerulea). Natural willow possesses unique characteristics including organic grain density variations, specks, and minor cosmetic wood marks that do not impair structural blade integrity.
+### 2. Nature of Handcrafted Kashmir Willow Equipment
+- **Organic Material Disclosure:** Cricket bats manufactured by Vishwakarma Bat House are shaped from natural Kashmir Willow (Salix alba caerulea). Natural willow possesses unique characteristics including organic grain density variations, specks, and minor cosmetic wood marks that do not impair structural blade integrity.
 - **Knocking-In & Maintenance:** While bats receive initial workshop pressing under our multi-ton compression setups, proper match preparation (edge rounding, scuff sheet application, and gradual netting with old leather balls) is essential to preserve blade longevity.
 
 ---
@@ -256,7 +256,7 @@ In such events, 100% of the purchase amount is promptly refunded to the original
 ---
 
 ### 1. Craftsmanship Warranty & Replacement Policy
-Vishwakarma Bat House stands firmly behind the structural integrity of our Grade 1+ English Willow equipment. Every bat manufactured in our Chaklasi workshop carries our **12-Month Structural Integrity Warranty** covering:
+Vishwakarma Bat House stands firmly behind the structural integrity of our Grade 1+ Kashmir Willow equipment. Every bat manufactured in our Chaklasi workshop carries our **12-Month Structural Integrity Warranty** covering:
 - Defective handle joint detachment under standard leather cricket ball match usage.
 - Delamination caused by manufacturing bond failures.
 

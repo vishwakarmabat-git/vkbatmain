@@ -189,11 +189,10 @@ export const ProductDetailsPage: React.FC = () => {
                 <button
                   key={img.image_url}
                   onClick={() => setSelectedImage(img.image_url)}
-                  className={`w-18 h-22 rounded-sm overflow-hidden border transition-all shrink-0 ${
-                    selectedImage === img.image_url
+                  className={`w-18 h-22 rounded-sm overflow-hidden border transition-all shrink-0 ${selectedImage === img.image_url
                       ? 'border-[#D4AF37] shadow-[0_0_10px_rgba(212,175,55,0.3)]'
                       : 'border-[#24242D] opacity-60 hover:opacity-100'
-                  }`}
+                    }`}
                 >
                   <img src={getImageUrl(img.image_url, '/VKCAT.png')} alt="Thumbnail" onError={handleImageError} className="w-full h-full object-contain p-1 bg-[#09090D]" />
                 </button>
@@ -276,7 +275,7 @@ export const ProductDetailsPage: React.FC = () => {
             </div>
             <div className="p-3 bg-[#121216] border border-[#24242D] rounded-xs flex items-center gap-2.5">
               <Award className="w-4 h-4 text-[#D4AF37]" />
-              <span>100% Genuine English Willow</span>
+              <span>100% Genuine Kashmir Willow</span>
             </div>
           </div>
         </div>
@@ -299,7 +298,7 @@ export const ProductDetailsPage: React.FC = () => {
         <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 font-sport tracking-wider text-xs">
           <div className="p-4 bg-[#181821] rounded-xs border border-[#24242D]">
             <span className="text-[#71717A] uppercase block">WILLOW GRADING</span>
-            <span className="font-bold text-[#F4F4F5] text-sm mt-1 block">{product.willow_grade || 'Grade 1 English Willow'}</span>
+            <span className="font-bold text-[#F4F4F5] text-sm mt-1 block">{product.willow_grade || 'Grade 1 Kashmir Willow'}</span>
           </div>
           <div className="p-4 bg-[#181821] rounded-xs border border-[#24242D]">
             <span className="text-[#71717A] uppercase block">EDGE THICKNESS</span>

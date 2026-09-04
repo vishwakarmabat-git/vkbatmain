@@ -23,7 +23,7 @@ def get_public_settings(db: Session = Depends(get_db)):
         "contact_email": db_settings.get("contact_email", app_settings.CONTACT_EMAIL),
         "contact_phone": db_settings.get("contact_phone", "+91 98765 43210"),
         "workshop_address": db_settings.get("workshop_address", "VK Artisan Bat Workshop, Industrial Area, Meerut / Jalandhar, India"),
-        "announcement_bar": db_settings.get("announcement_bar", "⚡ FREE SHIPPING ON ORDERS ABOVE ₹15,000 | 100% GENUINE ENGLISH WILLOW WITH WARRANTY")
+        "announcement_bar": db_settings.get("announcement_bar", "⚡ FREE SHIPPING ON ORDERS ABOVE ₹15,000 | 100% GENUINE Kashmir WILLOW WITH WARRANTY")
     }
 
 @router.get("", response_model=List[SettingSchema])

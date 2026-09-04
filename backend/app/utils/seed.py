@@ -111,7 +111,7 @@ def seed_database():
                 "name": "Triple X2 Hard Pressed",
                 "slug": "triple-x2-hard-pressed",
                 "blade_type": "Triple X2 Hard Pressed",
-                "description": "The Masterpiece. Samurai-grade hand selected Grade 1 Reserve English Willow, dual hydraulic pressed for ultimate boundary dominance.",
+                "description": "The Masterpiece. Samurai-grade hand selected Grade 1 Reserve Kashmir Willow, dual hydraulic pressed for ultimate boundary dominance.",
                 "image_url": "https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?auto=format&fit=crop&w=1000&q=80",
                 "starting_price": 44999.00,
                 "display_order": 6
@@ -136,12 +136,12 @@ def seed_database():
                 "slug": "vk-platinum-single-blade",
                 "sku": "VK-BAT-001-SB",
                 "category_id": cat_map.get("single-blade"),
-                "short_description": "Grade 1+ Handcrafted English Willow bat designed for sublime touch, feather pickup, and effortless drives.",
-                "full_description": "The VK Platinum Single Blade represents centuries of Vishwakarma artisan tradition. Handcrafted from unbleached Grade 1+ English Willow with 7 to 9 laser straight grains. Perfectly balanced for cricketers who value technical finesse, crisp timing, and seamless stroke acceleration.",
+                "short_description": "Grade 1+ Handcrafted Kashmir Willow bat designed for sublime touch, feather pickup, and effortless drives.",
+                "full_description": "The VK Platinum Single Blade represents centuries of Vishwakarma artisan tradition. Handcrafted from unbleached Grade 1+ Kashmir Willow with 7 to 9 laser straight grains. Perfectly balanced for cricketers who value technical finesse, crisp timing, and seamless stroke acceleration.",
                 "price": 16499.00,
                 "compare_price": 19999.00,
                 "discount_percent": 18,
-                "willow_grade": "Grade 1+ English Willow",
+                "willow_grade": "Grade 1+ Kashmir Willow",
                 "blade_architecture": "Single Blade",
                 "pressing_type": "Precision Hand Pressed",
                 "edge_thickness": "38–40mm",
@@ -171,7 +171,7 @@ def seed_database():
                 "price": 21999.00,
                 "compare_price": 26999.00,
                 "discount_percent": 19,
-                "willow_grade": "Grade 1 English Willow",
+                "willow_grade": "Grade 1 Kashmir Willow",
                 "blade_architecture": "Double Blade",
                 "pressing_type": "High Dynamic Pressure",
                 "edge_thickness": "40–42mm",
@@ -201,7 +201,7 @@ def seed_database():
                 "price": 27499.00,
                 "compare_price": 32999.00,
                 "discount_percent": 17,
-                "willow_grade": "Grade 1 Reserve English Willow",
+                "willow_grade": "Grade 1 Reserve Kashmir Willow",
                 "blade_architecture": "Triple Blade",
                 "pressing_type": "Progressive Density Pressing",
                 "edge_thickness": "41–43mm",
@@ -231,7 +231,7 @@ def seed_database():
                 "price": 32999.00,
                 "compare_price": 38999.00,
                 "discount_percent": 15,
-                "willow_grade": "Grade 1 Reserve English Willow",
+                "willow_grade": "Grade 1 Reserve Kashmir Willow",
                 "blade_architecture": "Triple Blade Hard Pressed",
                 "pressing_type": "4-Ton Hydraulic Cold Pressed",
                 "edge_thickness": "42–44mm",
@@ -261,7 +261,7 @@ def seed_database():
                 "price": 39999.00,
                 "compare_price": 46999.00,
                 "discount_percent": 15,
-                "willow_grade": "Grade 1 Limited Edition English Willow",
+                "willow_grade": "Grade 1 Limited Edition Kashmir Willow",
                 "blade_architecture": "Triple X2",
                 "pressing_type": "Dual Density Pressed",
                 "edge_thickness": "43–45mm",
@@ -286,12 +286,12 @@ def seed_database():
                 "slug": "vk-limited-edition-triple-x2-hard-pressed",
                 "sku": "VK-BAT-006-TX2HP",
                 "category_id": cat_map.get("triple-x2-hard-pressed"),
-                "short_description": "The Mastercraft Pinnacle. Hand-selected top 0.1% English Willow, 45mm massive edges, samurai-precision balance.",
+                "short_description": "The Mastercraft Pinnacle. Hand-selected top 0.1% Kashmir Willow, 45mm massive edges, samurai-precision balance.",
                 "full_description": "Strictly limited to 50 pieces per harvest season. The VK Limited Edition Triple X2 Hard Pressed is personally graded and hand-planed by our master craftsmen. Dual hydraulic cold-pressed with gold laser decals and bespoke laser engraved numbering.",
                 "price": 48999.00,
                 "compare_price": 58000.00,
                 "discount_percent": 16,
-                "willow_grade": "Top 0.1% Hand-Selected Grade 1 English Willow",
+                "willow_grade": "Top 0.1% Hand-Selected Grade 1 Kashmir Willow",
                 "blade_architecture": "Triple X2 Hard Pressed",
                 "pressing_type": "Master Ultra-Hydraulic Pressed",
                 "edge_thickness": "44–46mm",
@@ -356,7 +356,7 @@ def seed_database():
                     {
                         "reviewer_name": "David Miller Fan",
                         "rating": 5,
-                        "title": "Top-tier English Willow craftsmanship",
+                        "title": "Top-tier Kashmir Willow craftsmanship",
                         "comment": "The grains are razor straight and the edge thickness is immense. The pre-knocking service made it match ready in 2 days. Highly recommended for serious cricketers.",
                         "is_verified_purchase": True,
                         "status": "approved",
@@ -400,7 +400,7 @@ def seed_database():
         banners = [
             {
                 "title": "CRAFTED FOR THE CRICKET YOU PLAY.",
-                "subtitle": "SAMURAI-PRECISION HANDCRAFTED ENGLISH WILLOW BATS",
+                "subtitle": "SAMURAI-PRECISION HANDCRAFTED Kashmir WILLOW BATS",
                 "tagline": "ENGINEERED FOR POWER, BALANCE & PINPOINT PRECISION",
                 "cta_text": "EXPLORE BATS",
                 "cta_link": "/products",
@@ -454,7 +454,7 @@ def seed_database():
         faqs = [
             {
                 "question": "What makes VK Bat House blades different from factory mass-produced bats?",
-                "answer": "Every single VK bat is individually cleft-selected from hand-graded English Willow and hand-shaped by generational Vishwakarma artisans. We tune the spine and sweet spot to match individual batting styles, ensuring unrivaled weight distribution and rebound dynamics.",
+                "answer": "Every single VK bat is individually cleft-selected from hand-graded Kashmir Willow and hand-shaped by generational Vishwakarma artisans. We tune the spine and sweet spot to match individual batting styles, ensuring unrivaled weight distribution and rebound dynamics.",
                 "category": "Craftsmanship",
                 "display_order": 1
             },
@@ -538,7 +538,7 @@ def seed_database():
             ("whatsapp_number", "919876543210", "Business WhatsApp support number"),
             ("contact_email", "support@vkbathouse.com", "Customer support email"),
             ("contact_phone", "+91 98765 43210", "Customer support phone"),
-            ("announcement_bar", "⚡ FREE SHIPPING ACROSS INDIA ON ORDERS ABOVE ₹15,000 | 100% GENUINE ENGLISH WILLOW WITH WARRANTY", "Top banner text")
+            ("announcement_bar", "⚡ FREE SHIPPING ACROSS INDIA ON ORDERS ABOVE ₹15,000 | 100% GENUINE Kashmir WILLOW WITH WARRANTY", "Top banner text")
         ]
         for key, val, desc in settings_defaults:
             if not db.query(Setting).filter(Setting.key == key).first():

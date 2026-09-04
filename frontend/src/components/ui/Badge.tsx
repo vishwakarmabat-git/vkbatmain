@@ -2,18 +2,18 @@ import React from 'react';
 import { clsx } from 'clsx';
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: 
-    | 'gold' 
-    | 'willow'
-    | 'red' 
-    | 'cricket'
-    | 'dark' 
-    | 'outline' 
-    | 'success' 
-    | 'turf'
-    | 'crease'
-    | 'warning'
-    | 'scoreboard';
+  variant?:
+  | 'gold'
+  | 'willow'
+  | 'red'
+  | 'cricket'
+  | 'dark'
+  | 'outline'
+  | 'success'
+  | 'turf'
+  | 'crease'
+  | 'warning'
+  | 'scoreboard';
   showCricketBall?: boolean;
 }
 
@@ -25,7 +25,7 @@ export const Badge: React.FC<BadgeProps> = ({
   ...props
 }) => {
   const variantStyles = {
-    // English Willow Honey Gold
+    // Kashmir Willow Honey Gold
     gold: 'bg-gradient-to-r from-[#D4AF37]/20 to-[#AA7C11]/10 text-[#F5C542] border border-[#D4AF37]/50 shadow-[0_0_12px_rgba(212,175,55,0.2)]',
     willow: 'bg-gradient-to-r from-[#DDA843]/25 to-[#8C5D0E]/15 text-[#FFE8A3] border border-[#DDA843]/60 shadow-[0_0_12px_rgba(221,168,67,0.2)]',
 

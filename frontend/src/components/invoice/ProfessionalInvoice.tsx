@@ -156,11 +156,10 @@ export const ProfessionalInvoice: React.FC<ProfessionalInvoiceProps> = ({ order,
               <div className="flex justify-between items-center">
                 <span className="text-neutral-600">Payment Status:</span>
                 <span
-                  className={`font-black uppercase text-[10px] px-2 py-0.5 rounded-xs ${
-                    isPaid
+                  className={`font-black uppercase text-[10px] px-2 py-0.5 rounded-xs ${isPaid
                       ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
                       : 'bg-amber-100 text-amber-800 border border-amber-300'
-                  }`}
+                    }`}
                 >
                   {isPaid ? 'PAID' : 'PENDING UPON DELIVERY'}
                 </span>
@@ -324,7 +323,7 @@ export const ProfessionalInvoice: React.FC<ProfessionalInvoiceProps> = ({ order,
             TERMS & WORKSHOP GUARANTEE:
           </strong>
           <ol className="list-decimal pl-3 space-y-0.5 text-[8.5px] leading-tight text-neutral-500">
-            <li>Handcrafted using 100% genuine natural seasoned English & Kashmir willow clefts.</li>
+            <li>Handcrafted using 100% genuine natural seasoned Kashmir & Kashmir willow clefts.</li>
             <li>Covered under workshop manufacturing warranty for cleft and handle integrity.</li>
             <li>For knocking maintenance, re-gripping, or service, WhatsApp our master craftsman at +91 92745 43199.</li>
           </ol>

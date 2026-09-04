@@ -106,11 +106,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
         {/* Wishlist Heart Button */}
         <button
           onClick={handleWishlistClick}
-          className={`pointer-events-auto w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-            isLiked
+          className={`pointer-events-auto w-8 h-8 rounded-full flex items-center justify-center transition-all ${isLiked
               ? 'bg-[#E31B23] text-white shadow-[0_0_12px_rgba(227,27,35,0.6)]'
               : 'bg-[#09090B]/85 backdrop-blur-md text-[#A1A1AA] hover:text-[#E31B23] border border-[#242A38]'
-          }`}
+            }`}
           aria-label="Wishlist"
         >
           <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
@@ -127,13 +126,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           <img
             src={primaryImage}
             alt={product.name}
-            className={`w-full h-full object-contain object-center drop-shadow-[0_12px_25px_rgba(0,0,0,0.85)] transition-all duration-500 ease-out scale-105 ${
-              hasTwoImages
+            className={`w-full h-full object-contain object-center drop-shadow-[0_12px_25px_rgba(0,0,0,0.85)] transition-all duration-500 ease-out scale-105 ${hasTwoImages
                 ? showingSecondary
                   ? 'opacity-0 scale-95 pointer-events-none'
                   : 'opacity-100 scale-105'
                 : 'group-hover:scale-115'
-            }`}
+              }`}
             loading="lazy"
             onError={(e) => {
               (e.target as HTMLImageElement).src = '/VKCAT.png';
@@ -145,11 +143,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
             <img
               src={secondaryImage}
               alt={`${product.name} - View 2`}
-              className={`absolute inset-0 w-full h-full object-contain object-center p-4 drop-shadow-[0_12px_25px_rgba(0,0,0,0.85)] transition-all duration-500 ease-out ${
-                showingSecondary
+              className={`absolute inset-0 w-full h-full object-contain object-center p-4 drop-shadow-[0_12px_25px_rgba(0,0,0,0.85)] transition-all duration-500 ease-out ${showingSecondary
                   ? 'opacity-100 scale-105 pointer-events-auto'
                   : 'opacity-0 scale-95 pointer-events-none'
-              }`}
+                }`}
               loading="lazy"
               onError={(e) => {
                 (e.target as HTMLImageElement).style.display = 'none';
@@ -197,11 +194,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
                   e.stopPropagation();
                   setActiveSlide(0);
                 }}
-                className={`transition-all duration-200 rounded-full cursor-pointer ${
-                  !showingSecondary
+                className={`transition-all duration-200 rounded-full cursor-pointer ${!showingSecondary
                     ? 'w-3.5 h-1.5 bg-[#D4AF37]'
                     : 'w-1.5 h-1.5 bg-white/40 hover:bg-white'
-                }`}
+                  }`}
                 title="Picture 1: Main View"
               />
               <button
@@ -211,11 +207,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
                   e.stopPropagation();
                   setActiveSlide(1);
                 }}
-                className={`transition-all duration-200 rounded-full cursor-pointer ${
-                  showingSecondary
+                className={`transition-all duration-200 rounded-full cursor-pointer ${showingSecondary
                     ? 'w-3.5 h-1.5 bg-[#D4AF37]'
                     : 'w-1.5 h-1.5 bg-white/40 hover:bg-white'
-                }`}
+                  }`}
                 title="Picture 2: Hover View"
               />
             </div>
@@ -249,7 +244,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           <div className="flex items-center justify-between text-xs text-[#A1A1AA] font-sport font-semibold tracking-wider uppercase mb-1">
             <span className="text-[#D4AF37] flex items-center gap-1">
               <CricketBatIcon size={12} />
-              <span>{product.blade_architecture || product.category_name || 'English Willow'}</span>
+              <span>{product.blade_architecture || product.category_name || 'Kashmir Willow'}</span>
             </span>
             <div className="flex items-center gap-1 text-amber-400">
               <Star className="w-3 h-3 fill-amber-400" />

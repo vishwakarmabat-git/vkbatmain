@@ -47,13 +47,13 @@ def setup_test_api_db():
         db.add(adm)
 
     # 3. Test Category
-    cat = db.query(Category).filter(Category.slug == "english-willow").first()
+    cat = db.query(Category).filter(Category.slug == "Kashmir-willow").first()
     if not cat:
         cat = Category(
             id="test-cat-api-uuid",
-            name="English Willow Masterpieces",
-            slug="english-willow",
-            description="Grade 1+ handcrafted English Willow",
+            name="Kashmir Willow Masterpieces",
+            slug="Kashmir-willow",
+            description="Grade 1+ handcrafted Kashmir Willow",
             is_active=True
         )
         db.add(cat)
@@ -73,7 +73,7 @@ def setup_test_api_db():
             stock_quantity=15,
             status="active",
             is_featured=True,
-            willow_grade="Grade 1+ English Willow",
+            willow_grade="Grade 1+ Kashmir Willow",
             blade_architecture="Single Blade",
             pressing_type="Triple Pressed",
             grain_count="10",

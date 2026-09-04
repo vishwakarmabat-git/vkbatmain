@@ -3,19 +3,19 @@ import { clsx } from 'clsx';
 import { Loader2 } from 'lucide-react';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 
-    | 'primary' 
-    | 'gold' 
-    | 'willow'
-    | 'cricket'
-    | 'cricket-ball'
-    | 'crease'
-    | 'turf'
-    | 'outline' 
-    | 'secondary' 
-    | 'danger' 
-    | 'ghost' 
-    | 'whatsapp';
+  variant?:
+  | 'primary'
+  | 'gold'
+  | 'willow'
+  | 'cricket'
+  | 'cricket-ball'
+  | 'crease'
+  | 'turf'
+  | 'outline'
+  | 'secondary'
+  | 'danger'
+  | 'ghost'
+  | 'whatsapp';
   size?: 'sm' | 'md' | 'lg' | 'xl';
   isLoading?: boolean;
   leftIcon?: React.ReactNode;
@@ -48,7 +48,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const variantStyles = {
-      // 1. English Willow Cleft Gold (Organic Honey Wood Grain with Gold Stamp)
+      // 1. Kashmir Willow Cleft Gold (Organic Honey Wood Grain with Gold Stamp)
       gold: 'bg-gradient-to-r from-[#FFE29A] via-[#E5A832] to-[#A06C13] text-[#0A0D12] hover:shadow-[0_0_30px_rgba(229,168,50,0.5)] font-black border border-[#FFD573] hover:brightness-105',
       willow: 'bg-gradient-to-r from-[#FFE8A3] via-[#DDA843] to-[#8C5D0E] text-[#0A0D12] hover:shadow-[0_0_30px_rgba(221,168,67,0.55)] font-black border border-[#FFE8A3]/80 hover:brightness-105',
 
@@ -81,7 +81,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {/* Subtle white cricket ball stitch line through center for seam buttons */}
         {isSeamVariant && (
-          <span 
+          <span
             className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[1px] opacity-25 pointer-events-none"
             style={{
               backgroundImage: 'repeating-linear-gradient(90deg, #FFF 0px, #FFF 3px, transparent 3px, transparent 6px)'

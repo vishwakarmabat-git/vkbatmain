@@ -95,7 +95,7 @@ export const ProductsPage: React.FC = () => {
             CRICKET BAT CATALOG
           </h1>
           <p className="text-xs text-[#A1A1AA] mt-1">
-            Displaying {totalCount} bespoke English Willow handcrafted blades.
+            Displaying {totalCount} bespoke Kashmir Willow handcrafted blades.
           </p>
         </div>
 
@@ -165,9 +165,8 @@ export const ProductsPage: React.FC = () => {
             <div className="space-y-1">
               <button
                 onClick={() => updateParam('category', '')}
-                className={`w-full text-left px-3 py-1.5 rounded-xs text-xs transition-colors ${
-                  !currentCategory ? 'bg-[#181821] text-[#D4AF37] font-bold' : 'text-[#A1A1AA] hover:text-white'
-                }`}
+                className={`w-full text-left px-3 py-1.5 rounded-xs text-xs transition-colors ${!currentCategory ? 'bg-[#181821] text-[#D4AF37] font-bold' : 'text-[#A1A1AA] hover:text-white'
+                  }`}
               >
                 All Blade Editions
               </button>
@@ -175,11 +174,10 @@ export const ProductsPage: React.FC = () => {
                 <button
                   key={c.slug}
                   onClick={() => updateParam('category', c.slug)}
-                  className={`w-full text-left px-3 py-1.5 rounded-xs text-xs transition-colors flex items-center justify-between ${
-                    currentCategory === c.slug
+                  className={`w-full text-left px-3 py-1.5 rounded-xs text-xs transition-colors flex items-center justify-between ${currentCategory === c.slug
                       ? 'bg-[#181821] text-[#D4AF37] font-bold border-l-2 border-[#D4AF37]'
                       : 'text-[#A1A1AA] hover:text-white'
-                  }`}
+                    }`}
                 >
                   <span>{c.name}</span>
                 </button>
@@ -193,9 +191,8 @@ export const ProductsPage: React.FC = () => {
             <div className="space-y-1">
               <button
                 onClick={() => updateParam('willow', '')}
-                className={`w-full text-left px-3 py-1.5 rounded-xs text-xs transition-colors ${
-                  !currentWillow ? 'bg-[#181821] text-[#D4AF37] font-bold' : 'text-[#A1A1AA] hover:text-white'
-                }`}
+                className={`w-full text-left px-3 py-1.5 rounded-xs text-xs transition-colors ${!currentWillow ? 'bg-[#181821] text-[#D4AF37] font-bold' : 'text-[#A1A1AA] hover:text-white'
+                  }`}
               >
                 All Grades
               </button>
@@ -203,11 +200,10 @@ export const ProductsPage: React.FC = () => {
                 <button
                   key={g}
                   onClick={() => updateParam('willow', g)}
-                  className={`w-full text-left px-3 py-1.5 rounded-xs text-xs transition-colors ${
-                    currentWillow === g
+                  className={`w-full text-left px-3 py-1.5 rounded-xs text-xs transition-colors ${currentWillow === g
                       ? 'bg-[#181821] text-[#D4AF37] font-bold border-l-2 border-[#D4AF37]'
                       : 'text-[#A1A1AA] hover:text-white'
-                  }`}
+                    }`}
                 >
                   {g}
                 </button>

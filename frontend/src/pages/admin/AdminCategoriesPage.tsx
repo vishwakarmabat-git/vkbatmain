@@ -185,7 +185,7 @@ export const AdminCategoriesPage: React.FC = () => {
 
                 {/* Description */}
                 <p className="text-xs text-[#A1A1AA] leading-relaxed line-clamp-3">
-                  {c.description || 'Custom hand-pressed English Willow architectural profile.'}
+                  {c.description || 'Custom hand-pressed Kashmir Willow architectural profile.'}
                 </p>
               </div>
 

@@ -79,7 +79,7 @@ def _render_email_layout(title: str, preheader: str, body_html: str) -> str:
           <tr>
             <td style="padding: 24px 32px; background-color: #09090C; border-top: 1px solid #1E1E28; text-align: center; color: #71717A; font-size: 12px; line-height: 1.5;">
               <p style="margin: 0 0 8px 0; color: #A1A1AA; font-weight: 600;">Vishwakarma Bat House Guild</p>
-              <p style="margin: 0 0 12px 0;">Premium Grade 1 English & Kashmir Willow Cricket Bats</p>
+              <p style="margin: 0 0 12px 0;">Premium Grade 1 Kashmir & Kashmir Willow Cricket Bats</p>
               <p style="margin: 0 0 8px 0;">
                 Need assistance? <a href="mailto:{settings.CONTACT_EMAIL}" style="color: #D4AF37;">{settings.CONTACT_EMAIL}</a> | WhatsApp: +{settings.WHATSAPP_NUMBER}
               </p>
@@ -203,7 +203,7 @@ class EmailService:
         </div>
 
         <p style="color: #D4D4D8; line-height: 1.7; margin-bottom: 16px;">
-          Thank you for joining <strong>Vishwakarma Bat House</strong>. For generations, our master craftsmen have hand-shaped Grade 1 Reserve English and Kashmir Willow blades, tuned for sublime pickup, monstrous ping, and surgical power.
+          Thank you for joining <strong>Vishwakarma Bat House</strong>. For generations, our master craftsmen have hand-shaped Grade 1 Reserve Kashmir and Kashmir Willow blades, tuned for sublime pickup, monstrous ping, and surgical power.
         </p>
 
         <div style="background-color: #181821; border: 1px solid #242436; border-radius: 8px; padding: 20px; margin: 24px 0;">

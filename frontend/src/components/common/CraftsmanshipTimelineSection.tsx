@@ -12,7 +12,7 @@ export const CraftsmanshipTimelineSection: React.FC = () => {
       number: '01',
       title: 'Willow Selection',
       description:
-        'Every bat begins with Expert selecting the finest English and Kashmir Willow clefts, checking for vertical grains and weight density.',
+        'Every bat begins with Expert selecting the finest Kashmir and Kashmir Willow clefts, checking for vertical grains and weight density.',
     },
     {
       number: '02',
@@ -86,9 +86,8 @@ export const CraftsmanshipTimelineSection: React.FC = () => {
               return (
                 <div
                   key={step.number}
-                  className={`relative flex flex-col md:flex-row items-center ${
-                    isEven ? 'md:flex-row-reverse' : ''
-                  }`}
+                  className={`relative flex flex-col md:flex-row items-center ${isEven ? 'md:flex-row-reverse' : ''
+                    }`}
                 >
                   {/* Left / Right Card Container (Half Width) */}
                   <div className="w-full md:w-1/2 pl-8 md:pl-0 md:px-8 text-left">

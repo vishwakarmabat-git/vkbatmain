@@ -49,7 +49,7 @@ export const CraftsmanshipStorySection: React.FC = () => {
                 1. SOURCING ELITE CLEFTS
               </h4>
               <p className="text-xs text-[#A1A1AA] leading-relaxed font-normal">
-                We select Grade 1+ Kashmir and English Willow, inspecting for straight grains and moisture levels to assure premium performance.
+                We select Grade 1+ Kashmir and Kashmir Willow, inspecting for straight grains and moisture levels to assure premium performance.
               </p>
             </div>
 

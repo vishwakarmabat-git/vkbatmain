@@ -150,22 +150,20 @@ export const BatCustomizer: React.FC<BatCustomizerProps> = ({ product, onAddedTo
             <button
               key={step.number}
               onClick={() => setCurrentStep(step.number)}
-              className={`flex flex-col items-center text-center p-2 rounded-sm transition-all ${
-                isActive
+              className={`flex flex-col items-center text-center p-2 rounded-sm transition-all ${isActive
                   ? 'bg-[#181821] border-b-2 border-[#D4AF37] text-[#D4AF37]'
                   : isDone
-                  ? 'text-[#F4F4F5] hover:bg-[#181821]'
-                  : 'text-[#52525B] hover:text-[#A1A1AA]'
-              }`}
+                    ? 'text-[#F4F4F5] hover:bg-[#181821]'
+                    : 'text-[#52525B] hover:text-[#A1A1AA]'
+                }`}
             >
               <div
-                className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-sport font-bold mb-1 ${
-                  isActive
+                className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-sport font-bold mb-1 ${isActive
                     ? 'bg-[#D4AF37] text-[#09090B]'
                     : isDone
-                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-                    : 'bg-[#181821] border border-[#24242D]'
-                }`}
+                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                      : 'bg-[#181821] border border-[#24242D]'
+                  }`}
               >
                 {isDone ? <Check className="w-3 h-3" /> : `0${step.number}`}
               </div>
@@ -207,11 +205,10 @@ export const BatCustomizer: React.FC<BatCustomizerProps> = ({ product, onAddedTo
                   <button
                     key={item.range}
                     onClick={() => setWeight(item.range)}
-                    className={`p-4 rounded-sm border text-left transition-all relative ${
-                      weight === item.range
+                    className={`p-4 rounded-sm border text-left transition-all relative ${weight === item.range
                         ? 'bg-[#181821] border-[#D4AF37] shadow-[0_0_15px_rgba(212,175,55,0.15)]'
                         : 'bg-[#121216] border-[#24242D] hover:border-[#383846]'
-                    }`}
+                      }`}
                   >
                     {weight === item.range && (
                       <span className="absolute top-3 right-3 w-4 h-4 rounded-full bg-[#D4AF37] flex items-center justify-center text-[#09090B]">
@@ -253,11 +250,10 @@ export const BatCustomizer: React.FC<BatCustomizerProps> = ({ product, onAddedTo
                     <button
                       key={item.shape}
                       onClick={() => setHandleShape(item.shape)}
-                      className={`p-4 rounded-sm border text-left transition-all ${
-                        handleShape === item.shape
+                      className={`p-4 rounded-sm border text-left transition-all ${handleShape === item.shape
                           ? 'bg-[#181821] border-[#D4AF37] shadow-[0_0_15px_rgba(212,175,55,0.15)]'
                           : 'bg-[#121216] border-[#24242D] hover:border-[#383846]'
-                      }`}
+                        }`}
                     >
                       <div className="text-base font-sport font-black text-[#F4F4F5]">{item.shape} Handle</div>
                       <div className="text-xs text-[#71717A] mt-1">{item.desc}</div>
@@ -276,11 +272,10 @@ export const BatCustomizer: React.FC<BatCustomizerProps> = ({ product, onAddedTo
                       <button
                         key={sizeOption}
                         onClick={() => setHandleSize(sizeOption.split(' ')[0])}
-                        className={`p-3 rounded-sm border text-center font-sport font-bold transition-all ${
-                          handleSize === sizeOption.split(' ')[0]
+                        className={`p-3 rounded-sm border text-center font-sport font-bold transition-all ${handleSize === sizeOption.split(' ')[0]
                             ? 'bg-[#D4AF37] text-[#09090B] border-[#D4AF37]'
                             : 'bg-[#181821] text-[#A1A1AA] border-[#24242D] hover:text-white'
-                        }`}
+                          }`}
                       >
                         <div className="text-sm">{sizeOption.split(' ')[0]}</div>
                         <div className="text-[10px] opacity-75">{sizeOption.split(' ')[1] || 'Std'}</div>
@@ -310,11 +305,10 @@ export const BatCustomizer: React.FC<BatCustomizerProps> = ({ product, onAddedTo
                     <button
                       key={p}
                       onClick={() => setGripPattern(p)}
-                      className={`p-3.5 rounded-sm border text-center font-sport font-bold transition-all ${
-                        gripPattern === p
+                      className={`p-3.5 rounded-sm border text-center font-sport font-bold transition-all ${gripPattern === p
                           ? 'bg-[#181821] border-[#D4AF37] text-[#D4AF37]'
                           : 'bg-[#121216] border-[#24242D] text-[#A1A1AA] hover:text-white'
-                      }`}
+                        }`}
                     >
                       {p} Grip
                     </button>
@@ -338,11 +332,10 @@ export const BatCustomizer: React.FC<BatCustomizerProps> = ({ product, onAddedTo
                     <button
                       key={c.color}
                       onClick={() => setGripColor(c.color)}
-                      className={`p-2.5 rounded-sm border flex items-center gap-2 transition-all ${
-                        gripColor === c.color
+                      className={`p-2.5 rounded-sm border flex items-center gap-2 transition-all ${gripColor === c.color
                           ? 'bg-[#181821] border-[#D4AF37] text-[#D4AF37]'
                           : 'bg-[#121216] border-[#24242D] text-[#A1A1AA] hover:text-white'
-                      }`}
+                        }`}
                     >
                       <span className="w-3.5 h-3.5 rounded-full shrink-0 border border-white/20" style={{ backgroundColor: c.hex }} />
                       <span className="text-xs font-sport font-bold truncate">{c.color}</span>
@@ -363,11 +356,10 @@ export const BatCustomizer: React.FC<BatCustomizerProps> = ({ product, onAddedTo
                     <button
                       key={g.count}
                       onClick={() => setGripCount(g.count)}
-                      className={`p-4 rounded-sm border text-left transition-all ${
-                        gripCount === g.count
+                      className={`p-4 rounded-sm border text-left transition-all ${gripCount === g.count
                           ? 'bg-[#181821] border-[#D4AF37]'
                           : 'bg-[#121216] border-[#24242D] hover:border-[#383846]'
-                      }`}
+                        }`}
                     >
                       <div className="text-sm font-sport font-bold text-[#F4F4F5]">{g.count} Grip</div>
                       <div className="text-xs text-[#71717A] mt-0.5">{g.desc}</div>
@@ -418,11 +410,10 @@ export const BatCustomizer: React.FC<BatCustomizerProps> = ({ product, onAddedTo
                   <button
                     key={s.name}
                     onClick={() => setStickerFinish(s.name)}
-                    className={`p-5 rounded-sm border text-left transition-all ${
-                      stickerFinish === s.name
+                    className={`p-5 rounded-sm border text-left transition-all ${stickerFinish === s.name
                         ? 'bg-[#181821] border-[#D4AF37] shadow-[0_0_15px_rgba(212,175,55,0.15)]'
                         : 'bg-[#121216] border-[#24242D] hover:border-[#383846]'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-sport font-black text-[#F4F4F5]">{s.name}</span>
@@ -462,11 +453,10 @@ export const BatCustomizer: React.FC<BatCustomizerProps> = ({ product, onAddedTo
                     <button
                       key={k.type}
                       onClick={() => setPreKnocking(k.type)}
-                      className={`p-4 rounded-sm border text-left transition-all ${
-                        preKnocking === k.type
+                      className={`p-4 rounded-sm border text-left transition-all ${preKnocking === k.type
                           ? 'bg-[#181821] border-[#D4AF37] shadow-[0_0_15px_rgba(212,175,55,0.15)]'
                           : 'bg-[#121216] border-[#24242D] hover:border-[#383846]'
-                      }`}
+                        }`}
                     >
                       <div className="text-sm font-sport font-bold text-[#F4F4F5]">{k.type}</div>
                       <div className="text-xs text-[#71717A] mt-1">{k.desc}</div>
@@ -482,18 +472,17 @@ export const BatCustomizer: React.FC<BatCustomizerProps> = ({ product, onAddedTo
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3">
                   {[
-                    { opt: 'None', cost: 0, desc: 'Natural English Willow face' },
+                    { opt: 'None', cost: 0, desc: 'Natural Kashmir Willow face' },
                     { opt: 'Clear Anti-Scuff Sheet', cost: 250, desc: 'Protective polyurethane face sheet (+₹250)' },
                     { opt: 'Complete Armor Package (Anti-Scuff + Fibre + Toe)', cost: 550, desc: 'Anti-scuff face + fibre edge tape + pro rubber toe guard (+₹550)' },
                   ].map((p) => (
                     <button
                       key={p.opt}
                       onClick={() => setFaceProtection(p.opt)}
-                      className={`p-4 rounded-sm border text-left transition-all ${
-                        faceProtection === p.opt
+                      className={`p-4 rounded-sm border text-left transition-all ${faceProtection === p.opt
                           ? 'bg-[#181821] border-[#D4AF37]'
                           : 'bg-[#121216] border-[#24242D] hover:border-[#383846]'
-                      }`}
+                        }`}
                     >
                       <div className="text-sm font-sport font-bold text-[#F4F4F5]">{p.opt}</div>
                       <div className="text-xs text-[#71717A] mt-1">{p.desc}</div>

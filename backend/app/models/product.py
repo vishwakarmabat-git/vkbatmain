@@ -20,7 +20,7 @@ class Product(Base):
     discount_percent = Column(Integer, default=0)
     
     # Cricket Bat Specific Attributes
-    willow_grade = Column(String(100), nullable=True)  # Grade 1+ English Willow, etc.
+    willow_grade = Column(String(100), nullable=True)  # Grade 1+ Kashmir Willow, etc.
     blade_architecture = Column(String(100), nullable=True)  # Single Blade, Double Blade, Triple Blade Hard Pressed, etc.
     pressing_type = Column(String(100), nullable=True)  # Standard, High-Density Hard Pressed, Dual Cold Pressed
     edge_thickness = Column(String(50), nullable=True)  # 38-40mm, 42-45mm

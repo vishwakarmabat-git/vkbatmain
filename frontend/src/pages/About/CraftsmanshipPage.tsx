@@ -29,7 +29,7 @@ export const CraftsmanshipPage: React.FC = () => {
               100% Genuine Willow
             </h4>
             <p className="text-xs text-[#A1A1AA] leading-relaxed font-sans">
-              Strictly non-bleached, naturally air-seasoned English & Kashmir Willow clefts with authentic straight grains.
+              Strictly non-bleached, naturally air-seasoned Kashmir Willow clefts with authentic straight grains.
             </p>
           </div>
 

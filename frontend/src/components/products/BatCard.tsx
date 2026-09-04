@@ -79,7 +79,7 @@ export const BatCard: React.FC<BatCardProps> = ({ product }) => {
         title: product.name,
         text: `Check out the handcrafted ${product.name} from Vishwakarma Bat House!`,
         url: window.location.origin + `/products/${product.slug}`,
-      }).catch(() => {});
+      }).catch(() => { });
     } else {
       navigator.clipboard.writeText(window.location.origin + `/products/${product.slug}`);
       toast.success('Product link copied to clipboard!');
@@ -141,13 +141,12 @@ export const BatCard: React.FC<BatCardProps> = ({ product }) => {
           <img
             src={primaryImage}
             alt={product.name}
-            className={`w-full h-full object-contain object-center drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] transition-all duration-500 ease-out scale-105 ${
-              hasTwoImages
+            className={`w-full h-full object-contain object-center drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] transition-all duration-500 ease-out scale-105 ${hasTwoImages
                 ? showingSecondary
                   ? 'opacity-0 scale-95 pointer-events-none'
                   : 'opacity-100 scale-105'
                 : 'group-hover:scale-115'
-            }`}
+              }`}
             loading="lazy"
             onError={(e) => {
               (e.target as HTMLImageElement).src = '/VKCAT.png';
@@ -159,11 +158,10 @@ export const BatCard: React.FC<BatCardProps> = ({ product }) => {
             <img
               src={secondaryImage}
               alt={`${product.name} - Alternate View`}
-              className={`absolute inset-0 w-full h-full object-contain object-center p-2 sm:p-3 drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] transition-all duration-500 ease-out ${
-                showingSecondary
+              className={`absolute inset-0 w-full h-full object-contain object-center p-2 sm:p-3 drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] transition-all duration-500 ease-out ${showingSecondary
                   ? 'opacity-100 scale-105 pointer-events-auto'
                   : 'opacity-0 scale-95 pointer-events-none'
-              }`}
+                }`}
               loading="lazy"
               onError={(e) => {
                 (e.target as HTMLImageElement).style.display = 'none';
@@ -211,11 +209,10 @@ export const BatCard: React.FC<BatCardProps> = ({ product }) => {
                   e.stopPropagation();
                   setActiveSlide(0);
                 }}
-                className={`transition-all duration-200 rounded-full cursor-pointer ${
-                  !showingSecondary
+                className={`transition-all duration-200 rounded-full cursor-pointer ${!showingSecondary
                     ? 'w-3 h-1.5 bg-[#D4AF37]'
                     : 'w-1.5 h-1.5 bg-white/40 hover:bg-white'
-                }`}
+                  }`}
                 title="Picture 1: Main View"
               />
               <button
@@ -225,11 +222,10 @@ export const BatCard: React.FC<BatCardProps> = ({ product }) => {
                   e.stopPropagation();
                   setActiveSlide(1);
                 }}
-                className={`transition-all duration-200 rounded-full cursor-pointer ${
-                  showingSecondary
+                className={`transition-all duration-200 rounded-full cursor-pointer ${showingSecondary
                     ? 'w-3 h-1.5 bg-[#D4AF37]'
                     : 'w-1.5 h-1.5 bg-white/40 hover:bg-white'
-                }`}
+                  }`}
                 title="Picture 2: Hover View"
               />
             </div>
@@ -241,7 +237,7 @@ export const BatCard: React.FC<BatCardProps> = ({ product }) => {
       <div className="space-y-1">
         <div className="flex items-center justify-center gap-1.5 text-[10px] font-sport uppercase tracking-wider text-[#D4AF37]">
           <CricketBatIcon size={12} className="shrink-0" />
-          <span>Handcrafted English Willow</span>
+          <span>Handcrafted Kashmir Willow</span>
         </div>
 
         <Link to={`/products/${product.slug}`}>
