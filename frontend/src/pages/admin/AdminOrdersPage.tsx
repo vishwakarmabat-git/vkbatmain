@@ -69,14 +69,14 @@ export const AdminOrdersPage: React.FC = () => {
         </div>
 
         {/* Search */}
-        <div className="relative min-w-[240px]">
+        <div className="relative w-full sm:w-auto flex-1 min-w-0 sm:min-w-[220px]">
           <Search className="w-4 h-4 text-[#71717A] absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search order #, customer, phone..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-[#121216] border border-[#24242D] focus:border-[#D4AF37] text-xs font-sport tracking-wider text-white pl-9 pr-3 py-2 rounded-xs focus:outline-none"
+            className="w-full bg-[#121216] border border-[#24242D] focus:border-[#D4AF37] text-xs font-sport tracking-wider text-white pl-9 pr-3 py-2 rounded-xs focus:outline-none min-w-0"
           />
         </div>
       </div>

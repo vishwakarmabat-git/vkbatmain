@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, Send, ShoppingBag } from 'lucide-react';
+import { Heart, Send, ShoppingBag, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Product } from '@/types';
 import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
@@ -16,6 +16,22 @@ export const BatCard: React.FC<BatCardProps> = ({ product }) => {
   const { addItem, openDrawer } = useCartStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();
   const isLiked = isInWishlist(product.id);
+
+  // 1. Primary Image (Normal zoomed blade view)
+  const primaryImgObj = product.images?.find((img) => img.is_primary) || product.images?.[0];
+  const primaryImage = getImageUrl(primaryImgObj?.image_url, '/VKCAT.png');
+
+  // 2. Secondary Image (Hover / angle view like hittersports.in)
+  const secondaryImgObj = product.images?.find(
+    (img) => !img.is_primary && img.image_url !== primaryImgObj?.image_url
+  ) || (product.images && product.images.length > 1 ? product.images[1] : undefined);
+  const secondaryImage = secondaryImgObj?.image_url ? getImageUrl(secondaryImgObj.image_url) : null;
+
+  const hasTwoImages = Boolean(secondaryImage && secondaryImage !== primaryImage);
+
+  // Hover & Manual Slide toggle states
+  const [isHovered, setIsHovered] = useState(false);
+  const [activeSlide, setActiveSlide] = useState<number | null>(null);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -70,22 +86,34 @@ export const BatCard: React.FC<BatCardProps> = ({ product }) => {
     }
   };
 
+  // Determine which slide is visually active (for dots and images)
+  const showingSecondary = hasTwoImages && (
+    activeSlide === 1 || (activeSlide === null && isHovered)
+  );
+
   return (
-    <div className="w-full bg-[#0E1017] border border-[#202533] hover:border-[#D4AF37] rounded-xl p-2.5 sm:p-4 transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,175,55,0.2)] flex flex-col justify-between text-center space-y-2.5 sm:space-y-3.5 group relative overflow-hidden">
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setActiveSlide(null);
+      }}
+      className="w-full bg-[#0E1017] border border-[#202533] hover:border-[#D4AF37] rounded-xl p-2.5 sm:p-4 transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,175,55,0.2)] flex flex-col justify-between text-center space-y-2.5 sm:space-y-3.5 group relative overflow-hidden"
+    >
       {/* Background cricket turf/stadium ambient hint on hover */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#00FF87]/[0.02] pointer-events-none" />
 
       {/* Framed Image Container */}
-      <div className="relative w-full aspect-[3/4] bg-[#07090E] border border-[#1A1F2C] rounded-lg overflow-hidden flex items-center justify-center p-2 sm:p-3">
+      <div className="relative w-full aspect-[3/4] bg-[#07090E] border border-[#1A1F2C] rounded-lg overflow-hidden flex items-center justify-center p-2 sm:p-3 select-none">
         {/* Discount Badge */}
         {product.discount_percent > 0 && (
-          <div className="absolute top-2 left-2 z-10 bg-gradient-to-r from-[#8B1220] to-[#C9182B] border-y border-dashed border-white/60 text-white text-[9px] sm:text-[10px] font-sport font-black px-2 py-0.5 rounded-xs tracking-wider shadow-md">
+          <div className="absolute top-2 left-2 z-10 bg-gradient-to-r from-[#8B1220] to-[#C9182B] border-y border-dashed border-white/60 text-white text-[9px] sm:text-[10px] font-sport font-black px-2 py-0.5 rounded-xs tracking-wider shadow-md pointer-events-none">
             -{product.discount_percent}%
           </div>
         )}
 
         {/* Action icons on top right */}
-        <div className="absolute top-2 right-2 z-10 flex flex-col gap-1 sm:gap-1.5">
+        <div className="absolute top-2 right-2 z-20 flex flex-col gap-1 sm:gap-1.5 pointer-events-auto">
           {/* Wishlist Heart */}
           <button
             type="button"
@@ -107,14 +135,106 @@ export const BatCard: React.FC<BatCardProps> = ({ product }) => {
           </button>
         </div>
 
-        {/* Bat Visual */}
-        <Link to={`/products/${product.slug}`} className="w-full h-full flex items-center justify-center">
+        {/* Bat Visual (Hittersports Style Dual-Image with Zoom) */}
+        <Link to={`/products/${product.slug}`} className="absolute inset-0 p-2 sm:p-3 flex items-center justify-center">
+          {/* Primary Image: Normal Zoomed Bat Blade View */}
           <img
-            src={getImageUrl(product.images?.find((i) => i.is_primary)?.image_url || product.images?.[0]?.image_url, '/VKCAT.png')}
+            src={primaryImage}
             alt={product.name}
-            className="w-full h-full object-contain object-center drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] group-hover:scale-105 transition-transform duration-500"
+            className={`w-full h-full object-contain object-center drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] transition-all duration-500 ease-out scale-105 ${
+              hasTwoImages
+                ? showingSecondary
+                  ? 'opacity-0 scale-95 pointer-events-none'
+                  : 'opacity-100 scale-105'
+                : 'group-hover:scale-115'
+            }`}
+            loading="lazy"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = '/VKCAT.png';
+            }}
           />
+
+          {/* Secondary Image: Cursor Hover Angle / Full Bat View */}
+          {hasTwoImages && secondaryImage && (
+            <img
+              src={secondaryImage}
+              alt={`${product.name} - Alternate View`}
+              className={`absolute inset-0 w-full h-full object-contain object-center p-2 sm:p-3 drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] transition-all duration-500 ease-out ${
+                showingSecondary
+                  ? 'opacity-100 scale-105 pointer-events-auto'
+                  : 'opacity-0 scale-95 pointer-events-none'
+              }`}
+              loading="lazy"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
+            />
+          )}
+
+          {/* Subtle dark gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0E1017] via-transparent to-transparent opacity-80 pointer-events-none" />
         </Link>
+
+        {/* Carousel Arrow Controls (Appear on hover when 2 images exist, like hittersports.in) */}
+        {hasTwoImages && (
+          <>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setActiveSlide((prev) => (prev === 1 || (prev === null && isHovered) ? 0 : 1));
+              }}
+              className="absolute left-1.5 top-1/2 -translate-y-1/2 z-20 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-black/75 hover:bg-[#D4AF37] text-white hover:text-black border border-white/10 hover:border-[#D4AF37] flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 shadow-lg cursor-pointer"
+              aria-label="Previous picture"
+            >
+              <ChevronLeft className="w-3.5 h-3.5" />
+            </button>
+
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setActiveSlide((prev) => (prev === 1 || (prev === null && isHovered) ? 0 : 1));
+              }}
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 z-20 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-black/75 hover:bg-[#D4AF37] text-white hover:text-black border border-white/10 hover:border-[#D4AF37] flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 shadow-lg cursor-pointer"
+              aria-label="Next picture"
+            >
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
+
+            {/* Pagination Dots at bottom-left */}
+            <div className="absolute bottom-2 left-2 z-20 flex items-center gap-1 pointer-events-auto bg-black/60 backdrop-blur-xs px-1.5 py-0.5 rounded-full border border-white/10">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setActiveSlide(0);
+                }}
+                className={`transition-all duration-200 rounded-full cursor-pointer ${
+                  !showingSecondary
+                    ? 'w-3 h-1.5 bg-[#D4AF37]'
+                    : 'w-1.5 h-1.5 bg-white/40 hover:bg-white'
+                }`}
+                title="Picture 1: Main View"
+              />
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setActiveSlide(1);
+                }}
+                className={`transition-all duration-200 rounded-full cursor-pointer ${
+                  showingSecondary
+                    ? 'w-3 h-1.5 bg-[#D4AF37]'
+                    : 'w-1.5 h-1.5 bg-white/40 hover:bg-white'
+                }`}
+                title="Picture 2: Hover View"
+              />
+            </div>
+          </>
+        )}
       </div>
 
       {/* Info & Price */}

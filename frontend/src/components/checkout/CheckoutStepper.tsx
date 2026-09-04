@@ -47,14 +47,14 @@ export const CheckoutStepper: React.FC<CheckoutStepperProps> = ({
                   }
                 }}
                 disabled={!isAccessible}
-                className={`flex items-center gap-2 sm:gap-3 z-10 transition-all select-none group text-left ${
+                className={`flex items-center gap-1.5 sm:gap-3 z-10 transition-all select-none group text-left min-w-0 ${
                   isAccessible ? 'cursor-pointer' : 'cursor-not-allowed opacity-40'
                 }`}
                 aria-current={isCurrent ? 'step' : undefined}
               >
                 {/* Circle / Badge */}
                 <div
-                  className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-sport font-black text-xs sm:text-sm transition-all duration-300 shrink-0 ${
+                  className={`w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-sport font-black text-xs sm:text-sm transition-all duration-300 shrink-0 ${
                     isCompleted
                       ? 'bg-[#10B981] text-black shadow-[0_0_15px_rgba(16,185,129,0.35)]'
                       : isCurrent
@@ -63,16 +63,16 @@ export const CheckoutStepper: React.FC<CheckoutStepperProps> = ({
                   }`}
                 >
                   {isCompleted ? (
-                    <Check className="w-4 h-4 sm:w-5 sm:h-5 stroke-[3]" />
+                    <Check className="w-3.5 h-3.5 sm:w-5 sm:h-5 stroke-[3]" />
                   ) : (
                     <span>{step.id}</span>
                   )}
                 </div>
 
                 {/* Step Labels */}
-                <div className="flex flex-col min-w-0">
+                <div className="hidden xs:flex flex-col min-w-0">
                   <span
-                    className={`text-[10px] sm:text-xs font-sport tracking-wider uppercase font-bold transition-colors ${
+                    className={`text-[9px] sm:text-xs font-sport tracking-wider uppercase font-bold transition-colors ${
                       isCurrent
                         ? 'text-[#D4AF37]'
                         : isCompleted
@@ -99,7 +99,7 @@ export const CheckoutStepper: React.FC<CheckoutStepperProps> = ({
 
               {/* Connecting Bar */}
               {idx < STEPS.length - 1 && (
-                <div className="flex-1 mx-2 sm:mx-4 h-0.5 bg-[#1E1E28] relative overflow-hidden rounded-full">
+                <div className="flex-1 min-w-[8px] mx-1 sm:mx-4 h-0.5 bg-[#1E1E28] relative overflow-hidden rounded-full">
                   <div
                     className={`h-full transition-all duration-500 rounded-full ${
                       currentStep > step.id

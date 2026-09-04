@@ -101,7 +101,7 @@ export const Footer: React.FC = () => {
             <h4 className="text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
               LEGAL & COMPLIANCE
             </h4>
-            <div className="grid grid-cols-2 gap-y-2.5 gap-x-4 text-xs">
+            <div className="grid grid-cols-1 xs:grid-cols-2 gap-y-2.5 gap-x-4 text-xs">
               <div>
                 <Link to="/privacy-policy" className="text-[#A1A1AA] hover:text-white transition-colors block">
                   Privacy Policy
@@ -132,11 +132,11 @@ export const Footer: React.FC = () => {
                   Grievance Redressal
                 </Link>
               </div>
-              <div className="col-span-2 pt-1">
+              <div className="col-span-1 xs:col-span-2 pt-1">
                 <button
                   type="button"
                   onClick={() => window.dispatchEvent(new CustomEvent('vk:open_cookie_preferences'))}
-                  className="text-xs text-[#D4AF37] hover:text-[#F3E5AB] transition-colors underline cursor-pointer"
+                  className="text-xs text-[#D4AF37] hover:text-[#F3E5AB] transition-colors underline cursor-pointer text-left"
                 >
                   ⚙ Manage Cookie Preferences
                 </button>

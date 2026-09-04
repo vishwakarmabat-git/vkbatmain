@@ -94,7 +94,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ) : (
           <>
             {leftIcon && <span className="inline-flex shrink-0 z-10">{leftIcon}</span>}
-            <span className="z-10 tracking-wider">{children}</span>
+            <span className="z-10 tracking-wider inline-flex items-center justify-center gap-2">{children}</span>
             {rightIcon && <span className="inline-flex shrink-0 z-10">{rightIcon}</span>}
           </>
         )}

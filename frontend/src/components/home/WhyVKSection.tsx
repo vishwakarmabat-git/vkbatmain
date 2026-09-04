@@ -84,7 +84,7 @@ export const WhyVKSection: React.FC = () => {
               <CricketBallIcon size={14} className="shrink-0" />
               <span>{data.badge}</span>
             </div>
-            <h2 className="text-4xl sm:text-6xl font-serif font-black tracking-tight text-white uppercase leading-[1.05]">
+            <h2 className="text-[clamp(1.75rem,4.5vw+0.5rem,3.75rem)] font-serif font-black tracking-tight text-white uppercase leading-[1.08] break-words">
               {formattedTitle}
             </h2>
           </div>

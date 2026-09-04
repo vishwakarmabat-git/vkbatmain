@@ -293,17 +293,17 @@ export const ReviewOrderStep: React.FC<ReviewOrderStepProps> = ({
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="w-5 h-5 animate-spin" />
+                <Loader2 className="w-5 h-5 animate-spin shrink-0" />
                 <span>PROCESSING ORDER...</span>
               </>
             ) : paymentMethod === 'razorpay' ? (
               <>
-                <Lock className="w-4 h-4" />
+                <Lock className="w-4 h-4 shrink-0" />
                 <span>PAY ₹{grandTotal.toLocaleString('en-IN')} SECURELY</span>
               </>
             ) : (
               <>
-                <CheckCircle className="w-4 h-4" />
+                <CheckCircle className="w-4 h-4 shrink-0" />
                 <span>PLACE COD ORDER (₹{grandTotal.toLocaleString('en-IN')})</span>
               </>
             )}

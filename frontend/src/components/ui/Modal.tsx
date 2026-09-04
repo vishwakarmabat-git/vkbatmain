@@ -41,12 +41,12 @@ export const Modal: React.FC<ModalProps> = ({
   }, [isOpen, onClose]);
 
   const maxWidthStyles = {
-    sm: 'max-w-sm',
-    md: 'max-w-md',
-    lg: 'max-w-lg',
-    xl: 'max-w-xl',
-    '2xl': 'max-w-2xl',
-    '4xl': 'max-w-4xl',
+    sm: 'max-w-[min(calc(100vw-1.5rem),24rem)]',
+    md: 'max-w-[min(calc(100vw-1.5rem),28rem)]',
+    lg: 'max-w-[min(calc(100vw-1.5rem),32rem)]',
+    xl: 'max-w-[min(calc(100vw-1.5rem),36rem)]',
+    '2xl': 'max-w-[min(calc(100vw-1.5rem),42rem)]',
+    '4xl': 'max-w-[min(calc(100vw-1.5rem),56rem)]',
   };
 
   return (

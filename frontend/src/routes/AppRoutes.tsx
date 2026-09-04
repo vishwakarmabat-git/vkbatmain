@@ -170,6 +170,14 @@ export const AppRoutes: React.FC = () => {
         }
       />
       <Route
+        path="/order_success/:orderNumber"
+        element={
+          <CustomerLayout>
+            <OrderSuccessPage />
+          </CustomerLayout>
+        }
+      />
+      <Route
         path="/login"
         element={
           <CustomerLayout>

@@ -426,8 +426,8 @@ export const ProfilePage: React.FC = () => {
 
       {/* Account Deletion Request Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="bg-[#12121A] border border-red-500/40 rounded-2xl max-w-lg w-full p-6 sm:p-8 space-y-6 text-left font-sport shadow-2xl relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-[#12121A] border border-red-500/40 rounded-2xl w-full max-w-[min(calc(100vw-1.5rem),32rem)] p-4 sm:p-8 space-y-5 sm:space-y-6 text-left font-sport shadow-2xl relative max-h-[90dvh] overflow-y-auto overscroll-contain my-auto">
             <div className="flex items-center justify-between border-b border-[#242436] pb-3">
               <div className="flex items-center gap-2.5 text-red-400">
                 <AlertTriangle className="w-5 h-5" />

@@ -118,33 +118,33 @@ export const CookieConsentBanner: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center justify-end gap-2 pt-1">
-              <Button
-                variant="outline"
-                size="sm"
+            {/* 3 Action Buttons strictly in ONE LINE with SVGs on the right */}
+            <div className="grid grid-cols-3 gap-1.5 sm:gap-2.5 pt-1 w-full">
+              <button
+                type="button"
                 onClick={() => setShowModal(true)}
-                className="text-xs border-[#2A2A3C] text-[#A1A1AA] hover:text-white"
+                className="w-full h-8 sm:h-9 px-1 sm:px-2.5 rounded-xs border border-[#2A2A3C] bg-[#161622] hover:bg-[#202030] hover:border-[#D4AF37]/60 text-[#C4C4D0] hover:text-white inline-flex items-center justify-center gap-1 sm:gap-1.5 text-[9px] xs:text-[10.5px] sm:text-xs font-sport font-bold uppercase whitespace-nowrap transition-all duration-200 cursor-pointer shadow-xs active:scale-95"
               >
-                <Settings2 className="w-3.5 h-3.5 mr-1" />
                 <span>CUSTOMIZE</span>
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
+                <Settings2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 text-[#D4AF37]" />
+              </button>
+
+              <button
+                type="button"
                 onClick={handleRejectNonEssential}
-                className="text-xs border-[#2A2A3C] text-[#A1A1AA] hover:text-white"
+                className="w-full h-8 sm:h-9 px-1 sm:px-2.5 rounded-xs border border-[#2A2A3C] bg-[#161622] hover:bg-[#202030] hover:border-red-500/60 text-[#C4C4D0] hover:text-white inline-flex items-center justify-center gap-1 text-[8px] xs:text-[9.5px] sm:text-xs font-sport font-bold uppercase whitespace-nowrap transition-all duration-200 cursor-pointer shadow-xs active:scale-95 tracking-tight sm:tracking-normal"
               >
                 <span>REJECT NON-ESSENTIAL</span>
-              </Button>
-              <Button
-                variant="gold"
-                size="sm"
+              </button>
+
+              <button
+                type="button"
                 onClick={handleAcceptAll}
-                className="text-xs font-black shadow-[0_0_15px_rgba(212,175,55,0.25)]"
+                className="w-full h-8 sm:h-9 px-1 sm:px-2.5 rounded-xs bg-gradient-to-r from-[#FFE29A] via-[#E5A832] to-[#A06C13] hover:shadow-[0_0_20px_rgba(229,168,50,0.45)] text-[#0A0D12] border border-[#FFD573] inline-flex items-center justify-center gap-1 sm:gap-1.5 text-[9px] xs:text-[10.5px] sm:text-xs font-sport font-black uppercase whitespace-nowrap transition-all duration-200 cursor-pointer shadow-md active:scale-95"
               >
-                <Check className="w-3.5 h-3.5 mr-1" />
                 <span>ACCEPT ALL</span>
-              </Button>
+                <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 text-[#0A0D12] stroke-[2.5]" />
+              </button>
             </div>
           </div>
         </div>
@@ -152,8 +152,8 @@ export const CookieConsentBanner: React.FC = () => {
 
       {/* Detailed Cookie Customization Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-[#12121A] border border-[#242436] rounded-2xl max-w-lg w-full p-6 space-y-6 text-left font-sport shadow-2xl relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-[#12121A] border border-[#242436] rounded-2xl w-full max-w-[min(calc(100vw-1.5rem),32rem)] p-4 sm:p-6 space-y-5 text-left font-sport shadow-2xl relative max-h-[90dvh] overflow-y-auto overscroll-contain my-auto">
             <div className="flex items-center justify-between border-b border-[#242436] pb-3">
               <div className="flex items-center gap-2.5 text-[#D4AF37]">
                 <Cookie className="w-5 h-5" />

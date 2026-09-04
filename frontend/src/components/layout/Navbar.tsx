@@ -46,38 +46,38 @@ export const Navbar: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[#07090E]/95 backdrop-blur-md border-b border-[#1E2433] transition-all shadow-[0_4px_25px_rgba(0,0,0,0.6),0_1px_0_rgba(212,175,55,0.18)]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-12 items-center h-20">
-          {/* 1. Left: Brand Logo (3 cols) */}
-          <div className="md:col-span-3 flex items-center justify-start">
-            <Link to="/" className="flex items-center gap-3 shrink-0 group">
+      <div className="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between gap-2 sm:gap-4 h-16 sm:h-20 min-w-0">
+          {/* 1. Left: Brand Logo */}
+          <div className="flex items-center justify-start shrink-0 min-w-0">
+            <Link to="/" className="flex items-center gap-2.5 sm:gap-3 shrink-0 group">
               <img
                 src="/logo.png"
                 alt="Vishwakarma Bat House"
-                className="w-10 h-10 sm:w-11 sm:h-11 object-contain rounded-xs group-hover:scale-105 transition-transform drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]"
+                className="w-9 h-9 sm:w-11 sm:h-11 object-contain rounded-xs group-hover:scale-105 transition-transform drop-shadow-[0_0_10px_rgba(212,175,55,0.3)] shrink-0"
               />
               <div className="hidden sm:flex flex-col text-left">
-                <span className="font-serif font-black text-sm tracking-wider text-white group-hover:text-[#D4AF37] transition-colors leading-tight uppercase">
+                <span className="font-serif font-black text-sm tracking-wider text-white group-hover:text-[#D4AF37] transition-colors leading-tight uppercase truncate">
                   VISHWAKARMA
                 </span>
-                <span className="text-[9px] font-sport font-extrabold text-[#D4AF37] tracking-widest uppercase leading-tight flex items-center gap-1.5">
+                <span className="text-[9px] font-sport font-extrabold text-[#D4AF37] tracking-widest uppercase leading-tight flex items-center gap-1.5 truncate">
                   <span>BAT HOUSE</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#C9182B] shadow-[0_0_4px_#C9182B]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C9182B] shadow-[0_0_4px_#C9182B] shrink-0" />
                   <span className="text-[#8E97A8]">EST. GUJARAT</span>
                 </span>
               </div>
             </Link>
           </div>
 
-          {/* 2. Center: Navigation Links (6 cols - Dead Center) */}
-          <nav className="hidden md:flex md:col-span-6 items-center justify-center space-x-6 lg:space-x-8 xl:space-x-9 text-xs sm:text-sm font-sport font-black tracking-[0.15em] uppercase">
+          {/* 2. Center: Navigation Links (Fluid space, collapses cleanly on smaller/zoomed viewports) */}
+          <nav className="hidden xl:flex items-center justify-center space-x-5 lg:space-x-7 2xl:space-x-8 text-xs lg:text-[13px] font-sport font-black tracking-[0.14em] uppercase min-w-0">
             {navLinks.map((link) => {
               if (link.label === 'BULK ORDERS') {
                 return (
                   <button
                     key={link.label}
                     onClick={() => setBulkModalOpen(true)}
-                    className="px-2.5 py-1 rounded-xs border border-[#D4AF37]/50 text-[#F5C542] hover:bg-[#D4AF37]/15 hover:border-[#D4AF37] transition-all duration-200 uppercase cursor-pointer text-xs font-black tracking-wider shadow-[0_0_10px_rgba(212,175,55,0.12)]"
+                    className="py-2 transition-all duration-200 relative group text-[#E2E8F0] hover:text-[#F5C542] cursor-pointer whitespace-nowrap"
                   >
                     {link.label}
                   </button>
@@ -95,7 +95,7 @@ export const Navbar: React.FC = () => {
                 <NavLink
                   key={link.label}
                   to={link.path}
-                  className={`py-2 transition-all duration-200 relative group ${
+                  className={`py-2 transition-all duration-200 relative group whitespace-nowrap ${
                     isActive
                       ? 'text-[#F5C542] font-black'
                       : 'text-[#E2E8F0] hover:text-[#F5C542]'
@@ -110,12 +110,12 @@ export const Navbar: React.FC = () => {
             })}
           </nav>
 
-          {/* 3. Right: Action Icons (3 cols - Far Right) */}
-          <div className="md:col-span-3 flex items-center justify-end space-x-3 sm:space-x-5">
+          {/* 3. Right: Action Icons (Far Right, flex-shrink-0) */}
+          <div className="flex items-center justify-end space-x-2 sm:space-x-4 shrink-0">
             {/* Search Icon */}
             <button
               onClick={() => setSearchOpen(!searchOpen)}
-              className="p-1.5 text-[#F4F4F5] hover:text-[#D4AF37] transition-colors"
+              className="p-1.5 text-[#F4F4F5] hover:text-[#D4AF37] transition-colors cursor-pointer"
               aria-label="Search"
             >
               <Search className="w-5 h-5 stroke-[2]" />
@@ -130,7 +130,7 @@ export const Navbar: React.FC = () => {
                   className="p-1 text-[#F4F4F5] hover:text-[#D4AF37] transition-colors flex items-center gap-1.5 cursor-pointer group"
                   aria-label="User Account"
                 >
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#D4AF37] via-[#F3E5AB] to-[#AA7C11] text-[#09090B] font-bold text-xs flex items-center justify-center ring-2 ring-[#D4AF37]/40 shadow-sm group-hover:scale-105 group-hover:ring-[#D4AF37] transition-all">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-[#D4AF37] via-[#F3E5AB] to-[#AA7C11] text-[#09090B] font-bold text-xs flex items-center justify-center ring-2 ring-[#D4AF37]/40 shadow-sm group-hover:scale-105 group-hover:ring-[#D4AF37] transition-all">
                     {(user.full_name || user.email || 'VK').slice(0, 2).toUpperCase()}
                   </div>
                 </button>
@@ -151,7 +151,6 @@ export const Navbar: React.FC = () => {
               </button>
             )}
 
-
             {/* Favourites / Wishlist Heart Icon with Cricket Ball Badge */}
             <Link
               to="/wishlist"
@@ -159,7 +158,7 @@ export const Navbar: React.FC = () => {
               aria-label="Favourites"
             >
               <Heart className="w-5 h-5 stroke-[2] group-hover:scale-110 transition-transform" />
-              <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] border border-white/90 text-white text-[9px] font-sport font-black rounded-full flex items-center justify-center leading-none shadow-[0_0_8px_rgba(201,24,43,0.7)]">
+              <span className="absolute -top-1 -right-1 min-w-[17px] h-[17px] px-1 bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] border border-white/90 text-white text-[9px] font-sport font-black rounded-full flex items-center justify-center leading-none shadow-[0_0_8px_rgba(201,24,43,0.7)]">
                 {wishlistItems.length}
               </span>
             </Link>
@@ -171,15 +170,15 @@ export const Navbar: React.FC = () => {
               aria-label="Cart"
             >
               <ShoppingBag className="w-5 h-5 stroke-[2] group-hover:scale-110 transition-transform" />
-              <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] border border-white/90 text-white text-[9px] font-sport font-black rounded-full flex items-center justify-center leading-none shadow-[0_0_10px_rgba(201,24,43,0.8)]">
+              <span className="absolute -top-1 -right-1 min-w-[17px] h-[17px] px-1 bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] border border-white/90 text-white text-[9px] font-sport font-black rounded-full flex items-center justify-center leading-none shadow-[0_0_10px_rgba(201,24,43,0.8)]">
                 {cartCount}
               </span>
             </button>
 
-            {/* Mobile Menu Toggle */}
+            {/* Mobile / Tablet Menu Toggle (Visible below xl) */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-1.5 text-[#A1A1AA] hover:text-white"
+              className="xl:hidden p-1.5 text-[#A1A1AA] hover:text-white cursor-pointer"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6 text-[#D4AF37]" />}
@@ -196,18 +195,18 @@ export const Navbar: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               autoFocus
-              className="w-full bg-[#121216] border border-[#24242D] focus:border-[#D4AF37] text-[#F4F4F5] px-4 py-2 text-sm rounded-sm focus:outline-none"
+              className="w-full bg-[#121216] border border-[#24242D] focus:border-[#D4AF37] text-[#F4F4F5] px-4 py-2 text-xs sm:text-sm rounded-sm focus:outline-none min-w-0"
             />
-            <Button type="submit" variant="gold" size="sm">
+            <Button type="submit" variant="gold" size="sm" className="shrink-0">
               SEARCH
             </Button>
           </form>
         )}
       </div>
 
-      {/* Mobile Dropdown Navigation */}
+      {/* Mobile / Tablet Dropdown Navigation with Extreme Zoom Safety */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#0E0E12] border-b border-[#24242D] px-6 py-4 space-y-3 font-sport text-sm font-bold uppercase tracking-wider">
+        <div className="xl:hidden bg-[#0E0E12]/98 backdrop-blur-md border-b border-[#24242D] px-6 py-4 space-y-3 font-sport text-sm font-bold uppercase tracking-wider max-h-[calc(100dvh-4.5rem)] overflow-y-auto overscroll-contain shadow-2xl">
           {navLinks.map((link) => {
             if (link.label === 'BULK ORDERS') {
               return (
@@ -217,7 +216,7 @@ export const Navbar: React.FC = () => {
                     setMobileMenuOpen(false);
                     setBulkModalOpen(true);
                   }}
-                  className="block w-full text-left py-2 text-[#E4E4E7] hover:text-[#D4AF37]"
+                  className="block w-full text-left py-2 text-[#E4E4E7] hover:text-[#D4AF37] cursor-pointer"
                 >
                   {link.label}
                 </button>
@@ -241,7 +240,7 @@ export const Navbar: React.FC = () => {
                 setMobileMenuOpen(false);
                 setAuthModalOpen(true);
               }}
-              className="block w-full text-left py-2 text-[#D4AF37] font-bold uppercase"
+              className="block w-full text-left py-2 text-[#D4AF37] font-bold uppercase cursor-pointer"
             >
               SIGN IN / REGISTER
             </button>

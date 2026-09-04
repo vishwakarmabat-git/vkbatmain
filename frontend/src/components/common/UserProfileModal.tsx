@@ -86,14 +86,14 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
           />
 
           {/* Modal / Popover Container */}
-          <div className="fixed inset-0 z-50 pointer-events-none flex items-end sm:items-center justify-center md:justify-end md:items-start p-3 sm:p-6 md:pt-24 md:pr-10 lg:pr-20">
+          <div className="fixed inset-0 z-50 pointer-events-none flex items-end sm:items-center justify-center md:justify-end md:items-start p-3 sm:p-6 md:pt-20 md:pr-6 lg:pr-16 overflow-y-auto">
             <motion.div
               ref={menuRef}
               initial={{ opacity: 0, y: 24, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.96 }}
               transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-              className="pointer-events-auto w-full max-w-md md:w-84 bg-[#121218]/95 backdrop-blur-2xl border border-[#D4AF37]/35 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.85)] p-5 text-left font-sport overflow-hidden relative"
+              className="pointer-events-auto w-full max-w-[min(calc(100vw-1.5rem),22rem)] bg-[#121218]/95 backdrop-blur-2xl border border-[#D4AF37]/35 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.85)] p-5 text-left font-sport relative max-h-[85dvh] overflow-y-auto overscroll-contain"
             >
               {/* Subtle top ambient glow */}
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-12 bg-[#D4AF37]/15 blur-2xl pointer-events-none rounded-full" />

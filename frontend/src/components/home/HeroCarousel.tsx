@@ -97,8 +97,8 @@ export const HeroCarousel: React.FC = () => {
                 </div>
               )}
 
-              {/* Huge Bold Heading */}
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-black tracking-tight text-white uppercase leading-[1.02]">
+              {/* Huge Bold Heading with Fluid Clamp */}
+              <h1 className="text-[clamp(1.75rem,5vw+0.5rem,4.5rem)] font-serif font-black tracking-tight text-white uppercase leading-[1.04] break-words">
                 {renderTitle(slide.title)}
               </h1>
 
@@ -109,23 +109,23 @@ export const HeroCarousel: React.FC = () => {
                 </p>
               )}
 
-              {/* Buttons with Cricket Theme */}
-              <div className="flex flex-wrap items-center gap-4 pt-2 font-sport tracking-widest text-xs">
+              {/* Buttons with Cricket Theme & Responsive Sizing */}
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2 font-sport tracking-widest text-xs">
                 {slide.cta_text && (
                   <Link
                     to={slide.cta_link || '/products'}
-                    className="relative overflow-hidden bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] hover:shadow-[0_0_30px_rgba(201,24,43,0.6)] border-y border-dashed border-white/60 text-white font-black py-4 px-8 rounded-xs uppercase transition-all flex items-center gap-2.5 bat-swing-shine active:scale-95 group/btn"
+                    className="w-full sm:w-auto text-center justify-center relative overflow-hidden bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] hover:shadow-[0_0_30px_rgba(201,24,43,0.6)] border-y border-dashed border-white/60 text-white font-black py-3 sm:py-4 px-5 sm:px-8 rounded-xs uppercase transition-all flex items-center gap-2.5 bat-swing-shine active:scale-95 group/btn"
                   >
-                    <CricketBallIcon size={16} className="group-hover/btn:rotate-45 transition-transform duration-300" />
+                    <CricketBallIcon size={16} className="shrink-0 group-hover/btn:rotate-45 transition-transform duration-300" />
                     <span>{slide.cta_text}</span>
                   </Link>
                 )}
                 {slide.secondary_cta_text && (
                   <Link
                     to={slide.secondary_cta_link || '/contact'}
-                    className="bg-[#0E1017]/80 hover:bg-[#07150E] border-2 border-[#E2E8F0]/80 hover:border-[#00FF87] text-white hover:text-[#00FF87] hover:shadow-[0_0_25px_rgba(0,255,135,0.3)] font-black py-3.5 px-8 rounded-xs uppercase transition-all flex items-center gap-2 bat-swing-shine active:scale-95"
+                    className="w-full sm:w-auto text-center justify-center bg-[#0E1017]/80 hover:bg-[#07150E] border-2 border-[#E2E8F0]/80 hover:border-[#00FF87] text-white hover:text-[#00FF87] hover:shadow-[0_0_25px_rgba(0,255,135,0.3)] font-black py-2.5 sm:py-3.5 px-5 sm:px-8 rounded-xs uppercase transition-all flex items-center gap-2 bat-swing-shine active:scale-95"
                   >
-                    <CricketBatIcon size={16} className="text-[#D4AF37]" />
+                    <CricketBatIcon size={16} className="text-[#D4AF37] shrink-0" />
                     <span>{slide.secondary_cta_text}</span>
                   </Link>
                 )}

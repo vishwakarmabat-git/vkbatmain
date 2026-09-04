@@ -34,7 +34,8 @@ export const AdminProductFormPage: React.FC = () => {
   const [comparePrice, setComparePrice] = useState<number | string>(24999);
   const [shortDesc, setShortDesc] = useState('');
   const [fullDesc, setFullDesc] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [primaryImageUrl, setPrimaryImageUrl] = useState('');
+  const [secondaryImageUrl, setSecondaryImageUrl] = useState('');
   const [isFeatured, setIsFeatured] = useState(false);
   const [isBestseller, setIsBestseller] = useState(false);
   const [status, setStatus] = useState<'active' | 'draft' | 'archived'>('active');
@@ -69,7 +70,14 @@ export const AdminProductFormPage: React.FC = () => {
           setComparePrice(p.compare_price || '');
           setShortDesc(p.short_description || '');
           setFullDesc(p.full_description || '');
-          setImageUrl(p.images?.[0]?.image_url || '');
+          
+          // Dual Image support (like hittersports.in)
+          const primaryImg = p.images?.find((img) => img.is_primary) || p.images?.[0];
+          setPrimaryImageUrl(primaryImg?.image_url || '');
+
+          const secondaryImg = p.images?.find((img) => !img.is_primary && img.image_url !== primaryImg?.image_url) || (p.images && p.images.length > 1 ? p.images[1] : undefined);
+          setSecondaryImageUrl(secondaryImg?.image_url || '');
+
           setIsFeatured(p.is_featured);
           setIsBestseller(p.is_bestseller);
           setStatus(p.status);
@@ -95,6 +103,24 @@ export const AdminProductFormPage: React.FC = () => {
     e.preventDefault();
     setLoading(true);
 
+    const imagesPayload: any[] = [];
+    if (primaryImageUrl.trim()) {
+      imagesPayload.push({
+        image_url: primaryImageUrl.trim(),
+        alt_text: `${name} - Primary Blade View`,
+        display_order: 0,
+        is_primary: true,
+      });
+    }
+    if (secondaryImageUrl.trim()) {
+      imagesPayload.push({
+        image_url: secondaryImageUrl.trim(),
+        alt_text: `${name} - Secondary Angle View`,
+        display_order: imagesPayload.length === 0 ? 0 : 1,
+        is_primary: imagesPayload.length === 0,
+      });
+    }
+
     const payload: any = {
       name,
       slug,
@@ -116,9 +142,7 @@ export const AdminProductFormPage: React.FC = () => {
       is_featured: isFeatured,
       is_bestseller: isBestseller,
       status,
-      images: imageUrl
-        ? [{ image_url: imageUrl, alt_text: name, display_order: 0, is_primary: true }]
-        : undefined,
+      images: imagesPayload.length > 0 ? imagesPayload : [],
     };
 
     try {
@@ -184,33 +208,91 @@ export const AdminProductFormPage: React.FC = () => {
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#A1A1AA] font-sport mb-1.5">
+              BLADE ARCHITECTURAL CATEGORY
+            </label>
+            <select
+              value={categoryId}
+              onChange={(e) => {
+                setCategoryId(e.target.value);
+                const selCat = categories.find((c) => c.id === e.target.value);
+                if (selCat) setBladeArchitecture(selCat.name);
+              }}
+              className="w-full bg-[#121216] border border-[#24242D] text-white p-2.5 text-sm rounded-sm"
+            >
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Product Photography - Dual View Showcase (Hittersports Style) */}
+        <div className="bg-[#121216] border border-[#24242D] p-6 rounded-md space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#24242D] pb-3">
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-[#A1A1AA] font-sport mb-1.5">
-                BLADE ARCHITECTURAL CATEGORY
-              </label>
-              <select
-                value={categoryId}
-                onChange={(e) => {
-                  setCategoryId(e.target.value);
-                  const selCat = categories.find((c) => c.id === e.target.value);
-                  if (selCat) setBladeArchitecture(selCat.name);
-                }}
-                className="w-full bg-[#121216] border border-[#24242D] text-white p-2.5 text-sm rounded-sm"
-              >
-                {categories.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
+              <h3 className="font-sport font-bold text-base text-[#F4F4F5] uppercase flex items-center gap-2">
+                <ImageIcon className="w-4 h-4 text-[#D4AF37]" />
+                <span>PRODUCT PHOTOGRAPHY (DUAL PICTURES — HITTERSPORTS STYLE)</span>
+              </h3>
+              <p className="text-xs text-[#8E97A8] font-sport mt-0.5">
+                Upload 2 pictures: Picture 1 shows normally in catalog (zoomed blade); Picture 2 displays when customer hovers cursor over product!
+              </p>
+            </div>
+            <span className="text-[10px] font-sport font-black uppercase tracking-wider px-2.5 py-1 bg-[#D4AF37]/10 text-[#F5C542] border border-[#D4AF37]/30 rounded-xs self-start sm:self-auto">
+              DUAL HOVER SYSTEM
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+            {/* 1. Primary Image (Normal / Zoomed Blade View) */}
+            <div className="bg-[#09090E] border border-[#20202C] p-4 rounded-lg space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-sport font-bold text-white uppercase flex items-center gap-2">
+                  <span className="w-5 h-5 rounded-full bg-[#D4AF37] text-black text-[11px] font-black flex items-center justify-center shrink-0">
+                    1
+                  </span>
+                  <span>PICTURE 1: MAIN (ZOOMED BLADE VIEW)</span>
+                </span>
+                <span className="text-[10px] text-[#F5C542] font-sport font-bold uppercase tracking-wider px-2 py-0.5 bg-[#D4AF37]/10 rounded-xs">
+                  DEFAULT VIEW
+                </span>
+              </div>
+              <p className="text-xs text-[#8E97A8] leading-relaxed">
+                Visible normally on product cards. Best with a zoomed-in shot of the bat face, sticker, and grains (like hittersports.in).
+              </p>
+              <DeviceImageUpload
+                label="UPLOAD PRIMARY PICTURE (DEVICE OR URL)"
+                value={primaryImageUrl}
+                onChange={(url) => setPrimaryImageUrl(url)}
+              />
             </div>
 
-            <DeviceImageUpload
-              label="BAT STUDIO IMAGE (UPLOAD FROM DEVICE)"
-              value={imageUrl}
-              onChange={(url) => setImageUrl(url)}
-            />
+            {/* 2. Secondary Image (Hover / Full Angle View) */}
+            <div className="bg-[#09090E] border border-[#20202C] p-4 rounded-lg space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-sport font-bold text-white uppercase flex items-center gap-2">
+                  <span className="w-5 h-5 rounded-full bg-[#C9182B] text-white text-[11px] font-black flex items-center justify-center shrink-0">
+                    2
+                  </span>
+                  <span>PICTURE 2: HOVER (FULL BAT / ANGLE)</span>
+                </span>
+                <span className="text-[10px] text-[#FF4D4D] font-sport font-bold uppercase tracking-wider px-2 py-0.5 bg-[#C9182B]/10 rounded-xs">
+                  REVEALS ON HOVER
+                </span>
+              </div>
+              <p className="text-xs text-[#8E97A8] leading-relaxed">
+                Appears automatically when customer hovers mouse on the product card. Best with full bat angled or 3D view.
+              </p>
+              <DeviceImageUpload
+                label="UPLOAD SECONDARY PICTURE (DEVICE OR URL)"
+                value={secondaryImageUrl}
+                onChange={(url) => setSecondaryImageUrl(url)}
+              />
+            </div>
           </div>
         </div>
 

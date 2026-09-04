@@ -100,21 +100,21 @@ export const ProductsPage: React.FC = () => {
         </div>
 
         {/* Top Controls: Search Bar & Sort Dropdown */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
           {/* Search Input */}
-          <div className="relative min-w-[220px]">
+          <div className="relative w-full xs:w-auto flex-1 sm:flex-initial sm:min-w-[200px] min-w-0">
             <Search className="w-4 h-4 text-[#71717A] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search bats..."
               value={currentSearch}
               onChange={(e) => updateParam('search', e.target.value)}
-              className="w-full bg-[#121216] border border-[#24242D] focus:border-[#D4AF37] text-xs font-sport tracking-wider text-[#F4F4F5] pl-9 pr-3 py-2 rounded-xs focus:outline-none"
+              className="w-full bg-[#121216] border border-[#24242D] focus:border-[#D4AF37] text-xs font-sport tracking-wider text-[#F4F4F5] pl-9 pr-3 py-2 rounded-xs focus:outline-none min-w-0"
             />
           </div>
 
           {/* Sort Dropdown */}
-          <div className="min-w-[170px]">
+          <div className="w-full xs:w-auto flex-1 sm:flex-initial sm:min-w-[170px] min-w-0">
             <Select
               value={currentSort}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateParam('sort', e.target.value)}
@@ -132,7 +132,7 @@ export const ProductsPage: React.FC = () => {
           {/* Mobile filter toggle */}
           <button
             onClick={() => setFilterDrawerOpen(!filterDrawerOpen)}
-            className="lg:hidden p-2 bg-[#121216] border border-[#24242D] rounded-sm text-[#A1A1AA]"
+            className="lg:hidden p-2 bg-[#121216] border border-[#24242D] rounded-sm text-[#A1A1AA] cursor-pointer shrink-0"
           >
             <Filter className="w-5 h-5" />
           </button>
@@ -237,10 +237,10 @@ export const ProductsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Product Catalog Grid */}
-        <div className="lg:col-span-3">
+        {/* Product Catalog Grid - Fluid Auto-Fit/Auto-Fill */}
+        <div className="lg:col-span-3 min-w-0">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,250px),1fr))] gap-5 sm:gap-6">
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="h-96 bg-[#121216] border border-[#24242D] rounded-md animate-pulse" />
               ))}
@@ -254,7 +254,7 @@ export const ProductsPage: React.FC = () => {
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,250px),1fr))] gap-5 sm:gap-6">
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

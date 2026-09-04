@@ -80,7 +80,7 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 30 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-lg bg-[#111116] border border-[#D4AF37]/40 rounded-2xl p-6 sm:p-8 text-center shadow-[0_20px_60px_rgba(0,0,0,0.9),0_0_30px_rgba(212,175,55,0.15)] space-y-5 my-8 z-10 overflow-hidden"
+            className="relative w-full max-w-[min(calc(100vw-1.5rem),32rem)] bg-[#111116] border border-[#D4AF37]/40 rounded-2xl p-5 sm:p-8 text-center shadow-[0_20px_60px_rgba(0,0,0,0.9),0_0_30px_rgba(212,175,55,0.15)] space-y-5 my-auto z-10 max-h-[90dvh] overflow-y-auto overscroll-contain"
           >
             {/* Top Glowing Ambient Light */}
             <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-64 h-32 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />

@@ -18,7 +18,7 @@ export const LatestCollectionSection: React.FC<LatestCollectionSectionProps> = (
           <span className="text-xs font-sport font-black tracking-[0.25em] text-[#D4AF37] uppercase">
             LATEST COLLECTION
           </span>
-          <h2 className="text-4xl sm:text-6xl font-serif font-black tracking-tight text-white uppercase leading-none">
+          <h2 className="text-[clamp(1.75rem,4vw+0.5rem,3.75rem)] font-serif font-black tracking-tight text-white uppercase leading-tight break-words">
             New Arrival
           </h2>
           <p className="text-xs sm:text-sm text-[#A1A1AA] leading-relaxed max-w-xl mx-auto font-sans">
@@ -28,7 +28,7 @@ export const LatestCollectionSection: React.FC<LatestCollectionSectionProps> = (
 
         {/* Product Cards Grid or Empty Notice */}
         {products.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8 justify-items-center">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 sm:gap-6 lg:gap-8 justify-items-center w-full">
             {products.map((product, idx) => (
               <motion.div
                 key={product.id || idx}

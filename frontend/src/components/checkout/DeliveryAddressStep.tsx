@@ -495,10 +495,10 @@ export const DeliveryAddressStep: React.FC<DeliveryAddressStepProps> = ({
             type="submit"
             variant="gold"
             size="lg"
-            className="w-full text-sm sm:text-base py-3.5 flex items-center justify-center gap-2 font-black shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+            rightIcon={<ArrowRight className="w-4 h-4 shrink-0" />}
+            className="w-full text-sm sm:text-base py-3.5 font-black shadow-[0_0_20px_rgba(212,175,55,0.3)]"
           >
-            <span>CONTINUE TO PAYMENT</span>
-            <ArrowRight className="w-4 h-4" />
+            CONTINUE TO PAYMENT
           </Button>
         </div>
       </form>

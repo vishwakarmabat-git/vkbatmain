@@ -156,7 +156,7 @@ export const CartPage: React.FC = () => {
                   </div>
 
                   {/* Customization Details Grid */}
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 bg-[#181821] p-3 rounded-xs text-[11px] font-sport text-[#A1A1AA]">
+                  <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-2 bg-[#181821] p-3 rounded-xs text-[11px] font-sport text-[#A1A1AA]">
                     <div>
                       <span className="text-[#71717A] block">WEIGHT:</span>
                       <span className="text-[#D4AF37] font-bold">{item.customization.weight}</span>
@@ -186,7 +186,7 @@ export const CartPage: React.FC = () => {
                   </div>
 
                   {/* Pricing and Quantity Controls */}
-                  <div className="flex items-center justify-between pt-2">
+                  <div className="flex flex-wrap items-center justify-between gap-2 pt-2">
                     <div className="flex items-center bg-[#181821] border border-[#24242D] rounded-xs">
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}

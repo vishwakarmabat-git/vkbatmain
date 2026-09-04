@@ -185,10 +185,10 @@ export const PaymentMethodStep: React.FC<PaymentMethodStepProps> = ({
           variant="outline"
           size="md"
           onClick={onBack}
-          className="w-full sm:w-auto flex items-center justify-center gap-2"
+          leftIcon={<ArrowLeft className="w-4 h-4 shrink-0" />}
+          className="w-full sm:w-auto"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span>BACK TO ADDRESS</span>
+          BACK TO ADDRESS
         </Button>
 
         <Button
@@ -196,10 +196,10 @@ export const PaymentMethodStep: React.FC<PaymentMethodStepProps> = ({
           variant="gold"
           size="lg"
           onClick={onProceed}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 font-black shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+          rightIcon={<ArrowRight className="w-4 h-4 shrink-0" />}
+          className="w-full sm:w-auto font-black shadow-[0_0_20px_rgba(212,175,55,0.3)]"
         >
-          <span>CONTINUE TO REVIEW</span>
-          <ArrowRight className="w-4 h-4" />
+          CONTINUE TO REVIEW
         </Button>
       </div>
     </div>

@@ -80,7 +80,8 @@ export const ProductDetailsPage: React.FC = () => {
       try {
         const prod = await productService.getProductBySlug(slug);
         setProduct(prod);
-        setSelectedImage(prod.images?.[0]?.image_url || '');
+        const primaryImg = prod.images?.find((img) => img.is_primary) || prod.images?.[0];
+        setSelectedImage(primaryImg?.image_url || '');
 
         // Fetch approved reviews
         const revRes = await apiClient.get<Review[]>(`/reviews/product/${prod.id}`);
@@ -194,7 +195,7 @@ export const ProductDetailsPage: React.FC = () => {
                       : 'border-[#24242D] opacity-60 hover:opacity-100'
                   }`}
                 >
-                  <img src={getImageUrl(img.image_url, '/VKCAT.png')} alt="Thumbnail" onError={handleImageError} className="w-full h-full object-cover" />
+                  <img src={getImageUrl(img.image_url, '/VKCAT.png')} alt="Thumbnail" onError={handleImageError} className="w-full h-full object-contain p-1 bg-[#09090D]" />
                 </button>
               ))}
             </div>
@@ -295,7 +296,7 @@ export const ProductDetailsPage: React.FC = () => {
           <Badge variant="gold">PRO GRADE</Badge>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 font-sport tracking-wider text-xs">
+        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 font-sport tracking-wider text-xs">
           <div className="p-4 bg-[#181821] rounded-xs border border-[#24242D]">
             <span className="text-[#71717A] uppercase block">WILLOW GRADING</span>
             <span className="font-bold text-[#F4F4F5] text-sm mt-1 block">{product.willow_grade || 'Grade 1 English Willow'}</span>

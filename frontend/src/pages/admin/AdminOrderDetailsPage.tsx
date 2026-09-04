@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Save, Truck, Package, Shield, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Save, Truck, Package, Shield, CheckCircle2, Printer } from 'lucide-react';
 import { orderService } from '@/services/orderService';
 import { adminService } from '@/services/adminService';
 import { Order } from '@/types';
 import { Button } from '@/components/ui/Button';
 import { Input, Textarea } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
+import { ProfessionalInvoice } from '@/components/invoice/ProfessionalInvoice';
 import { toast } from 'sonner';
 
 export const AdminOrderDetailsPage: React.FC = () => {
@@ -73,27 +74,38 @@ export const AdminOrderDetailsPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8 text-left">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#24242D] pb-4">
-        <div className="flex items-center gap-3">
-          <Link to="/admin/orders" className="p-2 text-[#71717A] hover:text-white">
-            <ArrowLeft className="w-5 h-5" />
-          </Link>
-          <div>
-            <span className="text-xs font-sport font-bold tracking-widest text-[#D4AF37] uppercase">
-              ORDER FULFILLMENT & DISPATCH
-            </span>
-            <h1 className="text-2xl sm:text-3xl font-serif font-black text-[#F4F4F5] uppercase mt-0.5">
-              ORDER: {order.order_number}
-            </h1>
+    <>
+      <div className="screen-only max-w-5xl mx-auto space-y-8 text-left">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#24242D] pb-4">
+          <div className="flex items-center gap-3">
+            <Link to="/admin/orders" className="p-2 text-[#71717A] hover:text-white">
+              <ArrowLeft className="w-5 h-5" />
+            </Link>
+            <div>
+              <span className="text-xs font-sport font-bold tracking-widest text-[#D4AF37] uppercase">
+                ORDER FULFILLMENT & DISPATCH
+              </span>
+              <h1 className="text-2xl sm:text-3xl font-serif font-black text-[#F4F4F5] uppercase mt-0.5">
+                ORDER: {order.order_number}
+              </h1>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => window.print()}
+              leftIcon={<Printer className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />}
+            >
+              PRINT TAX INVOICE
+            </Button>
+            <Badge variant={order.order_status === 'delivered' ? 'success' : 'gold'}>
+              {order.order_status.toUpperCase()}
+            </Badge>
           </div>
         </div>
-
-        <Badge variant={order.order_status === 'delivered' ? 'success' : 'gold'}>
-          {order.order_status.toUpperCase()}
-        </Badge>
-      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left: Items, Customizations & Customer Info (7 cols) */}
@@ -268,6 +280,12 @@ export const AdminOrderDetailsPage: React.FC = () => {
           </Button>
         </form>
       </div>
-    </div>
+      </div>
+      {order && (
+        <div className="print-only">
+          <ProfessionalInvoice order={order} />
+        </div>
+      )}
+    </>
   );
 };

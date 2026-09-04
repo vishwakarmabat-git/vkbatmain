@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Package, Truck, Calendar, ShoppingBag, ArrowRight } from 'lucide-react';
+import { Package, Truck, Calendar, ShoppingBag, ArrowRight, FileText } from 'lucide-react';
 import { orderService } from '@/services/orderService';
 import { Order } from '@/types';
 import { Button } from '@/components/ui/Button';
@@ -106,16 +106,24 @@ export const OrdersPage: React.FC = () => {
               </div>
 
               {/* Order Footer */}
-              <div className="pt-3 border-t border-[#24242D] flex items-center justify-between">
+              <div className="pt-3 border-t border-[#24242D] flex flex-wrap items-center justify-between gap-3">
                 <div className="text-xs font-sport text-[#71717A]">
                   Payment: <span className="text-white uppercase font-bold">{order.payment_method}</span> ({order.payment_status})
                 </div>
 
-                <div className="text-right">
-                  <span className="text-xs font-sport text-[#A1A1AA] uppercase mr-2">Grand Total:</span>
-                  <span className="text-xl font-sport font-black text-[#D4AF37]">
-                    ₹{order.grand_total.toLocaleString('en-IN')}
-                  </span>
+                <div className="flex items-center gap-3">
+                  <Link to={`/order-success/${order.order_number}`}>
+                    <Button variant="outline" size="sm" leftIcon={<FileText className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />}>
+                      INVOICE & STATUS
+                    </Button>
+                  </Link>
+
+                  <div className="text-right">
+                    <span className="text-xs font-sport text-[#A1A1AA] uppercase mr-2">Grand Total:</span>
+                    <span className="text-xl font-sport font-black text-[#D4AF37]">
+                      ₹{order.grand_total.toLocaleString('en-IN')}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

@@ -262,7 +262,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="relative w-full max-w-md bg-[#12121A] border border-[#242436] rounded-2xl p-5 sm:p-8 shadow-2xl text-left z-10 space-y-4 sm:space-y-6 max-h-[90dvh] overflow-y-auto my-auto"
+            className="relative w-full max-w-[min(calc(100vw-1.5rem),28rem)] bg-[#12121A] border border-[#242436] rounded-2xl p-4 sm:p-8 shadow-2xl text-left z-10 space-y-4 sm:space-y-6 max-h-[90dvh] overflow-y-auto overscroll-contain my-auto"
           >
             {/* Close Button */}
             <button

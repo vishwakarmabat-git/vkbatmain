@@ -377,13 +377,13 @@ export const CartDrawer: React.FC = () => {
             </div>
 
             {/* B) DESKTOP VIEW: SLEEK RIGHT-SIDE DRAWER */}
-            <div className="hidden sm:flex fixed inset-y-0 right-0 max-w-full pl-10">
+            <div className="hidden sm:flex fixed inset-y-0 right-0 max-w-full pl-0 sm:pl-4">
               <motion.div
                 initial={{ x: '100%' }}
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
                 transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-                className="w-screen max-w-md bg-[#121216] border-l border-[#24242D] shadow-2xl flex flex-col justify-between overflow-hidden"
+                className="w-screen max-w-[min(100vw,28rem)] bg-[#121216] border-l border-[#24242D] shadow-2xl flex flex-col justify-between overflow-hidden"
               >
                 {/* Desktop Drawer Header */}
                 <div className="p-5 border-b border-[#24242D] flex items-center justify-between bg-[#181821]/50">

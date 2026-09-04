@@ -60,8 +60,8 @@ export const ReconsentModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-300">
-      <div className="bg-[#12121A] border border-[#D4AF37]/50 rounded-2xl max-w-lg w-full p-6 sm:p-8 space-y-6 text-left font-sport shadow-[0_0_50px_rgba(212,175,55,0.2)] relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-300">
+      <div className="bg-[#12121A] border border-[#D4AF37]/50 rounded-2xl w-full max-w-[min(calc(100vw-1.5rem),32rem)] p-4 sm:p-8 space-y-5 sm:space-y-6 text-left font-sport shadow-[0_0_50px_rgba(212,175,55,0.2)] relative max-h-[90dvh] overflow-y-auto overscroll-contain my-auto">
         <div className="flex items-center gap-3 text-[#D4AF37]">
           <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/15 border border-[#D4AF37]/40 flex items-center justify-center shrink-0">
             <ShieldAlert className="w-5 h-5" />

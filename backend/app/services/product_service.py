@@ -185,8 +185,8 @@ class ProductService:
                     product_id=product.id,
                     image_url=img.image_url,
                     alt_text=img.alt_text or product.name,
-                    display_order=img.display_order if img.display_order else idx,
-                    is_primary=img.is_primary if idx > 0 else True
+                    display_order=img.display_order if img.display_order is not None else idx,
+                    is_primary=img.is_primary if img.is_primary is not None else (idx == 0)
                 )
                 db.add(img_obj)
 
@@ -242,8 +242,8 @@ class ProductService:
                     product_id=product.id,
                     image_url=img.image_url,
                     alt_text=img.alt_text or product.name,
-                    display_order=img.display_order if img.display_order else idx,
-                    is_primary=img.is_primary if idx > 0 else True
+                    display_order=img.display_order if img.display_order is not None else idx,
+                    is_primary=img.is_primary if img.is_primary is not None else (idx == 0)
                 ))
             del update_data["images"]
 

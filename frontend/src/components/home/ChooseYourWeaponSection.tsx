@@ -77,7 +77,7 @@ export const ChooseYourWeaponSection: React.FC<ChooseYourWeaponSectionProps> = (
             <span>AUTHENTIC GUJARAT ARTISAN CLEFT</span>
           </div>
 
-          <h2 className="text-4xl sm:text-6xl font-serif font-black tracking-tight text-white uppercase leading-none">
+          <h2 className="text-[clamp(1.75rem,4vw+0.5rem,3.75rem)] font-serif font-black tracking-tight text-white uppercase leading-tight break-words">
             CHOOSE YOUR WEAPON
           </h2>
 
@@ -100,7 +100,7 @@ export const ChooseYourWeaponSection: React.FC<ChooseYourWeaponSectionProps> = (
                 placeholder="Search bats by name, willow grade, profile..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-[#0E1017] border border-[#202533] focus:border-[#D4AF37] text-white pl-10 pr-4 py-2.5 rounded-lg text-xs focus:outline-none placeholder:text-[#52525B] shadow-sm"
+                className="w-full bg-[#0E1017] border border-[#202533] focus:border-[#D4AF37] text-white pl-10 pr-4 py-2.5 rounded-lg text-xs focus:outline-none placeholder:text-[#52525B] shadow-sm min-w-0"
               />
             </div>
 
@@ -142,9 +142,9 @@ export const ChooseYourWeaponSection: React.FC<ChooseYourWeaponSectionProps> = (
           </div>
         </div>
 
-        {/* Product Cards Grid */}
+        {/* Product Cards Grid - Fluid auto-reflow */}
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8 justify-items-center">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 sm:gap-6 lg:gap-8 justify-items-center w-full">
             {filteredProducts.map((product, idx) => (
               <motion.div
                 key={product.id || idx}

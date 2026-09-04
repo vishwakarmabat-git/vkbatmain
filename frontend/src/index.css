@@ -18,12 +18,32 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  /* Universal Media & Image Responsive Safety */
+  img, svg, video, canvas, audio, iframe, embed, object {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Universal text wrapping safety */
+  p, h1, h2, h3, h4, h5, h6, span, a, label, button {
+    overflow-wrap: anywhere;
   }
 
   h1, h2, h3, h4, h5, h6, .font-serif, .font-display, .font-harrison {
     font-family: 'Harrison Rough', 'Work Sans', 'Barlow Condensed', sans-serif;
     letter-spacing: -0.025em;
   }
+}
+
+/* Fluid responsive container helper */
+.fluid-container {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 3vw, 2.5rem);
 }
 
 @theme {
@@ -229,5 +249,82 @@
 }
 .sweet-spot-pulse {
   animation: sweetSpotPulse 2.2s infinite;
+}
+
+/* ==========================================================================
+   PRINT INVOICE SYSTEM (1-PAGE GUARANTEE)
+   ========================================================================== */
+@media screen {
+  .print-only {
+    display: none !important;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 6mm 8mm;
+  }
+
+  /* Reset body and html for high-fidelity white paper printing */
+  html, body {
+    background: #ffffff !important;
+    color: #0a0a0a !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    font-size: 11px !important;
+  }
+
+  /* Hide entire website chrome: nav, footer, toasts, announcements, screen views */
+  header,
+  footer,
+  nav,
+  aside,
+  .announcement-bar,
+  .no-print,
+  .screen-only,
+  [data-sonner-toaster],
+  #toast-container,
+  .cookie-consent-banner {
+    display: none !important;
+  }
+
+  /* Reveal and format the single-page invoice container */
+  .print-only {
+    display: block !important;
+    visibility: visible !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #0a0a0a !important;
+  }
+
+  .print-single-page-invoice {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* Avoid page break inside table rows or sections */
+  table, tr, td, th, .print-single-page-invoice > div {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
 }
 
