@@ -22,7 +22,7 @@ export const AdminProductFormPage: React.FC = () => {
   const [sku, setSku] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [bladeArchitecture, setBladeArchitecture] = useState('Single Blade');
-  const [willowGrade, setWillowGrade] = useState('Grade 1+ English Willow');
+  const [willowGrade, setWillowGrade] = useState('Grade 1+ Kashmir Willow');
   const [pressingType, setPressingType] = useState('Precision Hand Pressed');
   const [edgeThickness, setEdgeThickness] = useState('40–42mm');
   const [spineHeight, setSpineHeight] = useState('65–67mm');

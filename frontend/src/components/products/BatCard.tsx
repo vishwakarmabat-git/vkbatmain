@@ -235,9 +235,9 @@ export const BatCard: React.FC<BatCardProps> = ({ product }) => {
 
       {/* Info & Price */}
       <div className="space-y-1">
-        <div className="flex items-center justify-center gap-1.5 text-[10px] font-sport uppercase tracking-wider text-[#D4AF37]">
-          <CricketBatIcon size={12} className="shrink-0" />
-          <span>Handcrafted Kashmir Willow</span>
+        <div className="flex items-center justify-center gap-1 text-[9px] sm:text-[10px] font-sport uppercase tracking-wider text-[#D4AF37]">
+          <CricketBatIcon size={11} className="shrink-0" />
+          <span className="truncate max-w-[130px] sm:max-w-none">Handcrafted Kashmir Willow</span>
         </div>
 
         <Link to={`/products/${product.slug}`}>
@@ -260,9 +260,9 @@ export const BatCard: React.FC<BatCardProps> = ({ product }) => {
       <button
         type="button"
         onClick={handleAddToCart}
-        className="w-full relative overflow-hidden bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] hover:shadow-[0_0_22px_rgba(201,24,43,0.55)] border-y border-dashed border-white/50 text-white font-sport font-black py-2.5 sm:py-3 px-3 rounded-xs text-[10px] sm:text-xs tracking-wider sm:tracking-widest uppercase transition-all duration-300 cursor-pointer shadow-md active:scale-95 bat-swing-shine flex items-center justify-center gap-2 group/btn"
+        className="w-full relative overflow-hidden bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] hover:shadow-[0_0_22px_rgba(201,24,43,0.55)] border-y border-dashed border-white/50 text-white font-sport font-black py-2 sm:py-3 px-2 sm:px-3 rounded-xs text-[9px] sm:text-xs tracking-wider uppercase transition-all duration-300 cursor-pointer shadow-md active:scale-95 bat-swing-shine flex items-center justify-center gap-1.5 group/btn"
       >
-        <CricketBallIcon size={14} className="shrink-0 group-hover/btn:rotate-45 transition-transform duration-300" />
+        <CricketBallIcon size={12} className="shrink-0 group-hover/btn:rotate-45 transition-transform duration-300" />
         <span>ADD TO CART</span>
       </button>
     </div>

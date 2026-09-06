@@ -58,7 +58,7 @@ export const HomePage: React.FC = () => {
       <CategoriesCollectionSection categories={categories} />
 
       {/* SECTION 3: LATEST COLLECTION (NEW ARRIVAL) */}
-      <LatestCollectionSection products={products.slice(0, 4)} />
+      <LatestCollectionSection products={products} />
 
       {/* SECTION 4: OUR COLLECTION (CHOOSE YOUR WEAPON) */}
       <ChooseYourWeaponSection products={products} categories={categories} />

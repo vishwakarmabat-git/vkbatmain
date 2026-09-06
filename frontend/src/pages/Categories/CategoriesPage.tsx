@@ -40,7 +40,9 @@ export const CategoriesPage: React.FC = () => {
                 <span className="text-xs font-sport font-black text-[#D4AF37] tracking-widest uppercase">
                   ARCHITECTURAL EDITION 0{idx + 1}
                 </span>
-                <Badge variant="gold">FROM ₹{Number(cat.starting_price).toLocaleString('en-IN')}</Badge>
+                {Number(cat.starting_price) > 0 && (
+                  <Badge variant="gold">FROM ₹{Number(cat.starting_price).toLocaleString('en-IN')}</Badge>
+                )}
               </div>
 
               <div className="w-full aspect-[4/3] bg-[#07070A] border border-[#181822] rounded-lg overflow-hidden flex items-center justify-center p-4">

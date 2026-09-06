@@ -21,8 +21,8 @@ export const AdminCategoriesPage: React.FC = () => {
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [desc, setDesc] = useState('');
-  const [startingPrice, setStartingPrice] = useState<number>(14999);
-  const [imageUrl, setImageUrl] = useState('/VKCAT.png');
+  const [startingPrice, setStartingPrice] = useState<number | string>('');
+  const [imageUrl, setImageUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Delete Confirmation State
@@ -55,8 +55,8 @@ export const AdminCategoriesPage: React.FC = () => {
     setName('');
     setSlug('');
     setDesc('');
-    setStartingPrice(14999);
-    setImageUrl('/VKCAT.png');
+    setStartingPrice('');
+    setImageUrl('');
     setModalOpen(true);
   };
 
@@ -65,8 +65,8 @@ export const AdminCategoriesPage: React.FC = () => {
     setName(cat.name);
     setSlug(cat.slug);
     setDesc(cat.description || '');
-    setStartingPrice(Number(cat.starting_price) || 14999);
-    setImageUrl(cat.image_url || '/VKCAT.png');
+    setStartingPrice(cat.starting_price !== undefined && cat.starting_price !== null ? cat.starting_price : 0);
+    setImageUrl(cat.image_url || '');
     setModalOpen(true);
   };
 
@@ -89,8 +89,8 @@ export const AdminCategoriesPage: React.FC = () => {
         slug: slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
         blade_type: name,
         description: desc,
-        starting_price: Number(startingPrice),
-        image_url: imageUrl || '/VKCAT.png',
+        starting_price: startingPrice === '' ? 0 : Number(startingPrice),
+        image_url: imageUrl || '',
         is_active: true,
       };
 
@@ -141,7 +141,7 @@ export const AdminCategoriesPage: React.FC = () => {
         </div>
 
         <Button variant="gold" size="md" onClick={openCreateModal} leftIcon={<Plus className="w-4 h-4" />}>
-          ADD NEW BLADE EDITION
+          ADD NEW CATEGORY
         </Button>
       </div>
 
@@ -152,7 +152,7 @@ export const AdminCategoriesPage: React.FC = () => {
         </div>
       ) : categories.length === 0 ? (
         <div className="py-16 text-center text-[#71717A] font-sport uppercase tracking-wider">
-          No categories found. Click "Add New Blade Edition" to create one.
+          No categories found. Click "Add New Category" to create one.
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -170,7 +170,7 @@ export const AdminCategoriesPage: React.FC = () => {
                       SLUG: /{c.slug}
                     </span>
                   </div>
-                  <Badge variant="gold">FROM ₹{Number(c.starting_price).toLocaleString('en-IN')}</Badge>
+                  <Badge variant="gold">{Number(c.starting_price) > 0 ? `FROM ₹${Number(c.starting_price).toLocaleString('en-IN')}` : '₹0'}</Badge>
                 </div>
 
                 {/* Inset Bat Image Preview */}
@@ -226,11 +226,11 @@ export const AdminCategoriesPage: React.FC = () => {
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        title={editingCategory ? `EDIT BLADE EDITION: ${editingCategory.name}` : 'ADD NEW BLADE EDITION'}
+        title={editingCategory ? `EDIT CATEGORY: ${editingCategory.name}` : 'ADD NEW CATEGORY'}
       >
         <form onSubmit={handleSaveCategory} className="space-y-4 text-left">
           <Input
-            label="EDITION NAME *"
+            label="CATEGORY NAME *"
             placeholder="e.g. Quad Blade Mastercraft"
             value={name}
             onChange={(e) => {
@@ -253,9 +253,10 @@ export const AdminCategoriesPage: React.FC = () => {
           <Input
             label="STARTING PRICE (₹) *"
             type="number"
+            placeholder="0"
             value={startingPrice}
-            onChange={(e) => setStartingPrice(Number(e.target.value))}
-            required
+            onChange={(e) => setStartingPrice(e.target.value === '' ? '' : Number(e.target.value))}
+            min={0}
           />
 
           <DeviceImageUpload

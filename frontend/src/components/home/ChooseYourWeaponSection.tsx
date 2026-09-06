@@ -144,7 +144,7 @@ export const ChooseYourWeaponSection: React.FC<ChooseYourWeaponSectionProps> = (
 
         {/* Product Cards Grid - Fluid auto-reflow */}
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 sm:gap-6 lg:gap-8 justify-items-center w-full">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-6 lg:gap-8 justify-items-center w-full">
             {filteredProducts.map((product, idx) => (
               <motion.div
                 key={product.id || idx}

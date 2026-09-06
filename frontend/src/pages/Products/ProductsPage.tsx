@@ -236,7 +236,7 @@ export const ProductsPage: React.FC = () => {
         {/* Product Catalog Grid - Fluid Auto-Fit/Auto-Fill */}
         <div className="lg:col-span-3 min-w-0">
           {loading ? (
-            <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,250px),1fr))] gap-5 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fill,minmax(min(100%,250px),1fr))] gap-2.5 sm:gap-6">
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="h-96 bg-[#121216] border border-[#24242D] rounded-md animate-pulse" />
               ))}
@@ -250,7 +250,7 @@ export const ProductsPage: React.FC = () => {
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,250px),1fr))] gap-5 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fill,minmax(min(100%,250px),1fr))] gap-2.5 sm:gap-6">
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
