@@ -24,6 +24,7 @@ export const CartDrawer: React.FC = () => {
     applyCoupon,
     removeCoupon,
     getSubtotal,
+    getGSTAmount,
     getGrandTotal,
   } = useCartStore();
 
@@ -32,6 +33,7 @@ export const CartDrawer: React.FC = () => {
   const [isWhatsAppOrdering, setIsWhatsAppOrdering] = useState(false);
 
   const subtotal = getSubtotal();
+  const gstAmount = getGSTAmount();
   const grandTotal = getGrandTotal();
   const totalItemsCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const firstItemImage = items[0]?.product?.images?.[0]?.image_url || '/VKCAT.png';
@@ -337,6 +339,17 @@ export const CartDrawer: React.FC = () => {
                           <span>-₹{couponDiscount.toLocaleString('en-IN')}</span>
                         </div>
                       )}
+                      {gstAmount > 0 ? (
+                        <div className="flex justify-between text-[#A1A1AA]">
+                          <span>GST</span>
+                          <span className="text-[#F4F4F5]">₹{gstAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        </div>
+                      ) : (
+                        <div className="flex justify-between text-[#A1A1AA]">
+                          <span>GST</span>
+                          <span className="text-[#22C55E] font-bold">0% (INCLUDED)</span>
+                        </div>
+                      )}
                       <div className="flex justify-between text-[#A1A1AA]">
                         <span>SHIPPING</span>
                         <span className="text-[#22C55E] font-bold">FREE</span>
@@ -348,7 +361,7 @@ export const CartDrawer: React.FC = () => {
                     </div>
 
                     {/* Mobile CTAs */}
-                    <div className="space-y-1.5 pt-0.5">
+                    <div className="pt-0.5">
                       <Button
                         variant="cricket-ball"
                         size="md"
@@ -358,17 +371,6 @@ export const CartDrawer: React.FC = () => {
                       >
                         <span>PROCEED TO CHECKOUT</span>
                         <span>₹{grandTotal.toLocaleString('en-IN')}</span>
-                      </Button>
-
-                      <Button
-                        variant="whatsapp"
-                        size="sm"
-                        className="w-full"
-                        onClick={handleWhatsAppCartOrder}
-                        isLoading={isWhatsAppOrdering}
-                        leftIcon={<MessageCircle className="w-4 h-4" />}
-                      >
-                        ORDER ALL VIA WHATSAPP
                       </Button>
                     </div>
                   </div>
@@ -563,6 +565,18 @@ export const CartDrawer: React.FC = () => {
                         </div>
                       )}
 
+                      {gstAmount > 0 ? (
+                        <div className="flex justify-between text-[#A1A1AA]">
+                          <span>ESTIMATED GST</span>
+                          <span className="text-[#F4F4F5]">₹{gstAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        </div>
+                      ) : (
+                        <div className="flex justify-between text-[#A1A1AA]">
+                          <span>GST</span>
+                          <span className="text-[#22C55E] font-bold">0% (INCLUDED)</span>
+                        </div>
+                      )}
+
                       <div className="flex justify-between text-[#A1A1AA]">
                         <span>SHIPPING</span>
                         <span className="text-[#22C55E] font-bold">FREE</span>
@@ -575,7 +589,7 @@ export const CartDrawer: React.FC = () => {
                     </div>
 
                     {/* CTAs */}
-                    <div className="space-y-2 pt-2">
+                    <div className="pt-2">
                       <Button
                         variant="cricket-ball"
                         size="lg"
@@ -585,17 +599,6 @@ export const CartDrawer: React.FC = () => {
                       >
                         <span>PROCEED TO CHECKOUT</span>
                         <span>₹{grandTotal.toLocaleString('en-IN')}</span>
-                      </Button>
-
-                      <Button
-                        variant="whatsapp"
-                        size="md"
-                        className="w-full"
-                        onClick={handleWhatsAppCartOrder}
-                        isLoading={isWhatsAppOrdering}
-                        leftIcon={<MessageCircle className="w-4 h-4" />}
-                      >
-                        ORDER ALL VIA WHATSAPP
                       </Button>
                     </div>
                   </div>

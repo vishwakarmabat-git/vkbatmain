@@ -103,7 +103,18 @@ export const useCartStore = create<CartState>()(
       },
 
       getGSTAmount: () => {
-        return 0;
+        const subtotal = get().getSubtotal();
+        const discount = get().couponDiscount;
+        const discountRatio = subtotal > 0 ? Math.max(0, 1 - discount / subtotal) : 1;
+
+        const totalGST = get().items.reduce((sum, item) => {
+          const itemGstRate = Number(item.product?.gst_rate || 0);
+          if (itemGstRate <= 0) return sum;
+          const taxableItemPrice = item.total_price * discountRatio;
+          return sum + (taxableItemPrice * itemGstRate) / 100;
+        }, 0);
+
+        return Math.round(totalGST * 100) / 100;
       },
 
       getShippingFee: () => {
@@ -113,7 +124,9 @@ export const useCartStore = create<CartState>()(
       getGrandTotal: () => {
         const subtotal = get().getSubtotal();
         const discount = get().couponDiscount;
-        return Math.max(0, subtotal - discount);
+        const gst = get().getGSTAmount();
+        const shipping = get().getShippingFee();
+        return Math.max(0, subtotal - discount) + gst + shipping;
       },
 
       getItemCount: () => {

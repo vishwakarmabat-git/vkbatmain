@@ -34,6 +34,7 @@ class ProductBase(BaseModel):
     price: float
     compare_price: Optional[float] = None
     discount_percent: int = 0
+    gst_rate: Optional[float] = 0.0
     
     willow_grade: Optional[str] = None
     blade_architecture: Optional[str] = None
@@ -68,6 +69,7 @@ class ProductUpdate(BaseModel):
     price: Optional[float] = None
     compare_price: Optional[float] = None
     discount_percent: Optional[int] = None
+    gst_rate: Optional[float] = None
     
     willow_grade: Optional[str] = None
     blade_architecture: Optional[str] = None

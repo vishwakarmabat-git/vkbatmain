@@ -10,11 +10,13 @@ def calculate_order_totals(
     discount_amount: float = 0.0,
     gst_percentage: float = 0.0,
     shipping_fee: float = 0.0,
-    free_shipping_threshold: float = 0.0
+    free_shipping_threshold: float = 0.0,
+    calculated_gst_amount: float = None
 ) -> Tuple[float, float, float, float, float]:
     """
     Returns (subtotal, gst_amount, shipping_fee, discount_amount, grand_total) as rounded floats.
-    Bat price is final — zero added taxes, zero added shipping fees.
+    Calculates GST cleanly based on calculated_gst_amount or gst_percentage.
+    Defaults to 0.00 if gst_rate is 0%.
     """
     d_subtotal = to_decimal(subtotal)
     d_discount = to_decimal(discount_amount)
@@ -24,9 +26,16 @@ def calculate_order_totals(
         d_discount = d_subtotal
 
     taxable_subtotal = d_subtotal - d_discount
-    d_gst_amount = Decimal("0.00")
-    d_shipping = Decimal("0.00")
-    d_grand_total = taxable_subtotal.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    
+    if calculated_gst_amount is not None:
+        d_gst_amount = to_decimal(calculated_gst_amount)
+    elif gst_percentage > 0:
+        d_gst_amount = (taxable_subtotal * to_decimal(gst_percentage) / Decimal("100")).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    else:
+        d_gst_amount = Decimal("0.00")
+
+    d_shipping = to_decimal(shipping_fee)
+    d_grand_total = (taxable_subtotal + d_gst_amount + d_shipping).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
     return (
         float(d_subtotal),

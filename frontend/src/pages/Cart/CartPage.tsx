@@ -263,6 +263,18 @@ export const CartPage: React.FC = () => {
               </div>
             )}
 
+            {gstAmount > 0 ? (
+              <div className="flex justify-between text-[#A1A1AA]">
+                <span>GST APPLICABLE</span>
+                <span className="text-white">₹{gstAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              </div>
+            ) : (
+              <div className="flex justify-between text-[#A1A1AA]">
+                <span>GST</span>
+                <span className="text-[#22C55E] font-bold">0% (INCLUDED)</span>
+              </div>
+            )}
+
             <div className="flex justify-between text-[#A1A1AA]">
               <span>SHIPPING</span>
               <span className="text-[#22C55E] font-bold">FREE</span>
@@ -275,7 +287,7 @@ export const CartPage: React.FC = () => {
           </div>
 
           {/* CTAs */}
-          <div className="space-y-2.5 pt-2">
+          <div className="pt-2">
             <Button
               variant="gold"
               size="lg"
@@ -285,17 +297,6 @@ export const CartPage: React.FC = () => {
             >
               <span>PROCEED TO CHECKOUT</span>
               <span>₹{grandTotal.toLocaleString('en-IN')}</span>
-            </Button>
-
-            <Button
-              variant="whatsapp"
-              size="md"
-              className="w-full"
-              onClick={handleWhatsAppOrder}
-              isLoading={isWhatsAppOrdering}
-              leftIcon={<MessageCircle className="w-4 h-4" />}
-            >
-              ORDER VIA WHATSAPP
             </Button>
           </div>
         </div>

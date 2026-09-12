@@ -29,6 +29,7 @@ export const CheckoutPage: React.FC = () => {
     appliedCoupon,
     couponDiscount,
     getSubtotal,
+    getGSTAmount,
     getShippingFee,
     getGrandTotal,
     applyCoupon,
@@ -500,6 +501,7 @@ export const CheckoutPage: React.FC = () => {
             items={items}
             subtotal={subtotal}
             grandTotal={grandTotal}
+            gstAmount={getGSTAmount()}
             appliedCoupon={appliedCoupon}
             couponDiscount={couponDiscount}
             onApplyCoupon={applyCoupon}

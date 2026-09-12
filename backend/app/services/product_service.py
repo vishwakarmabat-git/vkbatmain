@@ -159,6 +159,7 @@ class ProductService:
             price=data.price,
             compare_price=data.compare_price,
             discount_percent=data.discount_percent,
+            gst_rate=data.gst_rate if data.gst_rate is not None else 0.0,
             willow_grade=data.willow_grade,
             blade_architecture=data.blade_architecture,
             pressing_type=data.pressing_type,

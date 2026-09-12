@@ -78,14 +78,27 @@ class OrderService:
                 discount_amount = coupon_res.discount_amount
                 applied_coupon_code = data.coupon_code.upper().strip()
 
-        # 3. Calculate financial totals with decimal safety (Bat price only — 0 extra tax, 0 shipping)
+        # 3. Calculate financial totals with decimal safety
+        discount_ratio = max(0.0, 1.0 - (discount_amount / raw_subtotal)) if raw_subtotal > 0 else 1.0
+
+        calculated_gst = 0.0
+        for order_item, product in item_objects:
+            item_gst_rate = float(getattr(product, "gst_rate", 0.0) or 0.0)
+            if item_gst_rate > 0:
+                item_taxable = float(order_item.total_price) * discount_ratio
+                calculated_gst += (item_taxable * item_gst_rate) / 100.0
+
         subtotal, gst_amount, shipping_fee, discount_amt, grand_total = calculate_order_totals(
             subtotal=raw_subtotal,
             discount_amount=discount_amount,
             gst_percentage=0.0,
             shipping_fee=0.0,
-            free_shipping_threshold=0.0
+            free_shipping_threshold=0.0,
+            calculated_gst_amount=calculated_gst
         )
+
+        taxable_val = subtotal - discount_amt
+        effective_gst_percent = round((gst_amount / taxable_val * 100.0), 2) if taxable_val > 0 else 0.0
 
         # 4. Create Order entity
         order = Order(
@@ -96,9 +109,9 @@ class OrderService:
             customer_phone=data.shipping_address.phone,
             shipping_address=data.shipping_address.model_dump(),
             subtotal=subtotal,
-            gst_percent=0.0,
-            gst_amount=0.0,
-            shipping_fee=0.0,
+            gst_percent=effective_gst_percent,
+            gst_amount=gst_amount,
+            shipping_fee=shipping_fee,
             discount_amount=discount_amt,
             grand_total=grand_total,
             coupon_code=applied_coupon_code,

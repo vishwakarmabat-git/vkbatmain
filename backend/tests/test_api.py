@@ -77,8 +77,9 @@ def setup_test_api_db():
             blade_architecture="Single Blade",
             pressing_type="Triple Pressed",
             grain_count="10",
-            rating_average=5.0,
-            rating_count=12
+            rating_avg=5.0,
+            reviews_count=12,
+            gst_rate=0.0
         )
         db.add(prod)
     else:
@@ -131,7 +132,7 @@ def test_root_health_check():
     assert post_resp.status_code == 405
 
 def test_financial_calculations():
-    # All-inclusive pricing: Subtotal ₹10,000 with 10% coupon = ₹9,000 grand total (zero hidden taxes/shipping)
+    # 1. Zero GST (Default 0% - zero added tax)
     sub, gst, ship, disc, grand = calculate_order_totals(
         subtotal=10000.0,
         discount_amount=1000.0,
@@ -144,6 +145,27 @@ def test_financial_calculations():
     assert gst == 0.0
     assert ship == 0.0
     assert grand == 9000.0
+
+    # 2. Positive GST (e.g., 18% GST on taxable ₹9,000 = ₹1,620 -> grand total ₹10,620)
+    sub2, gst2, ship2, disc2, grand2 = calculate_order_totals(
+        subtotal=10000.0,
+        discount_amount=1000.0,
+        gst_percentage=18.0,
+        shipping_fee=0.0,
+        free_shipping_threshold=0.0
+    )
+    assert gst2 == 1620.0
+    assert grand2 == 10620.0
+
+    # 3. Itemized calculated GST amount
+    sub3, gst3, ship3, disc3, grand3 = calculate_order_totals(
+        subtotal=10000.0,
+        discount_amount=1000.0,
+        shipping_fee=0.0,
+        calculated_gst_amount=540.0
+    )
+    assert gst3 == 540.0
+    assert grand3 == 9540.0
 
 def test_get_categories():
     response = client.get("/api/v1/categories")

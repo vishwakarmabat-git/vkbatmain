@@ -88,16 +88,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
       className="group relative bg-[#0E1017] border border-[#202533] hover:border-[#D4AF37] rounded-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_35px_rgba(212,175,55,0.18)] flex flex-col text-left"
     >
       {/* Top badges bar */}
-      <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-none">
-        <div className="flex flex-col gap-1.5 pointer-events-auto">
+      <div className="absolute top-2 left-2 right-2 sm:top-3 sm:left-3 sm:right-3 z-20 flex items-start justify-between pointer-events-none">
+        <div className="flex flex-col gap-1 pointer-events-auto">
           {product.is_bestseller && (
-            <Badge variant="cricket" showCricketBall>BESTSELLER</Badge>
+            <span className="bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] text-white text-[8px] sm:text-[10px] font-sport font-black px-1.5 sm:px-2 py-0.5 rounded-xs tracking-wider uppercase shadow-md border-y border-dashed border-white/50 flex items-center gap-1">
+              <CricketBallIcon size={10} className="shrink-0" />
+              <span>BESTSELLER</span>
+            </span>
           )}
           {product.is_featured && !product.is_bestseller && (
-            <Badge variant="willow">FEATURED WEAPON</Badge>
+            <Badge variant="willow" className="text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5">FEATURED</Badge>
           )}
           {product.discount_percent > 0 && (
-            <span className="bg-gradient-to-r from-[#8B1220] to-[#C9182B] text-white text-[10px] font-sport font-black px-2 py-0.5 rounded-xs tracking-wider uppercase shadow-md border-y border-dashed border-white/50">
+            <span className="bg-gradient-to-r from-[#8B1220] to-[#C9182B] text-white text-[8px] sm:text-[10px] font-sport font-black px-1.5 sm:px-2 py-0.5 rounded-xs tracking-wider uppercase shadow-md border-y border-dashed border-white/50">
               SAVE {product.discount_percent}%
             </span>
           )}
@@ -106,21 +109,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
         {/* Wishlist Heart Button */}
         <button
           onClick={handleWishlistClick}
-          className={`pointer-events-auto w-8 h-8 rounded-full flex items-center justify-center transition-all ${isLiked
+          className={`pointer-events-auto w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all ${isLiked
               ? 'bg-[#E31B23] text-white shadow-[0_0_12px_rgba(227,27,35,0.6)]'
               : 'bg-[#09090B]/85 backdrop-blur-md text-[#A1A1AA] hover:text-[#E31B23] border border-[#242A38]'
             }`}
           aria-label="Wishlist"
         >
-          <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
+          <Heart className={`w-3 h-3 sm:w-4 sm:h-4 ${isLiked ? 'fill-current' : ''}`} />
         </button>
       </div>
 
       {/* Image Container with Zoom & Hover Actions (Hittersports Style) */}
-      <div className="relative aspect-3/4 w-full overflow-hidden bg-[#07090E] flex items-center justify-center p-4 select-none">
+      <div className="relative aspect-3/4 w-full overflow-hidden bg-[#07090E] flex items-center justify-center p-2 sm:p-4 select-none">
         <Link
           to={`/products/${product.slug}`}
-          className="absolute inset-0 p-4 flex items-center justify-center"
+          className="absolute inset-0 p-2 sm:p-4 flex items-center justify-center"
         >
           {/* Primary Image: Normal Zoomed Bat Blade View */}
           <img
@@ -238,70 +241,69 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
       </div>
 
       {/* Card Body */}
-      <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-        <div>
-          {/* Blade Architecture / Category */}
-          <div className="flex items-center justify-between text-xs text-[#A1A1AA] font-sport font-semibold tracking-wider uppercase mb-1">
-            <span className="text-[#D4AF37] flex items-center gap-1">
-              <CricketBatIcon size={12} />
-              <span>{product.blade_architecture || product.category_name || 'Kashmir Willow'}</span>
+      <div className="p-2.5 sm:p-4 md:p-5 flex-1 flex flex-col justify-between space-y-2 sm:space-y-3">
+        <div className="space-y-1 sm:space-y-1.5">
+          {/* Blade Architecture / Category + Star Rating Row */}
+          <div className="flex items-center justify-between gap-1 text-[9px] sm:text-xs font-sport font-bold tracking-wider uppercase min-w-0">
+            <span className="text-[#D4AF37] flex items-center gap-1 min-w-0 truncate">
+              <CricketBatIcon size={11} className="shrink-0" />
+              <span className="truncate">{product.blade_architecture || product.category_name || 'Kashmir Willow'}</span>
             </span>
-            <div className="flex items-center gap-1 text-amber-400">
-              <Star className="w-3 h-3 fill-amber-400" />
-              <span>{product.rating_avg.toFixed(1)}</span>
-              <span className="text-[#52525B]">({product.reviews_count})</span>
+            <div className="flex items-center gap-1 text-amber-400 shrink-0 whitespace-nowrap pl-1">
+              <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-amber-400 shrink-0" />
+              <span className="font-bold">{product.rating_avg.toFixed(1)}</span>
+              <span className="text-[#71717A] text-[8px] sm:text-[10px]">({product.reviews_count})</span>
             </div>
           </div>
 
           {/* Product Title */}
           <Link to={`/products/${product.slug}`} className="block">
-            <h4 className="font-serif font-black text-lg text-white group-hover:text-[#D4AF37] transition-colors line-clamp-1 uppercase tracking-wide">
+            <h4 className="font-serif font-black text-xs sm:text-sm md:text-base text-white group-hover:text-[#D4AF37] transition-colors line-clamp-2 uppercase tracking-wide leading-snug min-h-[2rem] sm:min-h-[2.5rem]">
               {product.name}
             </h4>
           </Link>
 
           {/* Key Cricket Specs Pill */}
-          <div className="mt-2.5 flex flex-wrap gap-1.5 text-[11px] font-sport tracking-wider text-[#A1A1AA]">
+          <div className="flex flex-wrap items-center gap-1 pt-0.5 text-[8px] sm:text-[10px] font-sport tracking-wider text-[#A1A1AA]">
             {product.edge_thickness && (
-              <span className="px-2 py-0.5 bg-[#141824] border border-[#242A38] rounded-xs text-[#E4E4E7]">
-                ⚡ {product.edge_thickness} Edges
+              <span className="px-1.5 py-0.5 bg-[#141824] border border-[#242A38] rounded-xs text-[#E4E4E7] whitespace-nowrap">
+                ⚡ {product.edge_thickness.replace(/ Edges?/i, '')}
               </span>
             )}
             {product.willow_grade && (
-              <span className="px-2 py-0.5 bg-[#141824] border border-[#242A38] rounded-xs text-[#F5C542]">
-                🛡️ {product.willow_grade.split(' ')[0]} {product.willow_grade.split(' ')[1] || ''}
+              <span className="px-1.5 py-0.5 bg-[#141824] border border-[#242A38] rounded-xs text-[#F5C542] whitespace-nowrap truncate max-w-[100px] sm:max-w-none">
+                🛡️ {product.willow_grade}
               </span>
             )}
           </div>
         </div>
 
-        {/* Pricing & Cricket Theme CTA Button - Fluid wrapping for extreme zoom & narrow containers */}
-        <div className="pt-3 border-t border-[#202533] flex flex-wrap items-end justify-between gap-2.5">
-          <div className="flex flex-col min-w-0">
-            <div className="flex items-baseline gap-2">
-              <span className="text-xl font-sport font-black text-[#F4F4F5] tracking-tight">
+        {/* Pricing & Cricket Theme CTA Button */}
+        <div className="pt-2 sm:pt-3 border-t border-[#202533] space-y-2">
+          <div className="flex items-baseline justify-between gap-1">
+            <div className="flex items-baseline gap-1.5 min-w-0">
+              <span className="text-sm sm:text-lg md:text-xl font-sport font-black text-[#F4F4F5] tracking-tight">
                 ₹{Number(product.price).toLocaleString('en-IN')}
               </span>
               {product.compare_price && Number(product.compare_price) > Number(product.price) && (
-                <span className="text-xs font-sport text-[#71717A] line-through">
+                <span className="text-[10px] sm:text-xs font-sport text-[#71717A] line-through">
                   ₹{Number(product.compare_price).toLocaleString('en-IN')}
                 </span>
               )}
             </div>
-            <span className="text-[10px] font-sport text-[#D4AF37] uppercase tracking-wider font-bold truncate">
-              Bespoke Artisan Craft
+            <span className="text-[8px] sm:text-[9px] font-sport text-[#D4AF37] uppercase tracking-wider font-bold truncate hidden xs:inline">
+              Handcrafted
             </span>
           </div>
 
-          <div className="flex items-center gap-2 w-full xs:w-auto">
-            <button
-              onClick={handleQuickAdd}
-              className="w-full xs:w-auto relative overflow-hidden bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] hover:shadow-[0_0_22px_rgba(201,24,43,0.55)] border-y border-dashed border-white/50 text-white font-sport font-black py-2.5 px-3.5 rounded-xs text-[11px] sm:text-xs tracking-wider uppercase transition-all duration-300 cursor-pointer flex items-center justify-center gap-1.5 shadow-md active:scale-95 bat-swing-shine group/btn shrink-0 min-w-0"
-            >
-              <CricketBallIcon size={13} className="shrink-0 group-hover/btn:rotate-45 transition-transform duration-300" />
-              <span>ADD TO CART</span>
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={handleQuickAdd}
+            className="w-full relative overflow-hidden bg-gradient-to-r from-[#8B1220] via-[#C9182B] to-[#780E1B] hover:shadow-[0_0_22px_rgba(201,24,43,0.55)] border-y border-dashed border-white/50 text-white font-sport font-black py-2 sm:py-2.5 px-2 rounded-xs text-[9px] sm:text-xs tracking-wider uppercase transition-all duration-300 cursor-pointer flex items-center justify-center gap-1.5 shadow-md active:scale-95 bat-swing-shine group/btn"
+          >
+            <CricketBallIcon size={12} className="shrink-0 group-hover/btn:rotate-45 transition-transform duration-300" />
+            <span>ADD TO CART</span>
+          </button>
         </div>
       </div>
     </div>

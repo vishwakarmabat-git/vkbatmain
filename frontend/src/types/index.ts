@@ -67,6 +67,7 @@ export interface Product {
   price: number;
   compare_price?: number;
   discount_percent: number;
+  gst_rate?: number;
   
   willow_grade?: string;
   blade_architecture?: string;

@@ -179,8 +179,8 @@ export const AdminOrderDetailsPage: React.FC = () => {
                 </div>
               )}
               <div className="flex justify-between text-[#A1A1AA]">
-                <span>GST (12% TAX):</span>
-                <span className="text-white">₹{order.gst_amount.toLocaleString('en-IN')}</span>
+                <span>GST ({order.gst_percent !== undefined && order.gst_percent !== null ? order.gst_percent : 0}% TAX):</span>
+                <span className="text-white">₹{order.gst_amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
               <div className="flex justify-between text-[#A1A1AA]">
                 <span>SHIPPING:</span>

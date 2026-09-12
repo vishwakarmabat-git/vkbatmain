@@ -32,6 +32,7 @@ export const AdminProductFormPage: React.FC = () => {
   const [toeProfile, setToeProfile] = useState('Square Power Toe');
   const [price, setPrice] = useState<number | string>(19999);
   const [comparePrice, setComparePrice] = useState<number | string>(24999);
+  const [gstRate, setGstRate] = useState<number | string>(0);
   const [shortDesc, setShortDesc] = useState('');
   const [fullDesc, setFullDesc] = useState('');
   const [primaryImageUrl, setPrimaryImageUrl] = useState('');
@@ -68,6 +69,7 @@ export const AdminProductFormPage: React.FC = () => {
           if (p.toe_profile) setToeProfile(p.toe_profile);
           setPrice(p.price);
           setComparePrice(p.compare_price || '');
+          setGstRate(p.gst_rate !== undefined && p.gst_rate !== null ? p.gst_rate : 0);
           setShortDesc(p.short_description || '');
           setFullDesc(p.full_description || '');
           
@@ -137,6 +139,7 @@ export const AdminProductFormPage: React.FC = () => {
       toe_profile: toeProfile,
       price: Number(price),
       compare_price: comparePrice ? Number(comparePrice) : undefined,
+      gst_rate: Number(gstRate) || 0,
       short_description: shortDesc,
       full_description: fullDesc,
       is_featured: isFeatured,
@@ -358,7 +361,7 @@ export const AdminProductFormPage: React.FC = () => {
             FINANCIALS & PRODUCT DESCRIPTIONS
           </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Input
               label="SALE PRICE (INR ₹)"
               type="number"
@@ -372,7 +375,45 @@ export const AdminProductFormPage: React.FC = () => {
               value={comparePrice}
               onChange={(e) => setComparePrice(e.target.value)}
             />
+            <div>
+              <Input
+                label="GST RATE (%)"
+                type="number"
+                placeholder="0"
+                min={0}
+                max={100}
+                step="0.01"
+                value={gstRate}
+                onChange={(e) => setGstRate(e.target.value)}
+              />
+              <p className="text-[10px] text-[#71717A] mt-1 font-sport tracking-wide">
+                Default: 0%. Added to cart & invoice.
+              </p>
+            </div>
           </div>
+
+          {/* Real-time GST calculation breakdown preview */}
+          {Number(gstRate) > 0 ? (
+            <div className="bg-[#181821] border border-[#2E2E3A] rounded-xs p-3 flex flex-wrap items-center justify-between gap-3 text-xs font-sport">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse" />
+                <span className="text-[#A1A1AA] uppercase tracking-wider">GST TAX PREVIEW:</span>
+                <span className="text-white font-bold">{gstRate}%</span>
+              </div>
+              <div className="flex items-center gap-4 text-[#A1A1AA]">
+                <div>Base: <span className="text-white font-bold">₹{Number(price || 0).toLocaleString('en-IN')}</span></div>
+                <div>+ GST: <span className="text-[#D4AF37] font-bold">₹{((Number(price || 0) * Number(gstRate)) / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span></div>
+                <div className="border-l border-[#2E2E3A] pl-4">
+                  Final Payable: <span className="text-emerald-400 font-bold">₹{(Number(price || 0) + (Number(price || 0) * Number(gstRate)) / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-[#181821]/50 border border-[#24242D] rounded-xs px-3 py-2 text-[11px] font-sport text-[#71717A] flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span>0% GST: Zero added tax (Storefront price is fully inclusive)</span>
+            </div>
+          )}
 
           <Textarea
             label="SHORT DESCRIPTION (CATALOG PREVIEW)"

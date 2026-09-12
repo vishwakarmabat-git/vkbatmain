@@ -18,6 +18,7 @@ class Product(Base):
     price = Column(Numeric(10, 2), nullable=False)
     compare_price = Column(Numeric(10, 2), nullable=True)
     discount_percent = Column(Integer, default=0)
+    gst_rate = Column(Float, default=0.0, nullable=False)
     
     # Cricket Bat Specific Attributes
     willow_grade = Column(String(100), nullable=True)  # Grade 1+ Kashmir Willow, etc.

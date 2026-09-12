@@ -11,6 +11,7 @@ interface OrderSummaryCardProps {
   grandTotal: number;
   appliedCoupon: Coupon | null;
   couponDiscount: number;
+  gstAmount?: number;
   onApplyCoupon: (coupon: Coupon, discount: number) => void;
   onRemoveCoupon: () => void;
 }
@@ -21,12 +22,22 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
   grandTotal,
   appliedCoupon,
   couponDiscount,
+  gstAmount,
   onApplyCoupon,
   onRemoveCoupon,
 }) => {
   const [mobileExpanded, setMobileExpanded] = useState(false);
   const [couponCodeInput, setCouponCodeInput] = useState('');
   const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
+
+  const discountRatio = subtotal > 0 ? Math.max(0, 1 - couponDiscount / subtotal) : 1;
+  const effectiveGST =
+    gstAmount !== undefined
+      ? gstAmount
+      : items.reduce((sum, item) => {
+          const r = Number(item.product?.gst_rate || 0);
+          return sum + (r > 0 ? (item.total_price * discountRatio * r) / 100 : 0);
+        }, 0);
 
   const handleApplyCoupon = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -113,6 +124,17 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
                 <span>Items Subtotal</span>
                 <span className="text-white font-bold">₹{subtotal.toLocaleString('en-IN')}</span>
               </div>
+              {effectiveGST > 0 ? (
+                <div className="flex justify-between text-[#A1A1AA]">
+                  <span>Applicable GST</span>
+                  <span className="text-white font-bold">₹{effectiveGST.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                </div>
+              ) : (
+                <div className="flex justify-between text-[#A1A1AA]">
+                  <span>GST</span>
+                  <span className="text-[#10B981] font-bold">0% (INCLUDED)</span>
+                </div>
+              )}
               <div className="flex justify-between text-[#A1A1AA]">
                 <span>Express Delivery</span>
                 <span className="text-[#10B981] font-bold">FREE</span>
@@ -221,6 +243,18 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
             <span>Items Subtotal</span>
             <span className="font-bold text-white">₹{subtotal.toLocaleString('en-IN')}</span>
           </div>
+
+          {effectiveGST > 0 ? (
+            <div className="flex justify-between text-[#A1A1AA]">
+              <span>Applicable GST</span>
+              <span className="font-bold text-white">₹{effectiveGST.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+            </div>
+          ) : (
+            <div className="flex justify-between text-[#A1A1AA]">
+              <span>GST</span>
+              <span className="font-bold text-[#10B981]">0% (INCLUDED)</span>
+            </div>
+          )}
 
           <div className="flex justify-between text-[#A1A1AA]">
             <span>Insured Express Shipping</span>
