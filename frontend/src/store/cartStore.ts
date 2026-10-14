@@ -1,12 +1,13 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { CartItem, Product, BatCustomization, Coupon } from '@/types';
+import { CartItem, Product, BatCustomization, Coupon, CourierQuote } from '@/types';
 
 interface CartState {
   items: CartItem[];
   isDrawerOpen: boolean;
   appliedCoupon: Coupon | null;
   couponDiscount: number;
+  selectedShippingQuote: CourierQuote | null;
   
   openDrawer: () => void;
   closeDrawer: () => void;
@@ -19,6 +20,7 @@ interface CartState {
   
   applyCoupon: (coupon: Coupon, discount: number) => void;
   removeCoupon: () => void;
+  setSelectedShippingQuote: (quote: CourierQuote | null) => void;
   
   // Computed values
   getSubtotal: () => number;
@@ -35,6 +37,7 @@ export const useCartStore = create<CartState>()(
       isDrawerOpen: false,
       appliedCoupon: null,
       couponDiscount: 0,
+      selectedShippingQuote: null,
 
       openDrawer: () => set({ isDrawerOpen: true }),
       closeDrawer: () => set({ isDrawerOpen: false }),
@@ -93,10 +96,11 @@ export const useCartStore = create<CartState>()(
         });
       },
 
-      clearCart: () => set({ items: [], appliedCoupon: null, couponDiscount: 0 }),
+      clearCart: () => set({ items: [], appliedCoupon: null, couponDiscount: 0, selectedShippingQuote: null }),
 
       applyCoupon: (coupon, discount) => set({ appliedCoupon: coupon, couponDiscount: discount }),
       removeCoupon: () => set({ appliedCoupon: null, couponDiscount: 0 }),
+      setSelectedShippingQuote: (quote) => set({ selectedShippingQuote: quote }),
 
       getSubtotal: () => {
         return get().items.reduce((sum, item) => sum + item.total_price, 0);
@@ -118,6 +122,10 @@ export const useCartStore = create<CartState>()(
       },
 
       getShippingFee: () => {
+        const quote = get().selectedShippingQuote;
+        if (quote && typeof quote.total_with_gst === 'number') {
+          return quote.total_with_gst;
+        }
         return 0;
       },
 

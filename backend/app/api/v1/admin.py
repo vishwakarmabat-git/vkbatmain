@@ -27,13 +27,15 @@ def get_dashboard_stats(db: Session = Depends(get_db), admin: User = Depends(get
 @router.get("/orders", response_model=List[OrderResponse])
 def get_all_orders(
     status_filter: Optional[str] = Query(None),
+    status: Optional[str] = Query(None),
     search: Optional[str] = Query(None),
     db: Session = Depends(get_db),
     admin: User = Depends(get_current_active_admin)
 ):
-    query = db.query(Order).options(joinedload(Order.items)).order_by(Order.created_at.desc())
-    if status_filter and status_filter != "all":
-        query = query.filter(Order.order_status == status_filter)
+    selected_status = status_filter or status
+    query = db.query(Order).options(joinedload(Order.items), joinedload(Order.shipments)).order_by(Order.created_at.desc())
+    if selected_status and selected_status != "all":
+        query = query.filter(Order.order_status == selected_status)
     if search:
         s = f"%{search.strip()}%"
         query = query.filter(

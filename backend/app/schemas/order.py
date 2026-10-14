@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 from pydantic import BaseModel, EmailStr
+from app.schemas.shipment import ShipmentResponse
 
 class CustomizationSchema(BaseModel):
     weight: Optional[str] = "1150–1180g"
@@ -38,6 +39,9 @@ class OrderCreate(BaseModel):
     coupon_code: Optional[str] = None
     payment_method: str = "cod"  # "razorpay", "cod", "whatsapp"
     customer_notes: Optional[str] = None
+    shipping_fee: Optional[float] = None
+    shipping_carrier: Optional[str] = None
+    shipping_service: Optional[str] = None
 
 class OrderItemResponse(BaseModel):
     id: str
@@ -77,6 +81,7 @@ class OrderResponse(BaseModel):
     admin_notes: Optional[str] = None
     created_at: datetime
     items: List[OrderItemResponse] = []
+    shipments: List[ShipmentResponse] = []
 
     class Config:
         from_attributes = True

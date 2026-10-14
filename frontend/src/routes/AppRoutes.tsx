@@ -64,6 +64,8 @@ import { AdminUsersPage } from '@/pages/admin/AdminUsersPage';
 import { AdminBulkOrdersPage } from '@/pages/admin/AdminBulkOrdersPage';
 import { AdminWhyVKPage } from '@/pages/admin/AdminWhyVKPage';
 import { AdminLegalPage } from '@/pages/admin/AdminLegalPage';
+import { AdminShipmentsPage } from '@/pages/admin/AdminShipmentsPage';
+import { TrackingPage } from '@/pages/Tracking/TrackingPage';
 
 import { useAuthStore } from '@/store/authStore';
 
@@ -227,6 +229,22 @@ export const AppRoutes: React.FC = () => {
         }
       />
       <Route
+        path="/track"
+        element={
+          <CustomerLayout>
+            <TrackingPage />
+          </CustomerLayout>
+        }
+      />
+      <Route
+        path="/track/:trackingId"
+        element={
+          <CustomerLayout>
+            <TrackingPage />
+          </CustomerLayout>
+        }
+      />
+      <Route
         path="/wishlist"
         element={
           <CustomerLayout>
@@ -383,6 +401,7 @@ export const AppRoutes: React.FC = () => {
         <Route path="inventory" element={<Navigate to="/admin/products" replace />} />
         <Route path="orders" element={<AdminOrdersPage />} />
         <Route path="orders/:id" element={<AdminOrderDetailsPage />} />
+        <Route path="shipments" element={<AdminShipmentsPage />} />
         <Route path="bulk-orders" element={<AdminBulkOrdersPage />} />
         <Route path="customers" element={<AdminCustomersPage />} />
         <Route path="reviews" element={<AdminReviewsPage />} />

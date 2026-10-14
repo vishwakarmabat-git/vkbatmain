@@ -5,10 +5,12 @@ import { orderService } from '@/services/orderService';
 import { Order } from '@/types';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { TrackingModal } from '@/components/shipping/TrackingModal';
 
 export const OrdersPage: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [trackingOrderId, setTrackingOrderId] = useState<string | null>(null);
 
   useEffect(() => {
     orderService
@@ -111,7 +113,16 @@ export const OrdersPage: React.FC = () => {
                   Payment: <span className="text-white uppercase font-bold">{order.payment_method}</span> ({order.payment_status})
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <Button
+                    variant="gold"
+                    size="sm"
+                    onClick={() => setTrackingOrderId(order.id)}
+                    leftIcon={<Truck className="w-3.5 h-3.5 shrink-0" />}
+                  >
+                    TRACK
+                  </Button>
+
                   <Link to={`/order-success/${order.order_number}`}>
                     <Button variant="outline" size="sm" leftIcon={<FileText className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />}>
                       INVOICE & STATUS
@@ -129,6 +140,15 @@ export const OrdersPage: React.FC = () => {
             </div>
           ))}
         </div>
+      )}
+
+      {/* Real-time Courier Uncle Tracking Modal */}
+      {trackingOrderId && (
+        <TrackingModal
+          orderId={trackingOrderId}
+          isOpen={Boolean(trackingOrderId)}
+          onClose={() => setTrackingOrderId(null)}
+        />
       )}
     </div>
   );

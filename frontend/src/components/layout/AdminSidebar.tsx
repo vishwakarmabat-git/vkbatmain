@@ -3,7 +3,7 @@ import { NavLink, Link, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Package, Layers, Boxes, ShoppingCart, Users,
   Star, Tag, Image, MessageSquare, HelpCircle, Settings, UserCheck,
-  History, ArrowLeft, LogOut, ShieldAlert, Sliders, Briefcase, Sparkles, Scale
+  History, ArrowLeft, LogOut, ShieldAlert, Sliders, Briefcase, Sparkles, Scale, Truck
 } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { useRealtime } from '@/realtime/RealtimeProvider';
@@ -20,6 +20,7 @@ export const AdminSidebar: React.FC<{ isOpen: boolean; onClose?: () => void }> =
     { label: 'Banners Slider', path: '/admin/banners', icon: <Sliders className="w-4 h-4" /> },
     { label: 'Why VK Showcase', path: '/admin/why-vk', icon: <Sparkles className="w-4 h-4" /> },
     { label: 'Orders & Sales', path: '/admin/orders', icon: <ShoppingCart className="w-4 h-4" /> },
+    { label: 'Shipping & Logistics', path: '/admin/shipments', icon: <Truck className="w-4 h-4" /> },
     { label: 'Bulk Orders', path: '/admin/bulk-orders', icon: <Briefcase className="w-4 h-4" /> },
     { label: 'Customers', path: '/admin/customers', icon: <Users className="w-4 h-4" /> },
     { label: 'Reviews Moderation', path: '/admin/reviews', icon: <Star className="w-4 h-4" /> },

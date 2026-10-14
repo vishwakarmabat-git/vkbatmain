@@ -22,6 +22,9 @@ from app.api.v1.upload import router as upload_router
 from app.api.v1.bulk_orders import router as bulk_orders_router
 from app.api.v1.legal import router as legal_router
 from app.api.v1.ws import router as ws_router
+from app.api.v1.shipping import router as shipping_router
+from app.api.v1.shipments import router as shipments_router
+from app.api.v1.webhooks import router as webhooks_router
 
 from app.core.middleware import SecurityHeadersMiddleware, RateLimitMiddleware
 
@@ -82,6 +85,11 @@ app.include_router(admin_router, prefix=settings.API_V1_PREFIX)
 app.include_router(upload_router, prefix=settings.API_V1_PREFIX)
 app.include_router(bulk_orders_router, prefix=settings.API_V1_PREFIX)
 app.include_router(legal_router, prefix=settings.API_V1_PREFIX)
+app.include_router(shipping_router, prefix=settings.API_V1_PREFIX)
+app.include_router(shipments_router, prefix=settings.API_V1_PREFIX)
+app.include_router(webhooks_router, prefix=settings.API_V1_PREFIX)
+app.include_router(webhooks_router, prefix="/api")
+app.include_router(webhooks_router, prefix="")
 app.include_router(ws_router, prefix=settings.API_V1_PREFIX)
 app.include_router(ws_router, prefix="/api")
 app.include_router(ws_router, prefix="")

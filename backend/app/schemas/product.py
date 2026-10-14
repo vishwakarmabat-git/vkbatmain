@@ -94,8 +94,8 @@ class ProductUpdate(BaseModel):
 
 class ProductResponse(ProductBase):
     id: str
-    rating_avg: float
-    reviews_count: int
+    rating_avg: float = 0.0
+    reviews_count: int = 0
     created_at: datetime
     images: List[ProductImageSchema] = []
     variants: List[VariantSchema] = []

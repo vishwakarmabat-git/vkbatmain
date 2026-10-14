@@ -25,6 +25,21 @@ class OrderService:
         data: OrderCreate,
         current_user: Optional[User] = None
     ) -> Order:
+        if not current_user or not getattr(current_user, "is_active", True):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="You must be signed in with an active account to place an order."
+            )
+
+        # Validate genuine email address (prevent test/throwaway accounts)
+        email = (data.shipping_address.email or "").strip().lower()
+        blocked_domains = ["test.com", "example.com", "test.org", "dummy.com", "fake.com", "g.g"]
+        if any(email.endswith("@" + d) or email.endswith("." + d) for d in blocked_domains) or email.startswith("test@"):
+            raise HTTPException(
+                status_code=400,
+                detail="Please provide a valid, active email address to complete your order."
+            )
+
         if not data.items:
             raise HTTPException(status_code=400, detail="Order must contain at least one item")
 
@@ -88,11 +103,13 @@ class OrderService:
                 item_taxable = float(order_item.total_price) * discount_ratio
                 calculated_gst += (item_taxable * item_gst_rate) / 100.0
 
+        req_shipping_fee = float(data.shipping_fee) if getattr(data, "shipping_fee", None) is not None else 0.0
+
         subtotal, gst_amount, shipping_fee, discount_amt, grand_total = calculate_order_totals(
             subtotal=raw_subtotal,
             discount_amount=discount_amount,
             gst_percentage=0.0,
-            shipping_fee=0.0,
+            shipping_fee=req_shipping_fee,
             free_shipping_threshold=0.0,
             calculated_gst_amount=calculated_gst
         )
@@ -118,6 +135,7 @@ class OrderService:
             payment_method=data.payment_method,
             payment_status="pending",
             order_status="confirmed" if data.payment_method == "cod" else "pending",
+            shipping_carrier=getattr(data, "shipping_carrier", None),
             customer_notes=data.customer_notes
         )
         db.add(order)
@@ -180,21 +198,21 @@ class OrderService:
 
     @staticmethod
     def get_order_by_id(db: Session, order_id: str) -> Order:
-        order = db.query(Order).options(joinedload(Order.items)).filter(Order.id == order_id).first()
+        order = db.query(Order).options(joinedload(Order.items), joinedload(Order.shipments)).filter(Order.id == order_id).first()
         if not order:
             raise HTTPException(status_code=404, detail="Order not found")
         return order
 
     @staticmethod
     def get_order_by_number(db: Session, order_number: str) -> Order:
-        order = db.query(Order).options(joinedload(Order.items)).filter(Order.order_number == order_number).first()
+        order = db.query(Order).options(joinedload(Order.items), joinedload(Order.shipments)).filter(Order.order_number == order_number).first()
         if not order:
             raise HTTPException(status_code=404, detail="Order not found")
         return order
 
     @staticmethod
     def get_user_orders(db: Session, user_id: str) -> List[Order]:
-        return db.query(Order).options(joinedload(Order.items)).filter(Order.user_id == user_id).order_by(Order.created_at.desc()).all()
+        return db.query(Order).options(joinedload(Order.items), joinedload(Order.shipments)).filter(Order.user_id == user_id).order_by(Order.created_at.desc()).all()
 
     @staticmethod
     def update_order_status(db: Session, order_id: str, data: OrderStatusUpdate) -> Order:

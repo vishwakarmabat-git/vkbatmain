@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { CartItem, Coupon } from '@/types';
 import { getImageUrl, handleImageError } from '@/utils/image';
 import { AddressFormData } from './DeliveryAddressStep';
+import { useCartStore } from '@/store/cartStore';
 
 interface ReviewOrderStepProps {
   formData: AddressFormData;
@@ -37,6 +38,7 @@ export const ReviewOrderStep: React.FC<ReviewOrderStepProps> = ({
   onBack,
   onConfirmOrder,
 }) => {
+  const { selectedShippingQuote } = useCartStore();
   const [termsOfSaleAgreed, setTermsOfSaleAgreed] = useState(false);
   return (
     <div className="space-y-6 text-left">
@@ -76,6 +78,17 @@ export const ReviewOrderStep: React.FC<ReviewOrderStepProps> = ({
               <p className="text-[11px] text-[#D4AF37]/90 pt-1 italic">
                 Note: "{formData.customerNotes}"
               </p>
+            )}
+            {selectedShippingQuote && (
+              <div className="mt-2.5 pt-2 border-t border-[#1E1E28] flex items-center justify-between text-[11px]">
+                <div className="flex items-center gap-1.5 text-white font-medium">
+                  <Truck className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  <span>{selectedShippingQuote.courier_name} ({selectedShippingQuote.service_label})</span>
+                </div>
+                <span className="text-[#D4AF37] font-bold font-sport">
+                  Est. {selectedShippingQuote.estimated_days} days
+                </span>
+              </div>
             )}
           </div>
         </div>

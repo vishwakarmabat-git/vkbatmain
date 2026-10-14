@@ -11,6 +11,7 @@ from app.models.setting import Setting
 from app.models.activity_log import AdminActivityLog
 from app.models.bulk_order import BulkOrder
 from app.models.legal import LegalDocument, ConsentRecord, MarketingPreference, PrivacyRequest
+from app.models.shipment import Shipment
 
 __all__ = [
     "Base",
@@ -38,4 +39,5 @@ __all__ = [
     "ConsentRecord",
     "MarketingPreference",
     "PrivacyRequest",
+    "Shipment",
 ]
