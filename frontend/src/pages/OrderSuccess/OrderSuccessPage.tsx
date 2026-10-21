@@ -254,6 +254,11 @@ export const OrderSuccessPage: React.FC = () => {
             {/* Financial Totals */}
             <div className="border-t border-[#24242D] pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 font-sport">
               <div className="text-xs text-[#71717A] text-left">
+                {order.gst_amount > 0 && (
+                  <div className="text-[#D4AF37] font-bold text-xs mb-1">
+                    ✓ Includes GST ({order.gst_percent}%): ₹{order.gst_amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </div>
+                )}
                 {order.payment_method === 'razorpay'
                   ? 'Verified & Paid online with Razorpay Gateway'
                   : 'Cash payment to be made upon delivery at your doorstep'}

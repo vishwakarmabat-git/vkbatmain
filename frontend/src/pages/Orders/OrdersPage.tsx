@@ -119,10 +119,17 @@ export const OrdersPage: React.FC = () => {
                   </Link>
 
                   <div className="text-right">
-                    <span className="text-xs font-sport text-[#A1A1AA] uppercase mr-2">Grand Total:</span>
-                    <span className="text-xl font-sport font-black text-[#D4AF37]">
-                      ₹{order.grand_total.toLocaleString('en-IN')}
-                    </span>
+                    <div className="flex items-baseline justify-end gap-2">
+                      <span className="text-xs font-sport text-[#A1A1AA] uppercase">Grand Total:</span>
+                      <span className="text-xl font-sport font-black text-[#D4AF37]">
+                        ₹{order.grand_total.toLocaleString('en-IN')}
+                      </span>
+                    </div>
+                    {order.gst_amount > 0 && (
+                      <div className="text-[10px] font-sport text-[#71717A]">
+                        Incl. ₹{order.gst_amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} GST ({order.gst_percent}%)
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

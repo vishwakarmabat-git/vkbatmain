@@ -25,6 +25,7 @@ export const CartDrawer: React.FC = () => {
     removeCoupon,
     getSubtotal,
     getGSTAmount,
+    getEffectiveGSTPercent,
     getGrandTotal,
   } = useCartStore();
 
@@ -34,6 +35,7 @@ export const CartDrawer: React.FC = () => {
 
   const subtotal = getSubtotal();
   const gstAmount = getGSTAmount();
+  const effectiveGstPercent = getEffectiveGSTPercent();
   const grandTotal = getGrandTotal();
   const totalItemsCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const firstItemImage = items[0]?.product?.images?.[0]?.image_url || '/VKCAT.png';
@@ -341,7 +343,7 @@ export const CartDrawer: React.FC = () => {
                       )}
                       {gstAmount > 0 ? (
                         <div className="flex justify-between text-[#A1A1AA]">
-                          <span>GST</span>
+                          <span>GST {effectiveGstPercent > 0 ? `(${effectiveGstPercent}%)` : ''}</span>
                           <span className="text-[#F4F4F5]">₹{gstAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                         </div>
                       ) : (
@@ -567,7 +569,7 @@ export const CartDrawer: React.FC = () => {
 
                       {gstAmount > 0 ? (
                         <div className="flex justify-between text-[#A1A1AA]">
-                          <span>ESTIMATED GST</span>
+                          <span>ESTIMATED GST {effectiveGstPercent > 0 ? `(${effectiveGstPercent}%)` : ''}</span>
                           <span className="text-[#F4F4F5]">₹{gstAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                         </div>
                       ) : (

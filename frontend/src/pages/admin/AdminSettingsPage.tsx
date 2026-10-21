@@ -23,8 +23,8 @@ export const AdminSettingsPage: React.FC = () => {
       .getSettings()
       .then((s) => {
         setSettings(s);
-        if (s.gst_rate) setGstRate(s.gst_rate);
-        if (s.shipping_fee) setShippingFee(s.shipping_fee);
+        if (s.gst_rate || s.gst_percentage) setGstRate(s.gst_rate || s.gst_percentage);
+        if (s.shipping_fee || s.default_shipping_fee) setShippingFee(s.shipping_fee || s.default_shipping_fee);
         if (s.free_shipping_threshold) setFreeShippingThreshold(s.free_shipping_threshold);
         if (s.whatsapp_number) setWhatsappNumber(s.whatsapp_number);
         if (s.contact_email) setStoreEmail(s.contact_email);
@@ -39,7 +39,9 @@ export const AdminSettingsPage: React.FC = () => {
     try {
       await adminService.updateSettings({
         gst_rate: gstRate,
+        gst_percentage: gstRate,
         shipping_fee: shippingFee,
+        default_shipping_fee: shippingFee,
         free_shipping_threshold: freeShippingThreshold,
         whatsapp_number: whatsappNumber,
         contact_email: storeEmail,

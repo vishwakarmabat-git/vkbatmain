@@ -30,6 +30,7 @@ def setup_test_api_db():
         db.add(cust)
     else:
         cust.hashed_password = get_password_hash("Player@123456")
+        cust.is_active = True
         db.commit()
 
 
@@ -379,5 +380,16 @@ def test_why_vk_cms_endpoints():
     assert get_res.status_code == 200
     assert get_res.json()["badge"] == "WHY CHOOSE VK?"
 
+def test_export_orders_excel():
+    login_res = client.post("/api/v1/auth/login", json={"email": "admin@vkbathouse.com", "password": "Admin@123456"})
+    admin_token = login_res.json()["access_token"]
+    admin_headers = {"Authorization": f"Bearer {admin_token}"}
 
-
+    resp = client.get(
+        "/api/v1/admin/orders/export-excel?start_date=2026-10-01&end_date=2026-10-31",
+        headers=admin_headers
+    )
+    assert resp.status_code == 200
+    assert "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" in resp.headers["content-type"]
+    assert "attachment; filename=" in resp.headers["content-disposition"]
+    assert len(resp.content) > 1000

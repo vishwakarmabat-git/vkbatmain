@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus, ArrowRight, Tag, ShieldCheck, ShoppingBag, MessageCircle } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
@@ -21,16 +21,23 @@ export const CartPage: React.FC = () => {
     removeCoupon,
     getSubtotal,
     getGSTAmount,
+    getEffectiveGSTPercent,
     getShippingFee,
     getGrandTotal,
+    syncCartWithServer,
   } = useCartStore();
 
   const [couponInput, setCouponInput] = useState('');
   const [isValidating, setIsValidating] = useState(false);
   const [isWhatsAppOrdering, setIsWhatsAppOrdering] = useState(false);
 
+  useEffect(() => {
+    syncCartWithServer();
+  }, [syncCartWithServer]);
+
   const subtotal = getSubtotal();
   const gstAmount = getGSTAmount();
+  const effectiveGstPercent = getEffectiveGSTPercent();
   const shippingFee = getShippingFee();
   const grandTotal = getGrandTotal();
 
@@ -265,7 +272,7 @@ export const CartPage: React.FC = () => {
 
             {gstAmount > 0 ? (
               <div className="flex justify-between text-[#A1A1AA]">
-                <span>GST APPLICABLE</span>
+                <span>GST APPLICABLE {effectiveGstPercent > 0 ? `(${effectiveGstPercent}%)` : ''}</span>
                 <span className="text-white">₹{gstAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
             ) : (

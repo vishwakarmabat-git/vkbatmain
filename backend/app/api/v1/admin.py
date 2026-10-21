@@ -1,5 +1,7 @@
 from typing import List, Optional
+from datetime import datetime, time, timezone
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session, joinedload
 from app.core.database import get_db
 from app.schemas.admin import (
@@ -10,6 +12,7 @@ from app.schemas.order import OrderResponse, OrderStatusUpdate
 from app.schemas.auth import UserResponse
 from app.services.admin_service import AdminService
 from app.services.order_service import OrderService
+from app.services.export_service import ExportService, IST
 from app.dependencies.auth import get_current_active_admin
 from app.models.user import User
 from app.models.order import Order
@@ -43,6 +46,79 @@ def get_all_orders(
             (Order.customer_phone.ilike(s))
         )
     return query.all()
+
+@router.get("/orders/export-excel")
+def export_orders_excel(
+    start_date: Optional[str] = Query(None, description="Start Date (YYYY-MM-DD)"),
+    end_date: Optional[str] = Query(None, description="End Date (YYYY-MM-DD)"),
+    status_filter: Optional[str] = Query(None),
+    search: Optional[str] = Query(None),
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_current_active_admin)
+):
+    query = db.query(Order).options(joinedload(Order.items)).order_by(Order.created_at.desc())
+
+    if status_filter and status_filter != "all":
+        query = query.filter(Order.order_status == status_filter)
+
+    if search:
+        s = f"%{search.strip()}%"
+        query = query.filter(
+            (Order.order_number.ilike(s)) |
+            (Order.customer_name.ilike(s)) |
+            (Order.customer_email.ilike(s)) |
+            (Order.customer_phone.ilike(s))
+        )
+
+    # Date range filters (YYYY-MM-DD)
+    if start_date and start_date.strip():
+        try:
+            sd = datetime.strptime(start_date.strip(), "%Y-%m-%d")
+            sd_ist = datetime.combine(sd.date(), time.min).replace(tzinfo=IST)
+            sd_utc = sd_ist.astimezone(timezone.utc).replace(tzinfo=None)
+            query = query.filter(Order.created_at >= sd_utc)
+        except ValueError:
+            pass
+
+    if end_date and end_date.strip():
+        try:
+            ed = datetime.strptime(end_date.strip(), "%Y-%m-%d")
+            ed_ist = datetime.combine(ed.date(), time.max).replace(tzinfo=IST)
+            ed_utc = ed_ist.astimezone(timezone.utc).replace(tzinfo=None)
+            query = query.filter(Order.created_at <= ed_utc)
+        except ValueError:
+            pass
+
+    orders = query.all()
+    excel_stream, media_type, ext = ExportService.generate_orders_excel(orders)
+
+    filename_parts = ["VK_Orders"]
+    if start_date:
+        filename_parts.append(f"from_{start_date.strip()}")
+    if end_date:
+        filename_parts.append(f"to_{end_date.strip()}")
+    filename = "_".join(filename_parts) + f".{ext}"
+
+    # Log activity
+    log = AdminActivityLog(
+        admin_id=admin.id,
+        admin_name=admin.full_name,
+        action="EXPORT_ORDERS_EXCEL",
+        entity_type="order",
+        entity_id=None,
+        details={"orders_count": len(orders), "start_date": start_date, "end_date": end_date}
+    )
+    db.add(log)
+    db.commit()
+
+    return StreamingResponse(
+        excel_stream,
+        media_type=media_type,
+        headers={
+            "Content-Disposition": f'attachment; filename="{filename}"',
+            "Access-Control-Expose-Headers": "Content-Disposition"
+        }
+    )
 
 @router.put("/orders/{order_id}/status", response_model=OrderResponse)
 def update_order_status(

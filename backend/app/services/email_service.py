@@ -308,6 +308,7 @@ class EmailService:
               <td>Subtotal</td>
               <td align="right" style="color: #FFFFFF; font-weight: 600;">₹{order.subtotal:,.2f}</td>
             </tr>
+            {f'<tr><td>GST ({float(order.gst_percent):g}% Tax)</td><td align="right" style="color: #FFFFFF; font-weight: 600;">₹{float(order.gst_amount):,.2f}</td></tr>' if float(getattr(order, 'gst_amount', 0) or 0) > 0 else '<tr><td>GST</td><td align="right" style="color: #10B981; font-weight: 600;">0% (INCLUDED)</td></tr>'}
             <tr>
               <td>Express Insured Shipping</td>
               <td align="right" style="color: #10B981; font-weight: 600;">FREE</td>

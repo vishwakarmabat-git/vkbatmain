@@ -49,6 +49,44 @@ export const adminService = {
     return data;
   },
 
+  async exportOrdersExcel(params?: {
+    startDate?: string;
+    endDate?: string;
+    statusFilter?: string;
+    search?: string;
+  }): Promise<void> {
+    const response = await apiClient.get('/admin/orders/export-excel', {
+      params: {
+        start_date: params?.startDate || undefined,
+        end_date: params?.endDate || undefined,
+        status_filter: params?.statusFilter || undefined,
+        search: params?.search || undefined,
+      },
+      responseType: 'blob',
+    });
+
+    let filename = 'VK_Orders_Export.xlsx';
+    const disposition = response.headers['content-disposition'];
+    if (disposition && disposition.indexOf('filename=') !== -1) {
+      const match = disposition.match(/filename="?([^";]+)"?/);
+      if (match && match[1]) {
+        filename = match[1];
+      }
+    }
+
+    const blob = new Blob([response.data], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(downloadUrl);
+  },
+
   async updateOrderStatus(orderId: string, payload: {
     order_status?: string;
     payment_status?: string;

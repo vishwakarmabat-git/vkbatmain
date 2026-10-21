@@ -300,8 +300,10 @@ export const ProfessionalInvoice: React.FC<ProfessionalInvoiceProps> = ({ order,
           </div>
 
           <div className="flex justify-between text-neutral-600">
-            <span>GST / Taxes:</span>
-            <span className="font-medium text-neutral-800">Included in Price</span>
+            <span>GST / Taxes {order.gst_percent ? `(${order.gst_percent}%)` : ''}:</span>
+            <span className="font-semibold text-neutral-900">
+              {order.gst_amount > 0 ? `₹${order.gst_amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '0% (Included in Price)'}
+            </span>
           </div>
 
           {/* Highlighted Total Box */}

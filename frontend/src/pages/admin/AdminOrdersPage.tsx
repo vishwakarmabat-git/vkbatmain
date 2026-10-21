@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ShoppingCart, Search, Eye, Filter, CheckCircle2 } from 'lucide-react';
+import { ShoppingCart, Search, Eye, Filter, CheckCircle2, FileSpreadsheet } from 'lucide-react';
 import { adminService } from '@/services/adminService';
 import { Order } from '@/types';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { useRealtimeSync } from '@/hooks/useRealtime';
+import { ExportOrdersModal } from '@/components/admin/ExportOrdersModal';
 
 export const AdminOrdersPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -14,6 +15,7 @@ export const AdminOrdersPage: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
   const fetchOrders = () => {
     setLoading(true);
@@ -41,6 +43,18 @@ export const AdminOrdersPage: React.FC = () => {
           <h1 className="text-2xl sm:text-3xl font-serif font-black text-[#F4F4F5] uppercase mt-0.5">
             CUSTOMER ORDERS ({orders.length})
           </h1>
+        </div>
+
+        {/* Top Right Action: Export Orders */}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setIsExportModalOpen(true)}
+            className="px-4 py-2 bg-[#181821] hover:bg-[#242436] border border-[#D4AF37]/50 hover:border-[#D4AF37] text-[#D4AF37] hover:text-white font-sport font-bold text-xs rounded-xs flex items-center gap-2 shadow-md transition-all cursor-pointer uppercase tracking-wider"
+          >
+            <FileSpreadsheet className="w-4 h-4 text-[#10B981]" />
+            <span>EXPORT ORDERS</span>
+          </button>
         </div>
       </div>
 
@@ -220,6 +234,13 @@ export const AdminOrdersPage: React.FC = () => {
           ))
         )}
       </div>
+
+      {/* Export Orders Modal */}
+      <ExportOrdersModal
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        allOrders={orders}
+      />
     </div>
   );
 };

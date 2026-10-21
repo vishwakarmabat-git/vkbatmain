@@ -30,11 +30,13 @@ export const CheckoutPage: React.FC = () => {
     couponDiscount,
     getSubtotal,
     getGSTAmount,
+    getEffectiveGSTPercent,
     getShippingFee,
     getGrandTotal,
     applyCoupon,
     removeCoupon,
     clearCart,
+    syncCartWithServer,
   } = useCartStore();
   const { user, isAuthenticated } = useAuthStore();
 
@@ -87,6 +89,11 @@ export const CheckoutPage: React.FC = () => {
       customerNotes: '',
     };
   });
+
+  // Sync latest product specs & GST rates with server on mount
+  useEffect(() => {
+    syncCartWithServer();
+  }, [syncCartWithServer]);
 
   // Auth Guard
   useEffect(() => {
@@ -484,6 +491,8 @@ export const CheckoutPage: React.FC = () => {
                   appliedCoupon={appliedCoupon}
                   couponDiscount={couponDiscount}
                   shippingFee={shippingFee}
+                  gstAmount={getGSTAmount()}
+                  gstPercent={getEffectiveGSTPercent()}
                   isSubmitting={isSubmitting}
                   onEditAddress={() => setCurrentStep(1)}
                   onChangePayment={() => setCurrentStep(2)}
@@ -502,6 +511,7 @@ export const CheckoutPage: React.FC = () => {
             subtotal={subtotal}
             grandTotal={grandTotal}
             gstAmount={getGSTAmount()}
+            gstPercent={getEffectiveGSTPercent()}
             appliedCoupon={appliedCoupon}
             couponDiscount={couponDiscount}
             onApplyCoupon={applyCoupon}

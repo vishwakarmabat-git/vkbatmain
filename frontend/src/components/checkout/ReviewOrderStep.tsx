@@ -15,6 +15,8 @@ interface ReviewOrderStepProps {
   appliedCoupon: Coupon | null;
   couponDiscount: number;
   shippingFee: number;
+  gstAmount?: number;
+  gstPercent?: number;
   isSubmitting: boolean;
   onEditAddress: () => void;
   onChangePayment: () => void;
@@ -31,6 +33,8 @@ export const ReviewOrderStep: React.FC<ReviewOrderStepProps> = ({
   appliedCoupon,
   couponDiscount,
   shippingFee,
+  gstAmount,
+  gstPercent,
   isSubmitting,
   onEditAddress,
   onChangePayment,
@@ -128,7 +132,7 @@ export const ReviewOrderStep: React.FC<ReviewOrderStepProps> = ({
             Items in Order ({items.length})
           </h3>
           <span className="text-xs font-sport font-bold text-[#D4AF37]">
-            ₹{grandTotal.toLocaleString('en-IN')} Total
+            ₹{grandTotal.toLocaleString('en-IN', { minimumFractionDigits: grandTotal % 1 !== 0 ? 2 : 0, maximumFractionDigits: 2 })} Total
           </span>
         </div>
 
@@ -156,9 +160,16 @@ export const ReviewOrderStep: React.FC<ReviewOrderStepProps> = ({
                   </span>
                 </div>
 
-                <div className="text-xs text-[#A1A1AA]">
-                  Qty: <span className="font-bold text-white">{item.quantity}</span> × ₹
-                  {item.unit_price.toLocaleString('en-IN')}
+                <div className="text-xs text-[#A1A1AA] flex items-center gap-2">
+                  <span>
+                    Qty: <span className="font-bold text-white">{item.quantity}</span> × ₹
+                    {item.unit_price.toLocaleString('en-IN')}
+                  </span>
+                  {(Number(item.product?.gst_rate || 0) > 0 || (gstPercent && gstPercent > 0)) && (
+                    <span className="text-[10px] text-[#D4AF37] bg-[#D4AF37]/10 border border-[#D4AF37]/30 px-1.5 py-0.5 rounded-xs font-sport font-semibold">
+                      +{Number(item.product?.gst_rate || 0) > 0 ? item.product.gst_rate : gstPercent}% GST
+                    </span>
+                  )}
                 </div>
 
                 {/* Customization Specs Badges */}
@@ -230,8 +241,17 @@ export const ReviewOrderStep: React.FC<ReviewOrderStepProps> = ({
               Total Payable Amount
             </div>
             <div className="text-2xl sm:text-3xl font-extrabold text-[#D4AF37] font-sport">
-              ₹{grandTotal.toLocaleString('en-IN')}
+              ₹{grandTotal.toLocaleString('en-IN', { minimumFractionDigits: grandTotal % 1 !== 0 ? 2 : 0, maximumFractionDigits: 2 })}
             </div>
+            {gstAmount !== undefined && gstAmount > 0 ? (
+              <div className="text-[11px] text-[#A1A1AA] pt-0.5">
+                Includes ₹{gstAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} GST {gstPercent ? `(${gstPercent}%)` : ''} • Free Delivery
+              </div>
+            ) : (
+              <div className="text-[11px] text-[#10B981] pt-0.5">
+                All Taxes & Delivery Included
+              </div>
+            )}
           </div>
           <div className="text-right text-xs text-[#10B981] font-semibold flex items-center gap-1">
             <CheckCircle className="w-3.5 h-3.5" />

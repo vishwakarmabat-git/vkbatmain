@@ -12,6 +12,7 @@ interface OrderSummaryCardProps {
   appliedCoupon: Coupon | null;
   couponDiscount: number;
   gstAmount?: number;
+  gstPercent?: number;
   onApplyCoupon: (coupon: Coupon, discount: number) => void;
   onRemoveCoupon: () => void;
 }
@@ -23,6 +24,7 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
   appliedCoupon,
   couponDiscount,
   gstAmount,
+  gstPercent,
   onApplyCoupon,
   onRemoveCoupon,
 }) => {
@@ -38,6 +40,14 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
           const r = Number(item.product?.gst_rate || 0);
           return sum + (r > 0 ? (item.total_price * discountRatio * r) / 100 : 0);
         }, 0);
+
+  const taxableSubtotal = Math.max(0, subtotal - couponDiscount);
+  const calculatedPercent =
+    gstPercent !== undefined && gstPercent > 0
+      ? gstPercent
+      : taxableSubtotal > 0 && effectiveGST > 0
+      ? Math.round((effectiveGST / taxableSubtotal) * 1000) / 10
+      : 0;
 
   const handleApplyCoupon = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,7 +88,7 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
 
           <div className="flex items-center gap-2">
             <span className="text-sm font-extrabold text-[#D4AF37] font-sport">
-              ₹{grandTotal.toLocaleString('en-IN')}
+              ₹{grandTotal.toLocaleString('en-IN', { minimumFractionDigits: grandTotal % 1 !== 0 ? 2 : 0, maximumFractionDigits: 2 })}
             </span>
             {mobileExpanded ? (
               <ChevronUp className="w-4 h-4 text-[#71717A]" />
@@ -106,8 +116,13 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
                     </div>
                     <div className="min-w-0">
                       <div className="text-xs font-bold text-white truncate">{item.product.name}</div>
-                      <div className="text-[10px] text-[#71717A]">
-                        Qty: {item.quantity} × ₹{item.unit_price.toLocaleString('en-IN')}
+                      <div className="text-[10px] text-[#71717A] flex items-center gap-1.5 flex-wrap">
+                        <span>Qty: {item.quantity} × ₹{item.unit_price.toLocaleString('en-IN')}</span>
+                        {(Number(item.product?.gst_rate || 0) > 0 || calculatedPercent > 0) && (
+                          <span className="text-[9px] text-[#D4AF37] bg-[#D4AF37]/10 border border-[#D4AF37]/30 px-1 py-0.2 rounded-xs font-sport font-semibold">
+                            +{Number(item.product?.gst_rate || 0) > 0 ? item.product.gst_rate : calculatedPercent}% GST
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -126,7 +141,7 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
               </div>
               {effectiveGST > 0 ? (
                 <div className="flex justify-between text-[#A1A1AA]">
-                  <span>Applicable GST</span>
+                  <span>GST ({calculatedPercent > 0 ? `${calculatedPercent}%` : 'Applicable'})</span>
                   <span className="text-white font-bold">₹{effectiveGST.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                 </div>
               ) : (
@@ -184,8 +199,13 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
 
                 <div className="min-w-0 space-y-0.5">
                   <h4 className="font-bold text-xs text-white truncate">{item.product.name}</h4>
-                  <div className="text-[11px] text-[#71717A] truncate">
-                    {item.customization?.weight || 'SH'} • {item.customization?.handle_shape || 'Round'}
+                  <div className="text-[11px] text-[#71717A] truncate flex items-center gap-1.5 flex-wrap">
+                    <span>{item.customization?.weight || 'SH'} • {item.customization?.handle_shape || 'Round'}</span>
+                    {(Number(item.product?.gst_rate || 0) > 0 || calculatedPercent > 0) && (
+                      <span className="text-[9px] text-[#D4AF37] bg-[#D4AF37]/10 border border-[#D4AF37]/30 px-1 py-0.2 rounded-xs font-sport font-semibold">
+                        +{Number(item.product?.gst_rate || 0) > 0 ? item.product.gst_rate : calculatedPercent}% GST
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -246,7 +266,7 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
 
           {effectiveGST > 0 ? (
             <div className="flex justify-between text-[#A1A1AA]">
-              <span>Applicable GST</span>
+              <span>GST ({calculatedPercent > 0 ? `${calculatedPercent}%` : 'Applicable'})</span>
               <span className="font-bold text-white">₹{effectiveGST.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </div>
           ) : (
@@ -276,7 +296,7 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
               <span className="text-[10px] text-[#71717A]">All-inclusive pricing • Zero hidden fees</span>
             </div>
             <span className="font-sport font-extrabold text-2xl text-[#D4AF37]">
-              ₹{grandTotal.toLocaleString('en-IN')}
+              ₹{grandTotal.toLocaleString('en-IN', { minimumFractionDigits: grandTotal % 1 !== 0 ? 2 : 0, maximumFractionDigits: 2 })}
             </span>
           </div>
         </div>

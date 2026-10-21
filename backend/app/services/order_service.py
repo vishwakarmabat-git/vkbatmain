@@ -8,6 +8,7 @@ from fastapi import HTTPException, status
 from app.models.order import Order, OrderItem, Payment
 from app.models.product import Product, InventoryVariant
 from app.models.user import User
+from app.models.setting import Setting
 from app.schemas.order import OrderCreate, OrderStatusUpdate, WhatsAppOrderRequest
 from app.services.coupon_service import CouponService
 from app.utils.calculations import calculate_order_totals
@@ -78,12 +79,23 @@ class OrderService:
                 discount_amount = coupon_res.discount_amount
                 applied_coupon_code = data.coupon_code.upper().strip()
 
-        # 3. Calculate financial totals with decimal safety
+        # 3. Calculate financial totals with decimal safety & global GST fallback
         discount_ratio = max(0.0, 1.0 - (discount_amount / raw_subtotal)) if raw_subtotal > 0 else 1.0
+
+        # Retrieve global store GST setting
+        db_settings = {s.key: s.value for s in db.query(Setting).all()}
+        raw_global_gst = db_settings.get("gst_rate") or db_settings.get("gst_percentage") or getattr(settings, "GST_PERCENTAGE", 5.0)
+        try:
+            global_gst_rate = float(raw_global_gst)
+        except (ValueError, TypeError):
+            global_gst_rate = 0.0
 
         calculated_gst = 0.0
         for order_item, product in item_objects:
             item_gst_rate = float(getattr(product, "gst_rate", 0.0) or 0.0)
+            if item_gst_rate <= 0 and global_gst_rate > 0:
+                item_gst_rate = global_gst_rate
+
             if item_gst_rate > 0:
                 item_taxable = float(order_item.total_price) * discount_ratio
                 calculated_gst += (item_taxable * item_gst_rate) / 100.0

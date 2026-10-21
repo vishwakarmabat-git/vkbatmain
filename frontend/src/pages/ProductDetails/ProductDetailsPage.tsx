@@ -239,7 +239,7 @@ export const ProductDetailsPage: React.FC = () => {
               )}
             </div>
             <span className="text-xs font-sport text-emerald-400 uppercase tracking-wider">
-              All Taxes Included • Free Shipping
+              {Number(product.gst_rate || 0) > 0 ? `+${product.gst_rate}% GST • Free Shipping` : 'Free Express Shipping Across India'}
             </span>
           </div>
 

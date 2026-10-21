@@ -1,12 +1,14 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { CartItem, Product, BatCustomization, Coupon } from '@/types';
+import { apiClient } from '@/api/client';
 
 interface CartState {
   items: CartItem[];
   isDrawerOpen: boolean;
   appliedCoupon: Coupon | null;
   couponDiscount: number;
+  globalGstRate: number;
   
   openDrawer: () => void;
   closeDrawer: () => void;
@@ -19,10 +21,13 @@ interface CartState {
   
   applyCoupon: (coupon: Coupon, discount: number) => void;
   removeCoupon: () => void;
+  setGlobalGstRate: (rate: number) => void;
+  syncCartWithServer: () => Promise<void>;
   
   // Computed values
   getSubtotal: () => number;
   getGSTAmount: () => number;
+  getEffectiveGSTPercent: () => number;
   getShippingFee: () => number;
   getGrandTotal: () => number;
   getItemCount: () => number;
@@ -35,13 +40,81 @@ export const useCartStore = create<CartState>()(
       isDrawerOpen: false,
       appliedCoupon: null,
       couponDiscount: 0,
+      globalGstRate: 0,
 
       openDrawer: () => set({ isDrawerOpen: true }),
       closeDrawer: () => set({ isDrawerOpen: false }),
       toggleDrawer: () => set((state) => ({ isDrawerOpen: !state.isDrawerOpen })),
 
+      setGlobalGstRate: (rate: number) => set({ globalGstRate: rate }),
+
+      syncCartWithServer: async () => {
+        try {
+          // 1. Fetch public settings to get current global store GST rate
+          let fetchedGst = get().globalGstRate;
+          try {
+            const settingsRes = await apiClient.get('/settings/public');
+            const data = settingsRes.data;
+            fetchedGst = Number(data?.gst_rate ?? data?.gst_percentage ?? 0);
+            set({ globalGstRate: fetchedGst });
+          } catch (e) {
+            // Ignore settings fetch failure
+          }
+
+          // 2. Refresh cart items' current product specifications & GST rates
+          const currentItems = get().items;
+          if (currentItems.length === 0) return;
+
+          const updatedItems = await Promise.all(
+            currentItems.map(async (item) => {
+              try {
+                if (item.product?.slug) {
+                  const prodRes = await apiClient.get<Product>(`/products/${item.product.slug}`);
+                  if (prodRes.data) {
+                    const serverProd = prodRes.data;
+                    const finalGstRate = Number(serverProd.gst_rate ?? 0) > 0 ? Number(serverProd.gst_rate) : fetchedGst;
+                    const updatedProduct: Product = {
+                      ...serverProd,
+                      gst_rate: finalGstRate
+                    };
+                    const unit_price = Number(serverProd.price) + Number(item.customization.extra_cost || 0);
+                    return {
+                      ...item,
+                      product: updatedProduct,
+                      unit_price,
+                      total_price: unit_price * item.quantity
+                    };
+                  }
+                }
+              } catch (e) {
+                // If single product fetch fails, ensure fallback GST rate is attached
+              }
+              const currentRate = Number(item.product?.gst_rate ?? 0);
+              const effectiveRate = currentRate > 0 ? currentRate : fetchedGst;
+              return {
+                ...item,
+                product: {
+                  ...item.product,
+                  gst_rate: effectiveRate
+                }
+              };
+            })
+          );
+
+          set({ items: updatedItems });
+        } catch (e) {
+          console.error('Failed to sync cart with server:', e);
+        }
+      },
+
       addItem: (product, customization, quantity = 1) => {
         set((state) => {
+          const effectiveGstRate = Number(product.gst_rate ?? 0) > 0 ? Number(product.gst_rate) : state.globalGstRate;
+          const productWithGst: Product = {
+            ...product,
+            gst_rate: effectiveGstRate
+          };
+
           const unit_price = Number(product.price) + Number(customization.extra_cost || 0);
           
           // Generate a deterministic or unique ID based on product and customization
@@ -56,12 +129,14 @@ export const useCartStore = create<CartState>()(
           if (existingIndex > -1) {
             const updatedItems = [...state.items];
             updatedItems[existingIndex].quantity += quantity;
+            updatedItems[existingIndex].unit_price = unit_price;
+            updatedItems[existingIndex].product = productWithGst;
             updatedItems[existingIndex].total_price = updatedItems[existingIndex].quantity * unit_price;
             return { items: updatedItems, isDrawerOpen: isMobile ? false : true };
           } else {
             const newItem: CartItem = {
               id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-              product,
+              product: productWithGst,
               quantity,
               customization,
               unit_price,
@@ -106,15 +181,26 @@ export const useCartStore = create<CartState>()(
         const subtotal = get().getSubtotal();
         const discount = get().couponDiscount;
         const discountRatio = subtotal > 0 ? Math.max(0, 1 - discount / subtotal) : 1;
+        const globalRate = get().globalGstRate || 0;
 
         const totalGST = get().items.reduce((sum, item) => {
-          const itemGstRate = Number(item.product?.gst_rate || 0);
-          if (itemGstRate <= 0) return sum;
+          const itemRate = Number(item.product?.gst_rate ?? 0);
+          const effectiveRate = itemRate > 0 ? itemRate : globalRate;
+          if (effectiveRate <= 0) return sum;
           const taxableItemPrice = item.total_price * discountRatio;
-          return sum + (taxableItemPrice * itemGstRate) / 100;
+          return sum + (taxableItemPrice * effectiveRate) / 100;
         }, 0);
 
         return Math.round(totalGST * 100) / 100;
+      },
+
+      getEffectiveGSTPercent: () => {
+        const subtotal = get().getSubtotal();
+        const discount = get().couponDiscount;
+        const taxable = Math.max(0, subtotal - discount);
+        if (taxable <= 0) return 0;
+        const gstAmount = get().getGSTAmount();
+        return Math.round((gstAmount / taxable) * 1000) / 10;
       },
 
       getShippingFee: () => {

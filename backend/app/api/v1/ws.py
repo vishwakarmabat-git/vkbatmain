@@ -4,7 +4,7 @@ from typing import Optional
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Query
 from app.core.websocket import realtime_manager
 from app.core.security import decode_access_token
-from app.core.database import SessionLocal
+import app.core.database as core_db
 from app.models.user import User
 
 logger = logging.getLogger("vkbathouse.realtime")
@@ -20,7 +20,7 @@ async def websocket_endpoint(
         try:
             payload = decode_access_token(token)
             if payload and payload.get("sub"):
-                db = SessionLocal()
+                db = core_db.SessionLocal()
                 try:
                     user = db.query(User).filter(User.id == payload.get("sub"), User.is_active == True).first()
                 finally:
