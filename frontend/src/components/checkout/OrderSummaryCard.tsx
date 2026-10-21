@@ -12,8 +12,6 @@ interface OrderSummaryCardProps {
   appliedCoupon: Coupon | null;
   couponDiscount: number;
   gstAmount?: number;
-  shippingFee?: number;
-  shippingCarrier?: string;
   onApplyCoupon: (coupon: Coupon, discount: number) => void;
   onRemoveCoupon: () => void;
 }
@@ -25,8 +23,6 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
   appliedCoupon,
   couponDiscount,
   gstAmount,
-  shippingFee,
-  shippingCarrier,
   onApplyCoupon,
   onRemoveCoupon,
 }) => {
@@ -140,12 +136,8 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
                 </div>
               )}
               <div className="flex justify-between text-[#A1A1AA]">
-                <span>Insured Delivery {shippingCarrier ? `(${shippingCarrier})` : ''}</span>
-                {shippingFee !== undefined && shippingFee > 0 ? (
-                  <span className="text-white font-bold">₹{shippingFee.toFixed(2)}</span>
-                ) : (
-                  <span className="text-[#10B981] font-bold">FREE</span>
-                )}
+                <span>Express Delivery</span>
+                <span className="text-[#10B981] font-bold">FREE</span>
               </div>
               {appliedCoupon && (
                 <div className="flex justify-between text-[#10B981]">
@@ -265,12 +257,8 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
           )}
 
           <div className="flex justify-between text-[#A1A1AA]">
-            <span>Insured Express Shipping {shippingCarrier ? `(${shippingCarrier})` : ''}</span>
-            {shippingFee !== undefined && shippingFee > 0 ? (
-              <span className="font-bold text-white">₹{shippingFee.toFixed(2)}</span>
-            ) : (
-              <span className="font-bold text-[#10B981]">FREE</span>
-            )}
+            <span>Insured Express Shipping</span>
+            <span className="font-bold text-[#10B981]">FREE</span>
           </div>
 
           {appliedCoupon && (

@@ -1,5 +1,5 @@
 from typing import List, Optional
-from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.schemas.order import (
@@ -16,13 +16,8 @@ router = APIRouter(prefix="/orders", tags=["Orders"])
 def create_order(
     data: OrderCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: Optional[User] = Depends(get_optional_current_user)
 ):
-    if not current_user.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Your account is not active. Please contact workshop support."
-        )
     return OrderService.create_order(db, data, current_user)
 
 @router.get("/my-orders", response_model=List[OrderResponse])

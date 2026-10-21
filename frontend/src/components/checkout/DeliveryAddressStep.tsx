@@ -3,8 +3,6 @@ import { MapPin, User, Phone, Mail, Home, Building2, Bookmark, ArrowRight, Check
 import { Button } from '@/components/ui/Button';
 import { Address } from '@/types';
 import { authService } from '@/services/authService';
-import { shippingService } from '@/services/shippingService';
-import { ShippingOptionsSelector } from './ShippingOptionsSelector';
 
 export const INDIAN_STATES = [
   'Andhra Pradesh',
@@ -160,30 +158,6 @@ export const DeliveryAddressStep: React.FC<DeliveryAddressStepProps> = ({
       isMounted = false;
     };
   }, []);
-
-  // Auto-fill City & State on valid 6-digit postal PIN code
-  useEffect(() => {
-    const pin = formData.pincode.trim();
-    if (pin.length === 6 && /^\d{6}$/.test(pin)) {
-      shippingService
-        .lookupPincode(pin)
-        .then((res) => {
-          if (res && res.city && !formData.city) {
-            onChange('city', res.city);
-          }
-          if (res && res.state && !formData.stateName) {
-            // Find closest matching state from list if possible
-            const matchedState = INDIAN_STATES.find(
-              (s) => s.toLowerCase() === res.state.toLowerCase()
-            );
-            onChange('stateName', matchedState || res.state);
-          }
-        })
-        .catch(() => {
-          // silent fallback
-        });
-    }
-  }, [formData.pincode]);
 
   const handleBlur = (field: keyof AddressFormData) => {
     setTouched((prev) => ({ ...prev, [field]: true }));
@@ -512,14 +486,6 @@ export const DeliveryAddressStep: React.FC<DeliveryAddressStepProps> = ({
             rows={2}
             placeholder="Special packing requests, custom initials engraving preference, gate code..."
             className="w-full bg-[#09090C] border border-[#1E1E28] focus:border-[#D4AF37] text-white px-3.5 py-2.5 rounded-md text-sm outline-none transition-colors placeholder:text-[#52525B]"
-          />
-        </div>
-
-        {/* Live Courier Uncle Shipping & Serviceability */}
-        <div className="pt-2">
-          <ShippingOptionsSelector
-            destinationPincode={formData.pincode}
-            paymentMode="PREPAID"
           />
         </div>
 

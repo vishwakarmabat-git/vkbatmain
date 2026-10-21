@@ -53,22 +53,6 @@ class Settings(BaseSettings):
     RAZORPAY_KEY_ID: str = ""
     RAZORPAY_KEY_SECRET: str = ""
 
-    # Courier Uncle Shipping & Logistics
-    COURIER_UNCLE_API_KEY: str = ""
-    COURIER_UNCLE_BASE_URL: str = "https://app.courieruncle.com/api/ext/v1"
-    COURIER_UNCLE_ENVIRONMENT: str = "sandbox"  # "sandbox" or "live"
-    COURIER_UNCLE_WEBHOOK_SECRET: str = ""
-    COURIER_UNCLE_DEFAULT_ORIGIN_PINCODE: str = "122001"
-    COURIER_UNCLE_AUTO_BOOK: bool = False
-
-    @property
-    def is_courier_uncle_sandbox(self) -> bool:
-        if self.COURIER_UNCLE_API_KEY.startswith("cu_test_"):
-            return True
-        if self.COURIER_UNCLE_API_KEY.startswith("cu_live_"):
-            return False
-        return self.COURIER_UNCLE_ENVIRONMENT.lower() == "sandbox"
-
     # CORS
     CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173,https://vkbatmain.vercel.app,https://www.vishwakarmabathouse.in,https://vishwakarmabathouse.in"
 

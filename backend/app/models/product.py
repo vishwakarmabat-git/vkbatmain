@@ -37,14 +37,9 @@ class Product(Base):
     is_bestseller = Column(Boolean, default=False)
     status = Column(String(50), default="active")  # "active", "draft", "archived"
     
-    # Cricket Bat Shipping & Parcel Packaging Specifications
-    package_weight_kg = Column(Float, default=1.5, nullable=False)
-    package_length_cm = Column(Float, default=90.0, nullable=False)
-    package_width_cm = Column(Float, default=14.0, nullable=False)
-    package_height_cm = Column(Float, default=10.0, nullable=False)
-    shipping_category = Column(String(50), default="cricket_bat", nullable=False)
-    packaging_type = Column(String(50), default="heavy_duty_box", nullable=False)
-
+    rating_avg = Column(Float, default=5.0)
+    reviews_count = Column(Integer, default=0)
+    
     # SEO
     seo_title = Column(String(255), nullable=True)
     seo_description = Column(Text, nullable=True)

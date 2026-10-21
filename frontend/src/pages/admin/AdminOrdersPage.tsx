@@ -19,21 +19,8 @@ export const AdminOrdersPage: React.FC = () => {
     setLoading(true);
     adminService
       .getOrders(statusFilter || undefined, search || undefined)
-      .then((res: any) => {
-        if (Array.isArray(res)) {
-          setOrders(res);
-        } else if (res && Array.isArray(res.items)) {
-          setOrders(res.items);
-        } else if (res && Array.isArray(res.orders)) {
-          setOrders(res.orders);
-        } else {
-          setOrders([]);
-        }
-      })
-      .catch((err) => {
-        console.error('Failed to load orders:', err);
-        setOrders([]);
-      })
+      .then(setOrders)
+      .catch(console.error)
       .finally(() => setLoading(false));
   };
 

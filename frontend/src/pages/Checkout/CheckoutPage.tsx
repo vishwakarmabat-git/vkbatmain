@@ -28,7 +28,6 @@ export const CheckoutPage: React.FC = () => {
     items,
     appliedCoupon,
     couponDiscount,
-    selectedShippingQuote,
     getSubtotal,
     getGSTAmount,
     getShippingFee,
@@ -231,9 +230,6 @@ export const CheckoutPage: React.FC = () => {
         coupon_code: appliedCoupon ? appliedCoupon.code : undefined,
         payment_method: paymentMethod,
         customer_notes: formData.customerNotes.trim() || undefined,
-        shipping_fee: selectedShippingQuote ? Number(selectedShippingQuote.total_with_gst) : 0,
-        shipping_carrier: selectedShippingQuote ? selectedShippingQuote.courier_name : undefined,
-        shipping_service: selectedShippingQuote ? selectedShippingQuote.service : undefined,
       };
 
       // 1. Create order on backend
@@ -503,15 +499,9 @@ export const CheckoutPage: React.FC = () => {
         <div className="lg:col-span-5 xl:col-span-4">
           <OrderSummaryCard
             items={items}
-            subtotal={getSubtotal()}
-            grandTotal={getGrandTotal()}
+            subtotal={subtotal}
+            grandTotal={grandTotal}
             gstAmount={getGSTAmount()}
-            shippingFee={getShippingFee()}
-            shippingCarrier={
-              selectedShippingQuote
-                ? `${selectedShippingQuote.courier_name} (${selectedShippingQuote.service_label})`
-                : undefined
-            }
             appliedCoupon={appliedCoupon}
             couponDiscount={couponDiscount}
             onApplyCoupon={applyCoupon}

@@ -21,9 +21,6 @@ export interface CreateOrderPayload {
   coupon_code?: string;
   payment_method: 'razorpay' | 'cod' | 'whatsapp';
   customer_notes?: string;
-  shipping_fee?: number;
-  shipping_carrier?: string;
-  shipping_service?: string;
 }
 
 export const orderService = {

@@ -1,26 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Save, Truck, Package, Shield, CheckCircle2, Printer, Download, Eye } from 'lucide-react';
+import { ArrowLeft, Save, Truck, Package, Shield, CheckCircle2, Printer } from 'lucide-react';
 import { orderService } from '@/services/orderService';
 import { adminService } from '@/services/adminService';
-import { shippingService } from '@/services/shippingService';
 import { Order } from '@/types';
 import { Button } from '@/components/ui/Button';
 import { Input, Textarea } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { ProfessionalInvoice } from '@/components/invoice/ProfessionalInvoice';
-import { ShipmentBookingModal } from '@/components/shipping/ShipmentBookingModal';
-import { TrackingModal } from '@/components/shipping/TrackingModal';
 import { toast } from 'sonner';
 
 export const AdminOrderDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
-
-  // Shipment & Tracking Modals
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-  const [isTrackingModalOpen, setIsTrackingModalOpen] = useState(false);
 
   // Update states
   const [orderStatus, setOrderStatus] = useState('pending');
@@ -29,46 +22,6 @@ export const AdminOrderDetailsPage: React.FC = () => {
   const [shippingCarrier, setShippingCarrier] = useState('');
   const [adminNotes, setAdminNotes] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
-
-  const fetchOrder = () => {
-    if (!id) return;
-    setLoading(true);
-    orderService
-      .getOrderById(id)
-      .then((o) => {
-        setOrder(o);
-        setOrderStatus(o.order_status);
-        setPaymentStatus(o.payment_status);
-        setTrackingNumber(o.tracking_number || '');
-        setShippingCarrier(o.shipping_carrier || '');
-        setAdminNotes(o.admin_notes || '');
-      })
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  };
-
-  const handleDownloadLabel = async () => {
-    if (!order?.shipments || order.shipments.length === 0) {
-      toast.error('No active shipment found for this order.');
-      return;
-    }
-    const activeSh = order.shipments[0];
-    try {
-      toast.info('Downloading shipping label...');
-      const blob = await shippingService.downloadLabel(activeSh.id);
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Label_${activeSh.tracking_id}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-      toast.success('Label downloaded successfully');
-    } catch {
-      toast.error('Failed to download shipping label');
-    }
-  };
 
   useEffect(() => {
     if (!id) return;
@@ -139,37 +92,7 @@ export const AdminOrderDetailsPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5">
-            {order.shipments && order.shipments.length > 0 ? (
-              <>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setIsTrackingModalOpen(true)}
-                  leftIcon={<Eye className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />}
-                >
-                  TRACK PARCEL
-                </Button>
-                <Button
-                  variant="gold"
-                  size="sm"
-                  onClick={handleDownloadLabel}
-                  leftIcon={<Download className="w-3.5 h-3.5 shrink-0" />}
-                >
-                  PRINT LABEL
-                </Button>
-              </>
-            ) : (
-              <Button
-                variant="gold"
-                size="sm"
-                onClick={() => setIsBookingModalOpen(true)}
-                leftIcon={<Truck className="w-3.5 h-3.5 shrink-0" />}
-              >
-                DISPATCH VIA COURIER UNCLE
-              </Button>
-            )}
-
+          <div className="flex items-center gap-3">
             <Button
               variant="outline"
               size="sm"
@@ -362,25 +285,6 @@ export const AdminOrderDetailsPage: React.FC = () => {
         <div className="print-only">
           <ProfessionalInvoice order={order} />
         </div>
-      )}
-
-      {/* Shipment Booking Modal */}
-      {order && (
-        <ShipmentBookingModal
-          order={order}
-          isOpen={isBookingModalOpen}
-          onClose={() => setIsBookingModalOpen(false)}
-          onSuccess={fetchOrder}
-        />
-      )}
-
-      {/* Tracking Modal */}
-      {order && (
-        <TrackingModal
-          orderId={order.id}
-          isOpen={isTrackingModalOpen}
-          onClose={() => setIsTrackingModalOpen(false)}
-        />
       )}
     </>
   );
